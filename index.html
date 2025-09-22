@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASTRISK - ACM AJCE Tech Fest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.cdnfonts.com/css/valorant" rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ================= BASE STYLES ================= */
+        body {
+            color: #e5e5e5;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            cursor: auto;
+            background-image: url('https://envs.sh/LzC.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            backdrop-filter: blur(0px);
+        }
+
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            pointer-events: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.2s ease;
+        }
+
+        .cursor-dot {
+            width: 24px;
+            height: 24px;
+            background: none;
+            position: fixed;
+            z-index: 9999;
+        }
+
+        .cursor-dot::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 24px solid #ff003c;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, transform 0.1s linear;
+        }
+
+        .cursor-outline::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 40px solid rgba(255, 0, 60, 0.3);
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+
+        body:hover .cursor-dot,
+        body:hover .cursor-outline {
+            opacity: 1;
+        }
+
+        a:hover~.cursor-outline,
+        button:hover~.cursor-outline {
+            width: 60px;
+            height: 60px;
+            border-color: #00ffff;
+        }
+
+        /* Fonts */
+        .font-rajdhani {
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* Navbar */
+        .glassmorphic-nav {
+            background: rgba(10, 10, 10, 0.4);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 0, 60, 0.2);
+        }
+
+        /* Hero BG */
+        .hero-bg {
+            cursor: none;
+            position: relative;
+        }
+
+        #valorant-ranks-bg {
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .valo-rank-icon {
+            position: absolute;
+            bottom: -150px;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-120vh) rotate(360deg);
+            }
+        }
+
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 20%;
+        }
+
+        /* Title Reveal */
+        .title-reveal {
+            color: #0ff;
+            border-color: #0077ff;
+            text-shadow: 0 0 10px #00adbd, 0 0 20px #009dff, 0 0 40px #0077ff;
+            animation: fadeInGlow 2s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Desktop: Remove glow and set white color for hero title */
+        @media (min-width: 769px) {
+            .title-reveal {
+                color: #fff !important;
+                text-shadow: none !important;
+            }
+        }
+
+        @keyframes fadeInGlow {
+            from {
+                opacity: 0;
+                letter-spacing: 0.5em;
+                filter: blur(5px);
+            }
+
+            to {
+                opacity: 1;
+                letter-spacing: normal;
+                filter: blur(0);
+            }
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff,
+                    0 0 20px #ff003c, 0 0 30px #ff003c, 0 0 40px #ff003c;
+            }
+
+            50% {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff,
+                    0 0 30px #ff003c, 0 0 40px #ff003c, 0 0 50px #ff003c;
+            }
+        }
+
+        /* Countdown */
+        .countdown-box {
+            border: none;
+            box-shadow: none;
+            padding: 12px;
+        }
+
+        .section-title {
+            text-shadow: 0 0 10px #ff003c, 0 0 20px #ff003c;
+        }
+
+        /* Events */
+        #events {
+            background-color: rgba(0, 0, 0, 0.75);
+        }
+
+        /* Cards */
+        .valorant-card {
+            position: relative;
+            overflow: hidden;
+            background: rgba(17, 17, 17, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px),
+                    calc(100% - 20px) 100%, 0 100%);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .valorant-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .valorant-card::before,
+        .valorant-card::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: #ff003c;
+            opacity: 0;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            box-shadow: 0 0 10px #ff003c;
+        }
+
+        .valorant-card::before {
+            top: 0;
+            left: 0;
+            transform: translateX(-100%);
+        }
+
+        .valorant-card::after {
+            bottom: 0;
+            right: 0;
+            transform: translateX(100%);
+        }
+
+        .valorant-card:hover::before,
+        .valorant-card:hover::after {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .card-bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .valorant-card:hover .card-bg-image {
+            opacity: 0.5;
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card-category {
+            font-family: 'Rajdhani', sans-serif;
+            color: #ff003c;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .card-title {
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+        }
+
+        .card-description {
+            flex-grow: 1;
+        }
+
+        .card-button {
+            color: #fff;
+            background: rgba(255, 0, 60, 0.2);
+            border: 1px solid rgba(255, 0, 60, 0.5);
+            padding: 0.5rem 1rem;
+            clip-path: polygon(0 0, calc(100% - 10px) 0,
+                    100% 10px, 100% 100%, 0 100%);
+            transition: background 0.3s ease;
+        }
+
+        .card-button:hover {
+            background: #ff003c;
+        }
+
+        /* Timeline */
+        .timeline-container {
+            position: relative;
+            padding-left: 3rem;
+            border-left: 2px solid rgba(255, 0, 60, 0.2);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateY(-5px);
+            border-color: #ff003c;
+            box-shadow: 0 10px 25px rgba(255, 0, 60, 0.15);
+        }
+
+        .timeline-item:not(:last-child) {
+            margin-bottom: 2rem;
+        }
+
+        .timeline-icon {
+            position: absolute;
+            left: -3.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2.5rem;
+            height: 2.5rem;
+            background-color: #0a0a0a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ff003c;
+            z-index: 10;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0);
+        }
+
+        .reveal.visible .timeline-icon {
+            animation: glowPulse 2s infinite;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                box-shadow: 0 0 5px rgba(255, 0, 60, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 20px rgba(255, 0, 60, 0.8);
+            }
+
+            100% {
+                box-shadow: 0 0 5px rgba(255, 0, 60, 0.5);
+            }
+        }
+
+        .timeline-time {
+            position: absolute;
+            left: 1.5rem;
+            top: -1rem;
+            background-color: #ff003c;
+            color: #fff;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Sponsors */
+        .sponsor-logo {
+            filter: grayscale(100%) brightness(1.5);
+            transition: all 0.3s ease;
+        }
+
+        .sponsor-logo:hover {
+            filter: grayscale(0%) brightness(1);
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: #111;
+            border: 1px solid #ff003c;
+        }
+
+        /* About Section */
+        #about {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(255, 0, 60, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 60, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: pan-grid 60s linear infinite;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        #about.visible .about-grid-bg {
+            opacity: 1;
+        }
+
+        @keyframes pan-grid {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: -800px -800px;
+            }
+        }
+
+        /* Heading */
+        .smallboy {
+            font-size: 2rem;
+            letter-spacing: 0.2em;
+            color: #1ba8ff;
+            text-shadow: 0 0 5px #000000;
+            font-family: 'valorant', sans-serif;
+            opacity: 95%;
+            font-weight: 900;
+        }
+
+        /* ================= RESPONSIVE FIXES ================= */
+
+        /* Hide cursor on mobile/touch devices */
+        @media (hover: none) and (pointer: coarse) {
+
+            .cursor-dot,
+            .cursor-outline {
+                display: none !important;
+            }
+
+            body {
+                cursor: auto;
+            }
+        }
+
+        /* Tablets */
+        @media (max-width: 1024px) {
+            .title-reveal {
+                font-size: 2.2rem;
+                text-align: center;
+            }
+
+            .smallboy {
+                font-size: 1.5rem;
+                letter-spacing: 0.15em;
+            }
+
+            .timeline-container {
+                padding-left: 1.5rem;
+                border-left-width: 1px;
+            }
+
+            .timeline-icon {
+                left: -2.5rem;
+                width: 2rem;
+                height: 2rem;
+            }
+
+            .timeline-time {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.5rem;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .logo {
+                display: none;
+            }
+
+            body::before {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.55);
+                z-index: 0;
+                pointer-events: none;
+            }
+
+            .cursor-dot,
+            .cursor-outline {
+                display: none !important;
+            }
+
+            /* Responsive background for mobile */
+            body {
+                background-image: url('https://envs.sh/Lzl.png');
+                background-size: auto;
+                background-position: center top;
+                background-attachment: scroll;
+            }
+
+            .title-reveal {
+                font-size: 1.8rem;
+            }
+
+            .smallboy {
+                font-size: 1.2rem;
+                text-align: center;
+                color: #009dff;
+            }
+
+            .valorant-card {
+                clip-path: none;
+                border-radius: 10px;
+            }
+
+            .card-content {
+                padding: 1rem;
+            }
+
+            .card-title {
+                font-size: 1.2rem;
+            }
+
+            .card-description {
+                font-size: 0.9rem;
+            }
+
+            .card-button {
+                font-size: 0.85rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .timeline-container {
+                padding-left: 1rem;
+            }
+
+            .timeline-item {
+                padding: 1rem;
+            }
+
+            .timeline-icon {
+                display: none;
+            }
+
+            /* Countdown fixes for mobile screens */
+            #countdown {
+                gap: 0.5rem;
+            }
+
+            .countdown-box {
+                width: 65px;
+                min-width: 0;
+                padding: 0.5rem;
+                border: none;
+                box-shadow: none;
+            }
+
+            .countdown-box>div:first-child {
+                font-size: 1.5rem;
+            }
+
+            .countdown-box>div:last-child {
+                font-size: 0.65rem;
+            }
+
+            /* Desktop spacing for countdown */
+            @media (min-width: 769px) {
+                #countdown {
+                    gap: 2.5rem;
+                }
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .title-reveal {
+                font-size: 1.5rem;
+                line-height: 1.3;
+            }
+
+            .smallboy {
+                font-size: 1rem;
+                letter-spacing: 0.1em;
+            }
+
+            .card-title {
+                font-size: 1rem;
+            }
+
+            .card-description {
+                font-size: 0.8rem;
+            }
+
+            .card-button {
+                font-size: 0.75rem;
+                padding: 0.3rem 0.6rem;
+            }
+
+            .timeline-item {
+                font-size: 0.85rem;
+            }
+
+            /* Countdown fixes for small mobile screens */
+            #countdown {
+                gap: 0.5rem;
+                /* Reduce space between boxes */
+            }
+
+            .countdown-box {
+                width: 65px;
+                /* Make boxes smaller */
+                padding: 0.5rem;
+            }
+
+            .countdown-box>div:first-child {
+                /* The number */
+                font-size: 1.5rem;
+                /* ~text-2xl */
+            }
+
+            .countdown-box>div:last-child {
+                /* The label e.g., "Days" */
+                font-size: 0.65rem;
+            }
+        }
+
+        #register {
+            background-color: rgba(0, 0, 0, 0.75);
+        }
+
+
+        #desktop-bg-video {
+            animation: fadeInVideo 1.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeInVideo {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    <!-- Desktop video background -->
+    <video id="desktop-bg-video" playsinline autoplay muted loop preload="none"
+        style="position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-1;display:none;"
+        poster="https://envs.sh/LzC.jpg">
+        <source src="https://cmsassets.rgpub.io/sanity/files/dsfx7636/news/409ab2fc369ba5e1fe50bac10c6676d7d1365a9f.mp4"
+            type="video/mp4">
+    </video>
+
+    <header class="fixed top-0 left-0 right-0 z-50 glassmorphic-nav">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#" class="flex items-center group">
+
+                <span class="text-2xl font-bold text-white ml-3"
+                    style="font-family: 'valorant', sans-serif;">ASTRISK</span>
+
+            </a>
+            <a><img src="https://envs.sh/Lau.png" alt="ASTRISK Logo" class="h-12 w-auto logo">
+            </a>
+            <div class="hidden md:flex space-x-8 text-white uppercase tracking-wider text-sm">
+                <a href="#about" class="relative group py-1">
+                    <span>About</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="#events" class="relative group py-1">
+                    <span>Events</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="#schedule" class="relative group py-1">
+                    <span>Schedule</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="#sponsors" class="relative group py-1">
+                    <span>Sponsors</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+            </div>
+            <img src="https://envs.sh/LaF.png" alt="ASTRISK Logo" class="h-12 w-auto logo">
+            <a href="#register"
+                class="hidden md:block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-sm transition shadow-lg shadow-red-500/20 uppercase tracking-wider text-sm">
+                Register Now
+            </a>
+
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#about" class="block py-2 px-4 text-sm hover:bg-gray-700">About</a>
+            <a href="#events" class="block py-2 px-4 text-sm hover:bg-gray-700">Events</a>
+            <a href="#schedule" class="block py-2 px-4 text-sm hover:bg-gray-700">Schedule</a>
+            <a href="#sponsors" class="block py-2 px-4 text-sm hover:bg-gray-700">Sponsors</a>
+            <a href="#register" class="block py-2 px-4 text-sm hover:bg-red-700 bg-red-600">Register Now</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="min-h-screen flex items-center justify-center text-center hero-bg overflow-hidden">
+            <div id="valorant-ranks-bg" class="absolute top-0 left-0 w-full h-full z-0"></div>
+            <canvas id="hero-canvas"></canvas>
+            <div class="z-10 p-6 relative">
+                <p class="text-xl md:text-2xl mt-4 tracking-widest uppercase smallboy ">ACM AJCE PRESENTS</p>
+
+                <h1 class="text-7xl md:text-9xl font-audiowide font-black uppercase title-reveal"
+                    style="font-family: 'valorant', sans-serif;">
+                    ASTRISK
+                </h1>
+                <div id="countdown" class="flex justify-center space-x-2 md:space-x-4 mt-4 text-white">
+                    <div class="countdown-box rounded-lg">
+                        <div id="days" class="text-4xl font-rajdhani font-bold">00</div>
+                        <div class="text-xs uppercase">Days</div>
+                    </div>
+                    <div class="countdown-box rounded-lg">
+                        <div id="hours" class="text-4xl font-rajdhani font-bold">00</div>
+                        <div class="text-xs uppercase">Hours</div>
+                    </div>
+                    <div class="countdown-box rounded-lg">
+                        <div id="minutes" class="text-4xl font-rajdhani font-bold">00</div>
+                        <div class="text-xs uppercase">Minutes</div>
+                    </div>
+                    <div class="countdown-box rounded-lg">
+                        <div id="seconds" class="text-4xl font-rajdhani font-bold">00</div>
+                        <div class="text-xs uppercase">Seconds</div>
+                    </div>
+                </div>
+                <div class="mt-12">
+                    <a href="#events"
+                        class="bg-transparent border-2 border-red-500 hover:bg-red-500 text-white font-bold py-3 px-8 rounded-sm transition duration-300">
+                        View The Arenas
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-20 bg-black">
+            <div class="about-grid-bg"></div>
+            <div class="container mx-auto px-6 text-center reveal relative z-10">
+                <h2 class="text-4xl md:text-5xl font-rajdhani font-bold section-title mb-8">Where Code Meets Combat</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-400 mb-16">
+                    ASTRISK is not just an event; it's an arena where the brightest minds in technology and the sharpest
+                    talents in gaming collide. For two electrifying days, the ACM Student Chapter at Amal Jyothi College
+                    of Engineering transforms into a hub of innovation, competition, and creativity. We're calling all
+                    creators, strategists, and tech enthusiasts to prove their mettle.
+                </p>
+                <div class="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto">
+                    <div class="reveal" style="transition-delay: 100ms;">
+                        <div class="bg-gray-900/50 p-6 rounded-lg border border-gray-800 h-full">
+                            <svg class="w-12 h-12 mx-auto text-red-500 mb-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <h3 class="text-xl font-rajdhani font-bold mb-2">Elite Competition</h3>
+                            <p class="text-gray-500">Face off against top-tier talent in high-stakes tournaments with a
+                                massive prize pool on the line.</p>
+                        </div>
+                    </div>
+                    <div class="reveal" style="transition-delay: 200ms;">
+                        <div class="bg-gray-900/50 p-6 rounded-lg border border-gray-800 h-full">
+                            <svg class="w-12 h-12 mx-auto text-red-500 mb-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01">
+                                </path>
+                            </svg>
+                            <h3 class="text-xl font-rajdhani font-bold mb-2">Creative Showcases</h3>
+                            <p class="text-gray-500">Unleash your artistic vision in our digital design competitions and
+                                celebrate the aesthetics of gaming.</p>
+                        </div>
+                    </div>
+                    <div class="reveal" style="transition-delay: 300ms;">
+                        <div class="bg-gray-900/50 p-6 rounded-lg border border-gray-800 h-full">
+                            <svg class="w-12 h-12 mx-auto text-red-500 mb-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9.663 16.663c.52-1.261 1.231-2.435 2.096-3.527l-.328-.328A3.001 3.001 0 015.663 9.09l7.25-7.25a3 3 0 014.242 0l.94.94a3 3 0 010 4.242l-7.25 7.25a3 3 0 01-4.242 0l-.328-.328z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12.002 11.002L13 12m-3-3l1-1"></path>
+                            </svg>
+                            <h3 class="text-xl font-rajdhani font-bold mb-2">Pro Insights</h3>
+                            <p class="text-gray-500">Learn from industry professionals in exclusive workshops and gain
+                                invaluable insights from guest speakers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="events" class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-rajdhani font-bold section-title mb-16 reveal">The Arenas</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                    <div class="valorant-card reveal" style="transition-delay: 100ms;">
+                        <div class="card-bg-image"
+                            style="background-image: url('https://placehold.co/600x800/000000/ff003c?text=Valorant\nGameplay&font=rajdhani');">
+                        </div>
+                        <div class="card-content text-left">
+                            <p class="card-category">E-Sports</p>
+                            <h3 class="card-title text-2xl font-rajdhani font-bold my-2">The Reckoning</h3>
+                            <p class="card-description text-gray-400 mb-6 text-sm">High-stakes 5v5 tactical shooter
+                                action. Compete for a massive ₹50,000 prize pool.</p>
+                            <button class="card-button event-details-btn mt-auto self-start"
+                                data-modal="valorantModal">View Ruleset &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div class="valorant-card reveal" style="transition-delay: 200ms;">
+                        <div class="card-bg-image"
+                            style="background-image: url('https://placehold.co/600x800/000000/ff003c?text=Digital\nArt&font=rajdhani');">
+                        </div>
+                        <div class="card-content text-left">
+                            <p class="card-category">Creative</p>
+                            <h3 class="card-title text-2xl font-rajdhani font-bold my-2">Art of the Game</h3>
+                            <p class="card-description text-gray-400 mb-6 text-sm">Unleash your creativity. Submit
+                                original digital art inspired by the world of gaming.</p>
+                            <button class="card-button event-details-btn mt-auto self-start" data-modal="artModal">View
+                                Guidelines &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div class="valorant-card reveal" style="transition-delay: 300ms;">
+                        <div class="card-bg-image"
+                            style="background-image: url('https://placehold.co/600x800/000000/ff003c?text=Game\nDev&font=rajdhani');">
+                        </div>
+                        <div class="card-content text-left">
+                            <p class="card-category">Workshop</p>
+                            <h3 class="card-title text-2xl font-rajdhani font-bold my-2">Dev Genesis</h3>
+                            <p class="card-description text-gray-400 mb-6 text-sm">Learn from a professional as they
+                                guide you through the process of game creation.</p>
+                            <button class="card-button event-details-btn mt-auto self-start"
+                                data-modal="workshopModal">Get Details &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div class="valorant-card reveal" style="transition-delay: 400ms;">
+                        <div class="card-bg-image"
+                            style="background-image: url('https://placehold.co/600x800/000000/ff003c?text=Console\nZone&font=rajdhani');">
+                        </div>
+                        <div class="card-content text-left">
+                            <p class="card-category">Gaming Zone</p>
+                            <h3 class="card-title text-2xl font-rajdhani font-bold my-2">Console Command</h3>
+                            <p class="card-description text-gray-400 mb-6 text-sm">Experience high-performance gaming on
+                                top-tier consoles. Relax and compete!</p>
+                            <button class="card-button event-details-btn mt-auto self-start"
+                                data-modal="consoleModal">More Info &rarr;</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <section id="schedule" class="py-20 bg-black">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-rajdhani font-bold text-center section-title mb-20 reveal">Event
+                    Timeline</h2>
+                <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-x-16 gap-y-12">
+
+                    <div class="reveal">
+                        <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-8 pl-12 md:pl-0">17th October <span
+                                class="text-lg text-gray-400 block font-medium">Internal Events</span></h3>
+                        <div class="timeline-container">
+                            <div class="timeline-item reveal" style="transition-delay: 100ms;">
+                                <div class="timeline-icon">
+                                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                                    </svg>
+                                </div>
+                                <span class="timeline-time">11:00 AM</span>
+                                <h4 class="font-bold text-white text-lg">Game Dev & Design Workshop</h4>
+                                <p class="text-gray-400 mt-1">An immersive session with an industry professional. From
+                                    concept to prototype.</p>
+                            </div>
+                            <div class="timeline-item reveal" style="transition-delay: 200ms;">
+                                <div class="timeline-icon">
+                                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
+                                        </path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <span class="timeline-time">ALL DAY</span>
+                                <h4 class="font-bold text-white text-lg">Gaming Console Zone</h4>
+                                <p class="text-gray-400 mt-1">Open all day for students to experience top-tier console
+                                    gaming.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reveal">
+                        <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-8 pl-12 md:pl-0">18th October <span
+                                class="text-lg text-gray-400 block font-medium">External Events</span></h3>
+                        <div class="timeline-container">
+                            <div class="timeline-item reveal" style="transition-delay: 100ms;">
+                                <div class="timeline-icon">
+                                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <span class="timeline-time">9:00 AM</span>
+                                <h4 class="font-bold text-white text-lg">Registration & Check-in</h4>
+                                <p class="text-gray-400 mt-1">Final teams check in for The Reckoning tournament.</p>
+                            </div>
+                            <div class="timeline-item reveal" style="transition-delay: 200ms;">
+                                <div class="timeline-icon">
+                                    <svg class="w-6 h-6 text-red-500" fill="currentColor" role="img" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <title>Valorant</title>
+                                        <path
+                                            d="m23.51 6.55-5.25 11.23a.47.47 0 0 1-.87-.01l-2.47-5.32-3.1 5.31a.47.47 0 0 1-.86 0l-3.08-5.3L5.42 17.7a.47.47 0 0 1-.87.02L.49 6.55a.47.47 0 0 1 .6-.53l10.42 4.04a.47.47 0 0 1 .42 0L22.9 6a.47.47 0 0 1 .6.54Z" />
+                                    </svg>
+                                </div>
+                                <span class="timeline-time">10:00 AM</span>
+                                <h4 class="font-bold text-white text-lg">Tournament Begins</h4>
+                                <p class="text-gray-400 mt-1">The LAN finals for the Valorant tournament kick off.</p>
+                            </div>
+                            <div class="timeline-item reveal" style="transition-delay: 300ms;">
+                                <div class="timeline-icon">
+                                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <span class="timeline-time">1:00 PM</span>
+                                <h4 class="font-bold text-white text-lg">Guest Streamer Session</h4>
+                                <p class="text-gray-400 mt-1">Meet & Greet with a prominent Malayalam streamer.</p>
+                            </div>
+                            <div class="timeline-item reveal" style="transition-delay: 400ms;">
+                                <div class="timeline-icon">
+                                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <span class="timeline-time">2:00 PM</span>
+                                <h4 class="font-bold text-white text-lg">Grand Finals & Closing Ceremony</h4>
+                                <p class="text-gray-400 mt-1">The final showdown, followed by prize distribution.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="register" class="py-20">
+            <div class="container mx-auto px-6 text-center reveal">
+                <h2 class="text-4xl md:text-5xl font-rajdhani font-bold section-title mb-6">Join The Battle</h2>
+                <p class="text-gray-400 mb-8 max-w-xl mx-auto">Registration for "The Reckoning" Valorant tournament is
+                    now open. Assemble your team and fight for glory.</p>
+                <div class="bg-gray-900/50 p-6 rounded-lg inline-block border border-gray-700">
+                    <p class="text-lg font-bold">Registration Fee: <span class="text-red-500">₹100 per person</span></p>
+                    <p class="text-sm text-gray-500">(Team of 6 = ₹600, Team of 7 = ₹700)</p>
+                </div>
+                <div class="mt-10">
+                    <a href="#"
+                        class="bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-10 text-lg rounded-sm transition duration-300 shadow-lg shadow-red-500/30">
+                        Register Your Team Now
+                    </a>
+                    <p class="text-xs text-gray-600 mt-4">(You will be redirected to a Google Form)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sponsors" class="py-20 bg-black">
+            <div class="container mx-auto px-6 text-center reveal">
+                <h2 class="text-4xl md:text-5xl font-rajdhani font-bold section-title mb-10" style="color:#fff;">Our
+                    Partners</h2>
+                <div id="sponsor-carousel" style="overflow:hidden;width:100%;max-width:900px;margin:0 auto;">
+                    <div id="sponsor-track" style="display:flex;gap:48px;animation:sponsorScroll 18s linear infinite;">
+                        <img src="https://placehold.co/150x60/0a0a0a/ffffff?text=SPONSOR" alt="Sponsor Logo"
+                            style="height:60px;width:150px;object-fit:contain;" />
+                        <img src="https://placehold.co/150x60/0a0a0a/ffffff?text=SPONSOR" alt="Sponsor Logo"
+                            style="height:60px;width:150px;object-fit:contain;" />
+                        <img src="https://placehold.co/150x60/0a0a0a/ffffff?text=SPONSOR" alt="Sponsor Logo"
+                            style="height:60px;width:150px;object-fit:contain;" />
+                        <img src="https://placehold.co/150x60/0a0a0a/ffffff?text=SPONSOR" alt="Sponsor Logo"
+                            style="height:60px;width:150px;object-fit:contain;" />
+                        <img src="https://placehold.co/150x60/0a0a0a/ffffff?text=SPONSOR" alt="Sponsor Logo"
+                            style="height:60px;width:150px;object-fit:contain;" />
+                        <img src="https://placehold.co/150x60/0a0a0a/ffffff?text=SPONSOR" alt="Sponsor Logo"
+                            style="height:60px;width:150px;object-fit:contain;" />
+                        <img src="https://placehold.co/150x60/0a0a0a/ffffff?text=SPONSOR" alt="Sponsor Logo"
+                            style="height:60px;width:150px;object-fit:contain;" />
+                    </div>
+                </div>
+                <style>
+                    @keyframes sponsorScroll {
+                        0% {
+                            transform: translateX(0);
+                        }
+
+                        100% {
+                            transform: translateX(-50%);
+                        }
+                    }
+
+                    #sponsor-track {
+                        min-width: 1400px;
+                    }
+                </style>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-10" style="background:rgba(17,17,17,0.85);">
+        <div class="container mx-auto px-6 text-center" style="max-width:900px;">
+            <div style="background:rgba(17,17,17,0.85);padding:2rem 1rem;backdrop-filter:blur(6px);">
+                <p
+                    style="font-family:'valorant',sans-serif;font-size:1.3rem;color:#fff;letter-spacing:0.12em;text-shadow:0 0 8px #ff003c;">
+                    &copy; 2025 ACM Student Chapter, Amal Jyothi College of Engineering
+                </p>
+                <p
+                    style="color:#ff003c;font-size:1rem;margin-top:0.5rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.08em;">
+                    Designed & Developed by Amarnath C and Amal Benny Joseph
+                </p>
+                <div style="margin-top:1.5rem;">
+                    <a href="#"
+                        style="color:#fff;background:#ff003c;padding:0.5rem 1.2rem;border-radius:6px;text-decoration:none;font-weight:700;box-shadow:0 0 10px #ff003c40;transition:background 0.2s;">Contact
+                        Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="valorantModal" class="modal">
+        <div class="modal-content max-w-2xl mx-auto my-12 p-8 rounded-lg shadow-lg relative">
+            <button class="close-btn absolute top-4 right-4 text-white text-2xl">&times;</button>
+            <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-4">The Reckoning: Rules</h3>
+            <div class="text-gray-300 space-y-4">
+                <div>
+                    <h4 class="font-bold text-white">Prize Pool:</h4>
+                    <p>₹50,000 Total (1st: ₹30k, 2nd: ₹13k, 3rd: ₹7k)</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Format:</h4>
+                    <p>Online qualifiers to select top 10 teams for the LAN finals on Oct 18th.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Server:</h4>
+                    <p>Mumbai</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">General Rules:</h4>
+                    <ul class="list-disc list-inside mt-2 text-gray-400">
+                        <li>No cheating, slurs, or harassment (verbal/physical).</li>
+                        <li>Mandatory screen recording by all players.</li>
+                        <li>Punctuality is key: 10-minute buffer for the entire team or face disqualification.</li>
+                        <li>Strictly no collusion or helping other teams.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="artModal" class="modal">
+        <div class="modal-content max-w-2xl mx-auto my-12 p-8 rounded-lg shadow-lg relative">
+            <button class="close-btn absolute top-4 right-4 text-white text-2xl">&times;</button>
+            <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-4">Art of the Game: Guidelines</h3>
+            <div class="text-gray-300 space-y-4">
+                <p>Showcase your talent! Submit original digital art inspired by the vast world of gaming. Celebrate the
+                    aesthetics and imagination that bring virtual worlds to life.</p>
+                <div>
+                    <h4 class="font-bold text-white">Theme:</h4>
+                    <p>Inspired by Gaming</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Submission:</h4>
+                    <p>Details on submission platform and deadline will be announced soon.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Judging Criteria:</h4>
+                    <p>Originality, creativity, technical skill, and relevance to the theme.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="workshopModal" class="modal">
+        <div class="modal-content max-w-2xl mx-auto my-12 p-8 rounded-lg shadow-lg relative">
+            <button class="close-btn absolute top-4 right-4 text-white text-2xl">&times;</button>
+            <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-4">Game Dev & Design Workshop</h3>
+            <div class="text-gray-300 space-y-4">
+                <p>An exclusive internal event for AJCE students. Learn the ropes of game creation from a company
+                    professional.</p>
+                <div>
+                    <h4 class="font-bold text-white">Format:</h4>
+                    <p>A 45-minute TED Talk style session, followed by a Q&A.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Key Takeaways:</h4>
+                    <p>Gain practical skills and invaluable insights into the game development lifecycle, from initial
+                        concept to playable prototype.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Date & Time:</h4>
+                    <p>October 17th. Specific time to be announced.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="consoleModal" class="modal">
+        <div class="modal-content max-w-2xl mx-auto my-12 p-8 rounded-lg shadow-lg relative">
+            <button class="close-btn absolute top-4 right-4 text-white text-2xl">&times;</button>
+            <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-4">Gaming Console Zone</h3>
+            <div class="text-gray-300 space-y-4">
+                <p>Another exclusive internal event for AJCE students. Drop in and play!</p>
+                <div>
+                    <h4 class="font-bold text-white">Experience:</h4>
+                    <p>High-performance gaming on a variety of top-tier consoles. A fun, high-energy space to compete,
+                        relax, and discover new favorites.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Location:</h4>
+                    <p>To be announced on campus.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Availability:</h4>
+                    <p>Open throughout the day on October 17th.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // ...existing code...
+            // Show custom cursor only in hero section
+            const hero = document.querySelector('.hero-bg');
+            function setCursorVisibility(e) {
+                const inHero = e.target.closest('.hero-bg') !== null;
+                cursorDot.style.display = inHero ? 'block' : 'none';
+                cursorOutline.style.display = inHero ? 'block' : 'none';
+            }
+            document.addEventListener('mousemove', setCursorVisibility, true);
+            // Lazy load and show video background only on desktop
+            function showDesktopBgVideo() {
+                const video = document.getElementById('desktop-bg-video');
+                if (window.innerWidth > 768) {
+                    video.style.display = 'block';
+                    video.load();
+                    video.play();
+                    // Only remove background image if it was set for desktop
+                    document.body.style.backgroundImage = '';
+                } else {
+                    video.style.display = 'none';
+
+                    document.body.style.backgroundImage = "url('https://envs.sh/Lzl.png')";
+                    document.body.style.backgroundAttachment = 'fixed';
+                    document.body.style.backgroundColor = '#000';
+                }
+            }
+            showDesktopBgVideo();
+            window.addEventListener('resize', showDesktopBgVideo);
+
+            const cursorDot = document.querySelector('.cursor-dot');
+            const cursorOutline = document.querySelector('.cursor-outline');
+            window.addEventListener('mousemove', (e) => {
+                cursorDot.style.left = `${e.clientX}px`;
+                cursorDot.style.top = `${e.clientY}px`;
+                cursorOutline.animate({
+                    left: `${e.clientX}px`,
+                    top: `${e.clientY}px`
+                }, { duration: 500, fill: 'forwards' });
+            });
+
+            const ranksContainer = document.getElementById('valorant-ranks-bg');
+            const rankImages = [
+                'https://media.valorant-api.com/competitivetiers/564d8e28-c226-3180-6285-e48a390db8b1/3/largeicon.png',
+                'https://media.valorant-api.com/competitivetiers/564d8e28-c226-3180-6285-e48a390db8b1/12/largeicon.png',
+                'https://media.valorant-api.com/competitivetiers/564d8e28-c226-3180-6285-e48a390db8b1/18/largeicon.png',
+                'https://media.valorant-api.com/competitivetiers/564d8e28-c226-3180-6285-e48a390db8b1/24/largeicon.png'
+            ];
+            function createFloatingRanks() {
+                ranksContainer.innerHTML = '';
+                const rankCount = window.innerWidth < 768 ? 10 : 25;
+                for (let i = 0; i < rankCount; i++) {
+                    const rankIcon = document.createElement('img');
+                    rankIcon.classList.add('valo-rank-icon');
+                    rankIcon.src = rankImages[Math.floor(Math.random() * rankImages.length)];
+                    rankIcon.alt = "Valorant Rank Icon";
+                    const size = Math.random() * 80 + 20;
+                    rankIcon.style.cssText = `width:${size}px; height:${size}px; left:${Math.random() * 100}%; animation-duration:${Math.random() * 20 + 15}s; animation-delay:${Math.random() * 20}s; opacity:${(Math.random() * 0.15 + 0.05)}`;
+                    ranksContainer.appendChild(rankIcon);
+                }
+            }
+
+            // --- Interactive Background Canvas - IMPROVED EFFECT ---
+            const canvas = document.getElementById('hero-canvas');
+            const ctx = canvas.getContext('2d');
+            let particlesArray;
+            const mouse = { x: null, y: null, radius: 150 };
+
+            window.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            });
+
+            function setupCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            setupCanvas();
+
+            window.addEventListener('resize', () => {
+                setupCanvas();
+                initParticles();
+                createFloatingRanks();
+            });
+
+            class Particle {
+                constructor(x, y, directionX, directionY, size, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.directionX = directionX;
+                    this.directionY = directionY;
+                    this.size = size;
+                    this.color = color;
+                    this.speed = 0.5;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+                update() {
+                    if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+                    if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius) {
+                        this.x -= dx / 20 * this.speed; // Push away from mouse
+                        this.y -= dy / 20 * this.speed;
+                    } else {
+                        this.x += this.directionX * this.speed;
+                        this.y += this.directionY * this.speed;
+                    }
+                    this.draw();
+                }
+            }
+
+            function initParticles() {
+                particlesArray = [];
+                let numberOfParticles = (canvas.height * canvas.width) / 9000;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    let size = Math.random() * 2 + 1;
+                    let x = Math.random() * canvas.width;
+                    let y = Math.random() * canvas.height;
+                    let directionX = (Math.random() * 0.4) - 0.2; // Slower, more ambient movement
+                    let directionY = (Math.random() * 0.4) - 0.2;
+                    let color = `rgba(255, 0, 60, ${Math.random() * 0.6 + 0.2})`;
+                    particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+                }
+            }
+
+            function animateParticles() {
+                requestAnimationFrame(animateParticles);
+                ctx.fillStyle = 'rgba(10, 10, 10, 0.1)'; // Trailing effect
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particlesArray.length; i++) {
+                    particlesArray[i].update();
+                }
+            }
+
+            initParticles();
+            animateParticles();
+            createFloatingRanks();
+
+            const countdownDate = new Date("Oct 17, 2025 09:00:00").getTime();
+            const countdownFunction = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = countdownDate - now;
+                if (distance < 0) {
+                    clearInterval(countdownFunction);
+                    document.getElementById("countdown").innerHTML = `<div class="text-3xl font-rajdhani text-red-500">EVENT IS LIVE!</div>`;
+                    return;
+                }
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById("days").innerText = days.toString().padStart(2, '0');
+                document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+                document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+                document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+            }, 1000);
+
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(elem => observer.observe(elem));
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+            const modalButtons = document.querySelectorAll('.event-details-btn');
+            const closeButtons = document.querySelectorAll('.close-btn');
+            modalButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    document.getElementById(button.getAttribute('data-modal')).style.display = 'block';
+                });
+            });
+            closeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    button.closest('.modal').style.display = 'none';
+                });
+            });
+            window.addEventListener('click', (event) => {
+                if (event.target.classList.contains('modal')) event.target.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -13,6 +13,29 @@
         href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@400;500;700&display=swap"
         rel="stylesheet">
     <style>
+        
+        .payment-button {
+            background: #ff003c;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 10px) 0,
+                    100% 10px, 100% 100%, 0 100%);
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+
+        .payment-button:hover {
+            background: #ff335c;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 0, 60, 0.3);
+        }
         /* ================= BASE STYLES ================= */
         body {
             color: #e5e5e5;
@@ -1148,7 +1171,7 @@
                 </div>
                 <div>
                     <button id="registerBtn" onclick="window.location.href='reg.html'"
-                        class="mt-4 px-6 py-3 bg-gradient-to-r from-cyan-500 to-pink-500 text-white rounded-lg hover-glow font-bold">
+                        class="payment-button">
                         Register Now
                     </button>
                 </div>

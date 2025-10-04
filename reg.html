@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - ASTRISK | ACM AJCE Tech Fest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.cdnfonts.com/css/valorant" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ================= BASE STYLES ================= */
+        body {
+            color: #e5e5e5;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            cursor: auto;
+            background-image: url('https://envs.sh/LzC.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            backdrop-filter: blur(0px);
+        }
+
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            pointer-events: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.2s ease;
+        }
+
+        .cursor-dot {
+            width: 24px;
+            height: 24px;
+            background: none;
+            position: fixed;
+            z-index: 9999;
+        }
+
+        .cursor-dot::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 24px solid #ff003c;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, transform 0.1s linear;
+        }
+
+        .cursor-outline::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 40px solid rgba(255, 0, 60, 0.3);
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        body:hover .cursor-dot,
+        body:hover .cursor-outline {
+            opacity: 1;
+        }
+
+        a:hover~.cursor-outline,
+        button:hover~.cursor-outline {
+            width: 60px;
+            height: 60px;
+            border-color: #00ffff;
+        }
+
+        /* Fonts */
+        .font-rajdhani {
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* Navbar */
+        .glassmorphic-nav {
+            background: rgba(10, 10, 10, 0.4);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 0, 60, 0.2);
+        }
+
+        /* Hero BG */
+        .hero-bg {
+            cursor: none;
+            position: relative;
+        }
+
+        #valorant-ranks-bg {
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .valo-rank-icon {
+            position: absolute;
+            bottom: -150px;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-120vh) rotate(360deg);
+            }
+        }
+
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 20%;
+        }
+
+        /* Title Reveal */
+        .title-reveal {
+            color: #0ff;
+            border-color: #0077ff;
+            text-shadow: 0 0 10px #00adbd, 0 0 20px #009dff, 0 0 40px #0077ff;
+            animation: fadeInGlow 2s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Desktop: Remove glow and set white color for hero title */
+        @media (min-width: 769px) {
+            .title-reveal {
+                color: #fff !important;
+                text-shadow: none !important;
+            }
+        }
+
+        @keyframes fadeInGlow {
+            from {
+                opacity: 0;
+                letter-spacing: 0.5em;
+                filter: blur(5px);
+            }
+
+            to {
+                opacity: 1;
+                letter-spacing: normal;
+                filter: blur(0);
+            }
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff,
+                    0 0 20px #ff003c, 0 0 30px #ff003c, 0 0 40px #ff003c;
+            }
+
+            50% {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff,
+                    0 0 30px #ff003c, 0 0 40px #ff003c, 0 0 50px #ff003c;
+            }
+        }
+
+        /* Countdown */
+        .countdown-box {
+            border: none;
+            box-shadow: none;
+            padding: 12px;
+        }
+
+        .section-title {
+            text-shadow: 0 0 10px #ff003c, 0 0 20px #ff003c;
+        }
+
+        /* Registration Form */
+        .registration-container {
+            background: rgba(17, 17, 17, 1.0);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px),
+                    calc(100% - 20px) 100%, 0 100%);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ff003c;
+            font-family: 'Rajdhani', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #ff003c;
+            box-shadow: 0 0 10px rgba(255, 0, 60, 0.3);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .member-section {
+            background: rgba(255, 0, 60, 0.05);
+            border-left: 3px solid rgba(255, 0, 60, 0.5);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .member-title {
+            color: #ff003c;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .optional-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+
+        .payment-info {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .payment-button {
+            background: #ff003c;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 10px) 0,
+                    100% 10px, 100% 100%, 0 100%);
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+
+        .payment-button:hover {
+            background: #ff335c;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 0, 60, 0.3);
+        }
+
+        .next-steps {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .next-steps-title {
+            color: #ff003c;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .next-steps-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .next-steps-list li {
+            margin-bottom: 0.75rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .next-steps-list li:before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #ff003c;
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Heading */
+        .smallboy {
+            font-size: 2rem;
+            letter-spacing: 0.2em;
+            color: #1ba8ff;
+            text-shadow: 0 0 5px #000000;
+            font-family: 'valorant', sans-serif;
+            opacity: 95%;
+            font-weight: 900;
+        }
+
+        /* ================= RESPONSIVE FIXES ================= */
+
+        /* Hide cursor on mobile/touch devices */
+        @media (hover: none) and (pointer: coarse) {
+
+            .cursor-dot,
+            .cursor-outline {
+                display: none !important;
+            }
+
+            body {
+                cursor: auto;
+            }
+        }
+
+        /* Tablets */
+        @media (max-width: 1024px) {
+            .title-reveal {
+                font-size: 2.2rem;
+                text-align: center;
+            }
+
+            .smallboy {
+                font-size: 1.5rem;
+                letter-spacing: 0.15em;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .logo {
+                display: none;
+            }
+
+            body::before {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.55);
+                z-index: 0;
+                pointer-events: none;
+            }
+
+            .cursor-dot,
+            .cursor-outline {
+                display: none !important;
+            }
+
+            /* Responsive background for mobile */
+            body {
+                background-image: url('https://envs.sh/Lzl.png');
+                background-size: auto;
+                background-position: center top;
+                background-attachment: scroll;
+            }
+
+            .title-reveal {
+                font-size: 1.8rem;
+            }
+
+            .smallboy {
+                font-size: 1.2rem;
+                text-align: center;
+                color: #009dff;
+            }
+
+            .registration-container {
+                clip-path: none;
+                border-radius: 10px;
+            }
+
+            .member-section {
+                padding: 1rem;
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .title-reveal {
+                font-size: 1.5rem;
+                line-height: 1.3;
+            }
+
+            .smallboy {
+                font-size: 1rem;
+                letter-spacing: 0.1em;
+            }
+
+            .member-section {
+                padding: 0.75rem;
+            }
+        }
+
+        #desktop-bg-video {
+            animation: fadeInVideo 1.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeInVideo {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    <!-- Desktop video background -->
+    <video id="desktop-bg-video" playsinline autoplay muted loop preload="none"
+        style="position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-1;display:none;"
+        poster="https://envs.sh/LzC.jpg">
+        <source src="https://cmsassets.rgpub.io/sanity/files/dsfx7636/news/409ab2fc369ba5e1fe50bac10c6676d7d1365a9f.mp4"
+            type="video/mp4">
+    </video>
+
+    <header class="fixed top-0 left-0 right-0 z-50 glassmorphic-nav">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="index.html" class="flex items-center group">
+                <span class="text-2xl font-bold text-white ml-3"
+                    style="font-family: 'valorant', sans-serif;">ASTRISK</span>
+            </a>
+            <a><img src="https://envs.sh/Lau.png" alt="ASTRISK Logo" class="h-12 w-auto logo">
+            </a>
+            <div class="hidden md:flex space-x-8 text-white uppercase tracking-wider text-sm">
+                <a href="index.html#about" class="relative group py-1">
+                    <span>About</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="index.html#events" class="relative group py-1">
+                    <span>Events</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="index.html#schedule" class="relative group py-1">
+                    <span>Schedule</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="index.html#sponsors" class="relative group py-1">
+                    <span>Sponsors</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+            </div>
+            <img src="https://envs.sh/LaF.png" alt="ASTRISK Logo" class="h-12 w-auto logo">
+            <a href="/"
+                class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-sm transition shadow-lg shadow-blue-500/20 uppercase tracking-wider text-sm">
+                Go Back
+            </a>
+
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="index.html#about" class="block py-2 px-4 text-sm hover:bg-gray-700">About</a>
+            <a href="index.html#events" class="block py-2 px-4 text-sm hover:bg-gray-700">Events</a>
+            <a href="index.html#schedule" class="block py-2 px-4 text-sm hover:bg-gray-700">Schedule</a>
+            <a href="index.html#sponsors" class="block py-2 px-4 text-sm hover:bg-gray-700">Sponsors</a>
+            <a href="#" class="block py-2 px-4 text-sm hover:bg-blue-700 bg-red-600">Go Back</a>
+        </div>
+    </header>
+
+    <main class="pt-24 pb-16">
+        <section class="py-8">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto">
+                    <div class="registration-container p-8 md:p-12 reveal">
+                        <form id="registration-form">
+                            <!-- Team Information -->
+                            <div class="form-group">
+                                <label class="form-label" for="team-name">Team Name</label>
+                                <input type="text" id="team-name" class="form-input" placeholder="Enter your team name"
+                                    required>
+                            </div>
+
+                            <!-- Team Lead Information -->
+                            <div class="member-section">
+                                <h3 class="member-title">Team Lead (Required)</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="form-group">
+                                        <label class="form-label" for="lead-name">Full Name</label>
+                                        <input type="text" id="lead-name" class="form-input"
+                                            placeholder="Team lead's full name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="lead-contact">Contact Number</label>
+                                        <input type="tel" id="lead-contact" class="form-input"
+                                            placeholder="Team lead's phone number" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="lead-email">Email Address</label>
+                                    <input type="email" id="lead-email" class="form-input"
+                                        placeholder="Team lead's email address" required>
+                                </div>
+                            </div>
+
+                            <!-- Required Team Members (Member 1-5) -->
+                            <div class="member-section">
+                                <h3 class="member-title">Team Member 1 (Required)</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="form-group">
+                                        <label class="form-label" for="member1-name">Full Name</label>
+                                        <input type="text" id="member1-name" class="form-input"
+                                            placeholder="Member 1's full name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="member1-contact">Contact Number</label>
+                                        <input type="tel" id="member1-contact" class="form-input"
+                                            placeholder="Member 1's phone number" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="member1-email">Email Address</label>
+                                    <input type="email" id="member1-email" class="form-input"
+                                        placeholder="Member 1's email address" required>
+                                </div>
+                            </div>
+
+                            <div class="member-section">
+                                <h3 class="member-title">Team Member 2 (Required)</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="form-group">
+                                        <label class="form-label" for="member2-name">Full Name</label>
+                                        <input type="text" id="member2-name" class="form-input"
+                                            placeholder="Member 2's full name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="member2-contact">Contact Number</label>
+                                        <input type="tel" id="member2-contact" class="form-input"
+                                            placeholder="Member 2's phone number" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="member2-email">Email Address</label>
+                                    <input type="email" id="member2-email" class="form-input"
+                                        placeholder="Member 2's email address" required>
+                                </div>
+                            </div>
+
+                            <div class="member-section">
+                                <h3 class="member-title">Team Member 3 (Required)</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="form-group">
+                                        <label class="form-label" for="member3-name">Full Name</label>
+                                        <input type="text" id="member3-name" class="form-input"
+                                            placeholder="Member 3's full name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="member3-contact">Contact Number</label>
+                                        <input type="tel" id="member3-contact" class="form-input"
+                                            placeholder="Member 3's phone number" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="member3-email">Email Address</label>
+                                    <input type="email" id="member3-email" class="form-input"
+                                        placeholder="Member 3's email address" required>
+                                </div>
+                            </div>
+
+                            <div class="member-section">
+                                <h3 class="member-title">Team Member 4 (Required)</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="form-group">
+                                        <label class="form-label" for="member4-name">Full Name</label>
+                                        <input type="text" id="member4-name" class="form-input"
+                                            placeholder="Member 4's full name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="member4-contact">Contact Number</label>
+                                        <input type="tel" id="member4-contact" class="form-input"
+                                            placeholder="Member 4's phone number" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="member4-email">Email Address</label>
+                                    <input type="email" id="member4-email" class="form-input"
+                                        placeholder="Member 4's email address" required>
+                                </div>
+                            </div>
+
+                            <div class="member-section">
+                                <h3 class="member-title">Team Member 5 (Required)</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="form-group">
+                                        <label class="form-label" for="member5-name">Full Name</label>
+                                        <input type="text" id="member5-name" class="form-input"
+                                            placeholder="Member 5's full name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="member5-contact">Contact Number</label>
+                                        <input type="tel" id="member5-contact" class="form-input"
+                                            placeholder="Member 5's phone number" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="member5-email">Email Address</label>
+                                    <input type="email" id="member5-email" class="form-input"
+                                        placeholder="Member 5's email address" required>
+                                </div>
+                            </div>
+
+                            <!-- Optional Substitute Member -->
+                            <div class="member-section">
+                                <h3 class="member-title">Substitute Member <span class="optional-label">(Optional)</span>
+                                </h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="form-group">
+                                        <label class="form-label" for="sub-name">Full Name</label>
+                                        <input type="text" id="sub-name" class="form-input"
+                                            placeholder="Substitute's full name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="sub-contact">Contact Number</label>
+                                        <input type="tel" id="sub-contact" class="form-input"
+                                            placeholder="Substitute's phone number">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="sub-email">Email Address</label>
+                                    <input type="email" id="sub-email" class="form-input"
+                                        placeholder="Substitute's email address">
+                                </div>
+                            </div>
+
+                            <!-- Next Steps Information -->
+                            <div class="next-steps">
+                                <h3 class="next-steps-title">What Happens Next?</h3>
+                                <ul class="next-steps-list">
+                                    <li>Fill out all required fields in the form above</li>
+                                    <li>Click the "Proceed to Payment" button below</li>
+                                    <li>Complete your payment on the next page</li>
+                                    <li>You'll receive a confirmation email with further instructions</li>
+                                    <li>Prepare for battle on October 18th!</li>
+                                </ul>
+                            </div>
+
+                            <!-- Payment Information -->
+                            <div class="payment-info">
+                                <h3 class="text-xl font-rajdhani font-bold text-red-500 mb-4">Payment Details</h3>
+                                <p class="mb-2">Registration Fee: <span class="text-red-500 font-bold">₹100 per
+                                        person</span></p>
+                                <p class="text-sm text-gray-400 mb-4">(Team of 6 = ₹600, Team of 7 =
+                                    ₹700)</p>
+                                <p class="text-sm text-gray-400">Payment must be completed to confirm your team's
+                                    registration.</p>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="button" id="payment-button" class="payment-button">
+                                Proceed to Payment
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-10" style="background:rgba(17,17,17,0.85);">
+        <div class="container mx-auto px-6 text-center" style="max-width:900px;">
+            <div style="background:rgba(17,17,17,0.85);padding:2rem 1rem;backdrop-filter:blur(6px);">
+                <p
+                    style="font-family:'valorant',sans-serif;font-size:1.3rem;color:#fff;letter-spacing:0.12em;text-shadow:0 0 8px #ff003c;">
+                    &copy; 2025 ACM Student Chapter, Amal Jyothi College of Engineering
+                </p>
+                <p
+                    style="color:#ff003c;font-size:1rem;margin-top:0.5rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.08em;">
+                    Designed & Developed by Amarnath C and Amal Benny Joseph
+                </p>
+                <div style="margin-top:1.5rem;">
+                    <a href="#"
+                        style="color:#fff;background:#ff003c;padding:0.5rem 1.2rem;border-radius:6px;text-decoration:none;font-weight:700;box-shadow:0 0 10px #ff003c40;transition:background 0.2s;">Contact
+                        Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Show custom cursor only in hero section
+            const hero = document.querySelector('.hero-bg');
+            function setCursorVisibility(e) {
+                const inHero = e.target.closest('.hero-bg') !== null;
+                cursorDot.style.display = inHero ? 'block' : 'none';
+                cursorOutline.style.display = inHero ? 'block' : 'none';
+            }
+            document.addEventListener('mousemove', setCursorVisibility, true);
+            // Lazy load and show video background only on desktop
+            function showDesktopBgVideo() {
+                const video = document.getElementById('desktop-bg-video');
+                if (window.innerWidth > 768) {
+                    video.style.display = 'block';
+                    video.load();
+                    video.play();
+                    // Only remove background image if it was set for desktop
+                    document.body.style.backgroundImage = '';
+                } else {
+                    video.style.display = 'none';
+
+                    document.body.style.backgroundImage = "url('https://envs.sh/Lzl.png')";
+                    document.body.style.backgroundAttachment = 'fixed';
+                    document.body.style.backgroundColor = '#000';
+                }
+            }
+            showDesktopBgVideo();
+            window.addEventListener('resize', showDesktopBgVideo);
+
+            const cursorDot = document.querySelector('.cursor-dot');
+            const cursorOutline = document.querySelector('.cursor-outline');
+            window.addEventListener('mousemove', (e) => {
+                cursorDot.style.left = `${e.clientX}px`;
+                cursorDot.style.top = `${e.clientY}px`;
+                cursorOutline.animate({
+                    left: `${e.clientX}px`,
+                    top: `${e.clientY}px`
+                }, { duration: 500, fill: 'forwards' });
+            });
+
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+            // Payment button redirect
+            const paymentButton = document.getElementById('payment-button');
+            paymentButton.addEventListener('click', () => {
+                // Replace with your actual payment URL
+                window.location.href = 'https://your-payment-site.com';
+            });
+
+            // Scroll animations
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(elem => observer.observe(elem));
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

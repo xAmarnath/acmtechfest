@@ -409,23 +409,26 @@
         }
 
         /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-        }
+       .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    align-items: start; /* Changed from center */
+    justify-content: center;
+    padding-top: 90%;
+}
 
-        .modal-content {
-            background-color: #111;
-            border: 1px solid #ff003c;
-        }
+.modal-content {
+    background-color: #111;
+    border: 1px solid #ff003c;
+}
 
         /* About Section */
         #about {
@@ -862,21 +865,21 @@
 
                     <div class="valorant-card reveal" style="transition-delay: 100ms;">
                         <div class="card-bg-image"
-                            style="background-image: url('https://placehold.co/600x800/000000/ff003c?text=Valorant\nGameplay&font=rajdhani');">
+                            style="background-image: url('https://cmsassets.rgpub.io/sanity/images/dsfx7636/news/54d784be3db8503ec574ff45e912ea098cc10352-854x484.png');">
                         </div>
                         <div class="card-content text-left">
                             <p class="card-category">E-Sports</p>
                             <h3 class="card-title text-2xl font-rajdhani font-bold my-2">The Reckoning</h3>
                             <p class="card-description text-gray-400 mb-6 text-sm">High-stakes 5v5 tactical shooter
-                                action. Compete for a massive ₹40,000 prize pool.</p>
+                                action. Compete for a massive ₹50,000 prize pool.</p>
                             <button class="card-button event-details-btn mt-auto self-start"
-                                data-modal="valorantModal">View Rules &rarr;</button>
+                                data-modal="valorantModal">View Ruleset &rarr;</button>
                         </div>
                     </div>
 
                     <div class="valorant-card reveal" style="transition-delay: 200ms;">
                         <div class="card-bg-image"
-                            style="background-image: url('https://placehold.co/600x800/000000/ff003c?text=Digital\nArt&font=rajdhani');">
+                            style="background-image: url('https://www.shutterstock.com/image-illustration/modern-couple-kissing-on-valentines-600nw-2258553649.jpg');">
                         </div>
                         <div class="card-content text-left">
                             <p class="card-category">Creative</p>
@@ -890,7 +893,7 @@
 
                     <div class="valorant-card reveal" style="transition-delay: 300ms;">
                         <div class="card-bg-image"
-                            style="background-image: url('https://placehold.co/600x800/000000/ff003c?text=Game\nDev&font=rajdhani');">
+                            style="background-image: url('https://t4.ftcdn.net/jpg/10/77/40/35/360_F_1077403598_HLkTA0SOLunXAVGA1Viwp4eeBsSxZQQD.jpg');">
                         </div>
                         <div class="card-content text-left">
                             <p class="card-category">Workshop</p>
@@ -904,7 +907,7 @@
 
                     <div class="valorant-card reveal" style="transition-delay: 400ms;">
                         <div class="card-bg-image"
-                            style="background-image: url('https://placehold.co/600x800/000000/ff003c?text=Console\nZone&font=rajdhani');">
+                            style="background-image: url('https://i.pinimg.com/736x/4f/60/a0/4f60a0e9d1c87a6a3dc5201c057df2d1.jpg');">
                         </div>
                         <div class="card-content text-left">
                             <p class="card-category">Gaming Zone</p>
@@ -913,6 +916,20 @@
                                 top-tier consoles. Relax and compete!</p>
                             <button class="card-button event-details-btn mt-auto self-start"
                                 data-modal="consoleModal">More Info &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div class="valorant-card reveal" style="transition-delay: 400ms;">
+                        <div class="card-bg-image"
+                            style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6wJzuyaw6y-0HPyZIP4GgANst7iGOdBSOd1hW1k2FNI2wJvHlXNe2BO48xT9OgqTNMhE&usqp=CAU');">
+                        </div>
+                        <div class="card-content text-left">
+                            <p class="card-category">Tech Talk</p>
+                            <h3 class="card-title text-2xl font-rajdhani font-bold my-2">Interactive Session</h3>
+                            <p class="card-description text-gray-400 mb-6 text-sm">Experience high-performance gaming on
+                                top-tier consoles. Relax and compete!</p>
+                            <button class="card-button event-details-btn mt-auto self-start"
+                                data-modal="talkModal">More Info &rarr;</button>
                         </div>
                     </div>
 
@@ -953,7 +970,7 @@
                                             d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
                                 </div>
-                                <span class="timeline-time">ALL DAY</span>
+                                <span class="timeline-time">BOTH DAYS</span>
                                 <h4 class="font-bold text-white text-lg">Gaming Console Zone</h4>
                                 <p class="text-gray-400 mt-1">Open all day for students to experience top-tier console
                                     gaming.</p>
@@ -1203,6 +1220,29 @@
         </div>
     </div>
 
+    <div id="talkModal" class="modal">
+        <div class="modal-content max-w-2xl mx-auto my-12 p-8 rounded-lg shadow-lg relative">
+            <button class="close-btn absolute top-4 right-4 text-white text-2xl">&times;</button>
+            <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-4">Interactive Tech Talk</h3>
+            <div class="text-gray-300 space-y-4">
+                <p>Another exclusive internal event for AJCE students. Drop in and Talk!</p>
+                <div>
+                    <h4 class="font-bold text-white">Experience:</h4>
+                    <p>High-performance gaming on a variety of top-tier consoles. A fun, high-energy space to compete,
+                        relax, and discover new favorites.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Location:</h4>
+                    <p>To be announced on campus.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Availability:</h4>
+                    <p>Open throughout the day on October 17th.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // ...existing code...
@@ -1392,7 +1432,7 @@
             const closeButtons = document.querySelectorAll('.close-btn');
             modalButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                    document.getElementById(button.getAttribute('data-modal')).style.display = 'block';
+                    document.getElementById(button.getAttribute('data-modal')).style.display = 'flex';
                 });
             });
             closeButtons.forEach(button => {

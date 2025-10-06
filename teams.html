@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Status - ASTRISK | ACM AJCE Tech Fest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.cdnfonts.com/css/valorant" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ================= BASE STYLES ================= */
+        :root {
+            --primary-red: #ff003c;
+            --primary-blue: #00ffff;
+            --dark-bg: #0a0a0a;
+        }
+
+        body {
+            color: #e5e5e5;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            cursor: auto;
+            background-image: url('https://56ktpin8ut.ucarecd.net/1e09c958-9b5a-4501-b491-6c06a5295b34/LzC.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            backdrop-filter: blur(0px);
+        }
+
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            pointer-events: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.2s ease;
+        }
+
+        .cursor-dot {
+            width: 24px;
+            height: 24px;
+            background: none;
+            position: fixed;
+            z-index: 9999;
+        }
+
+        .cursor-dot::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 24px solid var(--primary-red);
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, transform 0.1s linear;
+        }
+
+        .cursor-outline::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 40px solid rgba(255, 0, 60, 0.3);
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        body:hover .cursor-dot,
+        body:hover .cursor-outline {
+            opacity: 1;
+        }
+
+        a:hover~.cursor-outline,
+        button:hover~.cursor-outline {
+            width: 60px;
+            height: 60px;
+            border-color: var(--primary-blue);
+        }
+
+        /* Fonts */
+        .font-rajdhani {
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* Navbar */
+        .glassmorphic-nav {
+            background: rgba(10, 10, 10, 0.4);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 0, 60, 0.2);
+        }
+
+        /* Mobile menu button */
+        #mobile-menu-button {
+            position: relative;
+            z-index: 1000;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu-button:hover {
+            background: rgba(255, 0, 60, 0.1);
+            transform: scale(1.05);
+        }
+
+        #mobile-menu-button svg {
+            transition: transform 0.3s ease;
+        }
+
+        #mobile-menu-button.active svg {
+            transform: rotate(90deg);
+        }
+
+        /* Enhanced mobile menu */
+        #mobile-menu {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 2px solid #ff003c;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(255, 0, 60, 0.2);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        #mobile-menu.show {
+            max-height: 400px;
+            opacity: 1;
+        }
+
+        #mobile-menu a {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-left: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(180deg, #ff003c, #00fff7);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        #mobile-menu a:hover::before,
+        #mobile-menu a:active::before {
+            transform: translateX(0);
+        }
+
+        #mobile-menu a:hover {
+            background: linear-gradient(90deg, rgba(255, 0, 60, 0.15), transparent);
+            padding-left: 1.5rem;
+            color: #00fff7;
+        }
+
+        #mobile-menu a:last-child {
+            margin-top: 0.5rem;
+            background: linear-gradient(90deg, #ff003c, #e6003a);
+            border-left: none;
+            text-align: center;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(255, 0, 60, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        #mobile-menu a:last-child:hover {
+            background: linear-gradient(90deg, #ff335c, #ff003c);
+            padding-left: 1rem;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 0, 60, 0.6);
+        }
+
+        /* Mobile menu icons */
+        .mobile-menu-icon {
+            display: inline-block;
+            margin-right: 0.5rem;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Hero BG */
+        .hero-bg {
+            cursor: none;
+            position: relative;
+        }
+
+        #valorant-ranks-bg {
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .valo-rank-icon {
+            position: absolute;
+            bottom: -150px;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-120vh) rotate(360deg);
+            }
+        }
+
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 20%;
+        }
+
+        /* Title Reveal */
+        .title-reveal {
+            color: #0ff;
+            border-color: #0077ff;
+            text-shadow: 0 0 10px #00adbd, 0 0 20px #009dff, 0 0 40px #0077ff;
+            animation: fadeInGlow 2s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Desktop: Remove glow and set white color for hero title */
+        @media (min-width: 769px) {
+            .title-reveal {
+                color: #fff !important;
+                text-shadow: none !important;
+            }
+        }
+
+        @keyframes fadeInGlow {
+            from {
+                opacity: 0;
+                letter-spacing: 0.5em;
+                filter: blur(5px);
+            }
+
+            to {
+                opacity: 1;
+                letter-spacing: normal;
+                filter: blur(0);
+            }
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff,
+                    0 0 20px var(--primary-red), 0 0 30px var(--primary-red), 0 0 40px var(--primary-red);
+            }
+
+            50% {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff,
+                    0 0 30px var(--primary-red), 0 0 40px var(--primary-red), 0 0 50px var(--primary-red);
+            }
+        }
+
+        /* Countdown */
+        .countdown-box {
+            border: none;
+            box-shadow: none;
+            padding: 12px;
+        }
+
+        .section-title {
+            text-shadow: 0 0 10px var(--primary-red), 0 0 20px var(--primary-red);
+        }
+
+        /* Registration Form */
+        .registration-container {
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 0, 60, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 0 40px rgba(255, 0, 60, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-red);
+            font-family: 'Rajdhani', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            box-shadow: 0 0 10px rgba(255, 0, 60, 0.3);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-input.error {
+            border-color: #ff4444;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .member-section {
+            background: rgba(255, 0, 60, 0.05);
+            border-left: 3px solid rgba(255, 0, 60, 0.5);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+        }
+
+        .member-section.active {
+            background: rgba(255, 0, 60, 0.1);
+            border-left-color: var(--primary-red);
+        }
+
+        .member-title {
+            color: var(--primary-red);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .optional-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+
+        .payment-info {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .payment-button {
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 10px) 0,
+                    100% 10px, 100% 100%, 0 100%);
+            margin-top: 1.5rem;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-button:hover {
+            background: #ff335c;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 0, 60, 0.3);
+        }
+
+        .payment-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .payment-button.loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
+        }
+
+        .next-steps {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .next-steps-title {
+            color: var(--primary-red);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .next-steps-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .next-steps-list li {
+            margin-bottom: 0.75rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .next-steps-list li:before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: var(--primary-red);
+        }
+
+        /* Success Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: rgba(17, 17, 17, 0.95);
+            border: 2px solid var(--primary-red);
+            border-radius: 10px;
+            padding: 2rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        /* Mobile modal positioning */
+        @media (max-width: 768px) {
+            .modal-content {
+                position: fixed;
+                top: auto;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+        }
+
+        .modal-success {
+            color: #00ff88;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-red);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+        }
+
+        @media (max-width: 768px) {
+            .toast-container {
+                top: 80px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+
+        .toast {
+            background: rgba(17, 17, 17, 0.95);
+            border-left: 4px solid;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            max-width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .toast {
+                transform: translateY(-100px);
+            }
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left-color: #00ff88;
+        }
+
+        .toast.error {
+            border-left-color: #ff4444;
+        }
+
+        .toast.warning {
+            border-left-color: #ffaa00;
+        }
+
+        .toast.info {
+            border-left-color: var(--primary-blue);
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .toast.success .toast-icon {
+            color: #00ff88;
+        }
+
+        .toast.error .toast-icon {
+            color: #ff4444;
+        }
+
+        .toast.warning .toast-icon {
+            color: #ffaa00;
+        }
+
+        .toast.info .toast-icon {
+            color: var(--primary-blue);
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 700;
+            font-family: 'Rajdhani', sans-serif;
+            margin-bottom: 4px;
+            color: #fff;
+        }
+
+        .toast-message {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: color 0.2s ease;
+        }
+
+        .toast-close:hover {
+            color: #fff;
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Heading */
+        .smallboy {
+            font-size: 2rem;
+            letter-spacing: 0.2em;
+            color: #1ba8ff;
+            text-shadow: 0 0 5px #000000;
+            font-family: 'valorant', sans-serif;
+            opacity: 95%;
+            font-weight: 900;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 2px solid var(--primary-red);
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ================= RESPONSIVE FIXES ================= */
+
+        /* Hide cursor on mobile/touch devices */
+        @media (hover: none) and (pointer: coarse) {
+
+            .cursor-dot,
+            .cursor-outline {
+                display: none !important;
+            }
+
+            body {
+                cursor: auto;
+            }
+        }
+
+        /* Tablets */
+        @media (max-width: 1024px) {
+            .title-reveal {
+                font-size: 2.2rem;
+                text-align: center;
+            }
+
+            .smallboy {
+                font-size: 1.5rem;
+                letter-spacing: 0.15em;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .logo {
+                display: none;
+            }
+
+            body::before {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.55);
+                z-index: 0;
+                pointer-events: none;
+            }
+
+            .cursor-dot,
+            .cursor-outline {
+                display: none !important;
+            }
+
+            /* Responsive background for mobile */
+            body {
+                background-image: url('https://56ktpin8ut.ucarecd.net/e08e6332-fdd6-46b8-9e3a-e074003c9a46/Lzl.png');
+                background-size: auto;
+                background-position: center top;
+                background-attachment: scroll;
+            }
+
+            .title-reveal {
+                font-size: 1.8rem;
+            }
+
+            .smallboy {
+                font-size: 1.2rem;
+                text-align: center;
+                color: #009dff;
+            }
+
+            .registration-container {
+                clip-path: none;
+                border-radius: 10px;
+            }
+
+            .member-section {
+                padding: 1rem;
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .title-reveal {
+                font-size: 1.5rem;
+                line-height: 1.3;
+            }
+
+            .smallboy {
+                font-size: 1rem;
+                letter-spacing: 0.1em;
+            }
+
+            .member-section {
+                padding: 0.75rem;
+            }
+        }
+
+        #desktop-bg-video {
+            animation: fadeInVideo 1.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeInVideo {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <header class="fixed top-0 left-0 right-0 z-50 glassmorphic-nav">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="bx.html" class="flex items-center group">
+
+                <span class="text-2xl font-bold text-white ml-3"
+                    style="font-family: 'valorant', sans-serif;">ASTRISK</span>
+
+            </a>
+            <a><img src="https://envs.sh/Lau.png" alt="ASTRISK Logo" class="h-12 w-auto logo">
+            </a>
+            <div class="hidden md:flex space-x-8 text-white uppercase tracking-wider text-sm">
+                <a href="bx.html#about" class="relative group py-1">
+                    <span>About</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="bx.html#events" class="relative group py-1">
+                    <span>Events</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="bx.html#schedule" class="relative group py-1">
+                    <span>Schedule</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+                <a href="bx.html#sponsors" class="relative group py-1">
+                    <span>Sponsors</span>
+                    <span
+                        class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+                </a>
+            </div>
+            <img src="https://envs.sh/LaF.png" alt="ASTRISK Logo" class="h-12 w-auto logo">
+            <a href="bx.html"
+                class="hidden md:block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-sm transition shadow-lg shadow-red-500/20 uppercase tracking-wider text-sm">
+                Go Back
+            </a>
+
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="md:hidden">
+            <a href="bx.html#about" class="block py-3 px-4 text-sm"><span class="mobile-menu-icon">ℹ️</span>About</a>
+            <a href="bx.html#events" class="block py-3 px-4 text-sm"><span class="mobile-menu-icon">🎮</span>Events</a>
+            <a href="bx.html#schedule" class="block py-3 px-4 text-sm"><span class="mobile-menu-icon">📅</span>Schedule</a>
+            <a href="bx.html#sponsors" class="block py-3 px-4 text-sm"><span class="mobile-menu-icon">🤝</span>Sponsors</a>
+            <a href="bx.html" class="block py-3 px-6 text-sm mt-2 mb-2 mx-2 rounded"><span
+                    class="mobile-menu-icon">🏠</span>Go Back</a>
+        </div>
+    </header>
+
+    <main class="pt-20 pb-12">
+        <section class="py-6">
+            <div class="container mx-auto px-4">
+                <div class="max-w-6xl mx-auto">
+                    <div class="registration-container p-6 md:p-8 reveal">
+                        <h2 class="text-3xl font-rajdhani font-bold text-center mb-2" style="background: linear-gradient(135deg, #ff003c 0%, #ff003c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">⚔️ Registered Teams ⚔️</h2>
+                        <p class="text-center text-gray-400 mb-6 font-rajdhani text-sm">Track team registration status in real-time</p>
+                        
+                        <!-- Search and Filter Bar -->
+                        <div class="mb-4 flex flex-col md:flex-row gap-3">
+                            <div class="flex-1">
+                                <input type="text" id="search-teams" placeholder="🔍 Search teams..." 
+                                    class="w-full px-3 py-2 bg-rgba(255,255,255,0.05) border border-rgba(255,255,255,0.1) rounded-lg text-white text-sm focus:outline-none focus:border-red-500 transition-all"
+                                    style="background: rgba(255, 255, 255, 0.05);">
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="filterTeams('all')" class="filter-btn active px-3 py-2 rounded-lg font-rajdhani font-bold uppercase text-xs transition-all" data-filter="all">All</button>
+                                <button onclick="filterTeams('completed')" class="filter-btn px-3 py-2 rounded-lg font-rajdhani font-bold uppercase text-xs transition-all" data-filter="completed" style="background: rgba(0, 255, 136, 0.1); color: #00ff88; border: 1px solid rgba(0, 255, 136, 0.3);">Paid</button>
+                                <button onclick="filterTeams('pending')" class="filter-btn px-3 py-2 rounded-lg font-rajdhani font-bold uppercase text-xs transition-all" data-filter="pending" style="background: rgba(255, 170, 0, 0.1); color: #ffaa00; border: 1px solid rgba(255, 170, 0, 0.3);">Pending</button>
+                            </div>
+                        </div>
+
+                        <!-- Stats Cards -->
+                        <div class="flex justify-center gap-6 mb-6">
+                            <div class="stat-card px-4 py-2 rounded-lg text-center" style="background: linear-gradient(135deg, rgba(255, 0, 60, 0.1) 0%, rgba(255, 0, 60, 0.05) 100%); border: 1px solid rgba(255, 0, 60, 0.3);">
+                                <div class="text-2xl font-bold text-red-500" id="total-teams">0</div>
+                                <div class="text-gray-400 text-xs font-rajdhani uppercase">Total</div>
+                            </div>
+                            <div class="stat-card px-4 py-2 rounded-lg text-center" style="background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%); border: 1px solid rgba(0, 255, 136, 0.3);">
+                                <div class="text-2xl font-bold text-green-400" id="paid-teams">0</div>
+                                <div class="text-gray-400 text-xs font-rajdhani uppercase">Paid</div>
+                            </div>
+                            <div class="stat-card px-4 py-2 rounded-lg text-center" style="background: linear-gradient(135deg, rgba(255, 170, 0, 0.1) 0%, rgba(255, 170, 0, 0.05) 100%); border: 1px solid rgba(255, 170, 0, 0.3);">
+                                <div class="text-2xl font-bold text-yellow-400" id="pending-teams">0</div>
+                                <div class="text-gray-400 text-xs font-rajdhani uppercase">Pending</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Loading Spinner -->
+                        <div id="loading" class="flex justify-center items-center mb-6">
+                            <div class="spinner" style="width: 32px; height: 32px; border-width: 3px;"></div>
+                            <span class="ml-3 text-gray-400 text-sm">Loading teams...</span>
+                        </div>
+
+                        <!-- Teams Grid -->
+                        <div id="teams-list" class="hidden">
+                            <div id="teams-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                <!-- Teams will be appended here as cards -->
+                            </div>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div id="empty-state" class="hidden text-center text-gray-400 mt-6">
+                            <div class="text-5xl mb-3">🏆</div>
+                            <p class="text-lg font-rajdhani">No teams registered yet.</p>
+                            <p class="text-xs mt-1">Be the first to register!</p>
+                        </div>
+
+                        <!-- No Results State -->
+                        <div id="no-results" class="hidden text-center text-gray-400 mt-6">
+                            <div class="text-5xl mb-3">🔍</div>
+                            <p class="text-lg font-rajdhani">No teams found</p>
+                            <p class="text-xs mt-1">Try adjusting your search or filter</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-16 relative overflow-hidden" style="background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%); border-top: 1px solid rgba(255,0,60,0.2);">
+        <!-- Animated background -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,0,60,0.3) 1px, transparent 0); background-size: 40px 40px;"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 text-center relative z-10" style="max-width:900px;">
+            <div style="padding:2rem 1rem;">
+                <!-- Logo/Brand -->
+                <h3 class="text-3xl font-bold mb-4" style="font-family:'valorant',sans-serif;background: linear-gradient(135deg, #ff003c 0%, #00fff7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">ASTRISK 2025</h3>
+                
+                <!-- Tagline -->
+                <p class="text-gray-400 mb-6 font-rajdhani text-lg">Where Code Meets Combat</p>
+                
+                <!-- Social Links -->
+                <div class="flex justify-center gap-6 mb-8">
+                    <a href="#" style="display:inline-block;width:50px;height:50px;border-radius:50%;background:rgba(255,0,60,0.1);border:2px solid rgba(255,0,60,0.3);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='rgba(255,0,60,0.3)';this.style.transform='scale(1.1)';this.style.borderColor='#ff003c';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.transform='scale(1)';this.style.borderColor='rgba(255,0,60,0.3)';">📸</a>
+                    <a href="#" style="display:inline-block;width:50px;height:50px;border-radius:50%;background:rgba(0,255,247,0.1);border:2px solid rgba(0,255,247,0.3);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='rgba(0,255,247,0.3)';this.style.transform='scale(1.1)';this.style.borderColor='#00fff7';" onmouseout="this.style.background='rgba(0,255,247,0.1)';this.style.transform='scale(1)';this.style.borderColor='rgba(0,255,247,0.3)';">🐦</a>
+                    <a href="#" style="display:inline-block;width:50px;height:50px;border-radius:50%;background:rgba(255,0,60,0.1);border:2px solid rgba(255,0,60,0.3);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='rgba(255,0,60,0.3)';this.style.transform='scale(1.1)';this.style.borderColor='#ff003c';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.transform='scale(1)';this.style.borderColor='rgba(255,0,60,0.3)';">💼</a>
+                </div>
+                
+                <!-- Divider -->
+                <div style="height:1px;background:linear-gradient(90deg, transparent 0%, rgba(255,0,60,0.5) 50%, transparent 100%);margin:2rem 0;"></div>
+                
+                <!-- Copyright -->
+                <p style="font-family:'Rajdhani',sans-serif;font-size:1rem;color:#999;letter-spacing:0.05em;margin-bottom:0.5rem;">
+                    &copy; 2025 <span style="color:#ff003c;font-weight:700;">ACM Student Chapter</span>, Amal Jyothi College of Engineering
+                </p>
+                <p style="color:#666;font-size:0.9rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.05em;">
+                    Crafted with 💻 by <span style="color:#00fff7;">Amarnath C</span> & <span style="color:#00fff7;">Amal Benny Joseph</span>
+                </p>
+                
+                <!-- Contact Button -->
+                <a href="tel:+919876543210" style="display:inline-block;color:#fff;background:#ff003c;padding:0.75rem 2rem;border-radius:25px;text-decoration:none;font-weight:700;font-family:'Rajdhani',sans-serif;text-transform:uppercase;letter-spacing:0.1em;box-shadow:0 5px 20px rgba(255,0,60,0.4);transition:all 0.3s ease;margin-top:1.5rem;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(255,0,60,0.6)';this.style.background='#e6003a';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 5px 20px rgba(255,0,60,0.4)';this.style.background='#ff003c';">☎ CALL US</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Backend API URL - Update this to your actual backend URL
+        const API_BASE_URL = 'https://30c61382b1f2.ngrok-free.app';
+
+        let allTeams = [];
+        let currentFilter = 'all';
+
+        // Toast notification system
+        function showToast(type, title, message, duration = 5000) {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                success: '✓',
+                error: '✕',
+                warning: '⚠',
+                info: 'ℹ'
+            };
+
+            toast.innerHTML = `
+                <div class="toast-icon">${icons[type]}</div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            // Trigger animation
+            setTimeout(() => toast.classList.add('show'), 10);
+
+            // Auto remove after duration
+            if (duration > 0) {
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.classList.remove('show');
+                        setTimeout(() => toast.remove(), 300);
+                    }
+                }, duration);
+            }
+
+            return toast;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('show');
+                mobileMenuButton.classList.toggle('active');
+            });
+
+            // Close mobile menu when clicking on a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('show');
+                    mobileMenuButton.classList.remove('active');
+                });
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                    mobileMenu.classList.remove('show');
+                    mobileMenuButton.classList.remove('active');
+                }
+            });
+
+            // Search functionality
+            const searchInput = document.getElementById('search-teams');
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                filterAndRenderTeams(searchTerm, currentFilter);
+            });
+
+            // Fetch teams
+            fetchTeams();
+
+            // Scroll animations
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(elem => observer.observe(elem));
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) target.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+        });
+
+        async function fetchTeams() {
+            const loading = document.getElementById('loading');
+            const teamsList = document.getElementById('teams-list');
+            const emptyState = document.getElementById('empty-state');
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/teams`);
+                const data = await response.json();
+
+                if (data.success && data.teams.length > 0) {
+                    allTeams = data.teams;
+                    updateStats();
+                    renderTeams(allTeams);
+                    teamsList.classList.remove('hidden');
+                } else {
+                    emptyState.classList.remove('hidden');
+                }
+            } catch (error) {
+                showToast('error', 'Fetch Error', 'Failed to load teams. Please try again later.', 5000);
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        function updateStats() {
+            const total = allTeams.length;
+            const paid = allTeams.filter(t => t.payment_status === 'completed').length;
+            const pending = allTeams.filter(t => t.payment_status === 'pending').length;
+
+            document.getElementById('total-teams').textContent = total;
+            document.getElementById('paid-teams').textContent = paid;
+            document.getElementById('pending-teams').textContent = pending;
+        }
+
+        function renderTeams(teams) {
+            const teamsGrid = document.getElementById('teams-grid');
+            const noResults = document.getElementById('no-results');
+            
+            if (teams.length === 0) {
+                teamsGrid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+            
+            noResults.classList.add('hidden');
+            teamsGrid.innerHTML = teams.map((team, index) => {
+                const isPaid = team.payment_status === 'completed';
+                const statusColor = isPaid ? 'green' : 'yellow';
+                const statusBg = isPaid ? 'rgba(0, 255, 136, 0.08)' : 'rgba(255, 170, 0, 0.08)';
+                const statusBorder = isPaid ? 'rgba(0, 255, 136, 0.2)' : 'rgba(255, 170, 0, 0.2)';
+                const statusText = isPaid ? '#00ff88' : '#ffaa00';
+                const icon = isPaid ? '✓' : '⏱';
+                
+                return `
+                    <div class="team-card" style="background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 0, 60, 0.2); border-radius: 10px; padding: 1rem; transition: all 0.3s ease; position: relative; overflow: hidden;" 
+                        onmouseover="this.style.background='rgba(255, 0, 60, 0.08)'; this.style.borderColor='rgba(255, 0, 60, 0.4)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 20px rgba(255, 0, 60, 0.25)';" 
+                        onmouseout="this.style.background='rgba(0, 0, 0, 0.4)'; this.style.borderColor='rgba(255, 0, 60, 0.2)'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        
+                        <div class="flex items-start justify-between mb-2">
+                            <div class="flex-1 pr-2">
+                                <div class="text-xs text-gray-600 font-rajdhani uppercase mb-0.5">#${index + 1}</div>
+                                <h3 class="text-sm font-bold text-white font-rajdhani leading-tight" style="color: #fff; word-break: break-word;">${team.team_name}</h3>
+                            </div>
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: ${statusBg}; border: 1.5px solid ${statusBorder}; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">
+                                ${icon}
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="px-2 py-0.5 rounded-full text-xs font-bold font-rajdhani uppercase" style="background: ${statusBg}; color: ${statusText}; border: 1px solid ${statusBorder};">
+                                ${team.payment_status}
+                            </span>
+                            ${isPaid ? '<span class="text-xs text-green-400">⚡</span>' : '<span class="text-xs text-yellow-400">⏳</span>'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterTeams(status) {
+            currentFilter = status;
+            const searchTerm = document.getElementById('search-teams').value.toLowerCase();
+            
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.filter === status) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            filterAndRenderTeams(searchTerm, status);
+        }
+
+        function filterAndRenderTeams(searchTerm, status) {
+            let filtered = allTeams;
+            
+            // Filter by status
+            if (status !== 'all') {
+                filtered = filtered.filter(team => team.payment_status === status);
+            }
+            
+            // Filter by search term
+            if (searchTerm) {
+                filtered = filtered.filter(team => 
+                    team.team_name.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            renderTeams(filtered);
+        }
+    </script>
+    <style>
+        .filter-btn {
+            background: rgba(0, 0, 0, 0.5);
+            color: #999;
+            border: 1px solid rgba(255, 0, 60, 0.15);
+        }
+        
+        .filter-btn:hover {
+            background: rgba(255, 0, 60, 0.15);
+            border-color: rgba(255, 0, 60, 0.3);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+        
+        .filter-btn.active {
+            background: rgba(255, 0, 60, 0.2);
+            border-color: var(--primary-red);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.3);
+        }
+    </style>
+</body>
+
+</html>

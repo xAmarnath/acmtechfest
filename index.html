@@ -13,7 +13,6 @@
         href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@400;500;700&display=swap"
         rel="stylesheet">
     <style>
-        
         .payment-button {
             background: #ff003c;
             color: white;
@@ -36,6 +35,7 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(255, 0, 60, 0.3);
         }
+
         /* ================= BASE STYLES ================= */
         body {
             color: #e5e5e5;
@@ -132,6 +132,110 @@
             border-bottom: 1px solid rgba(255, 0, 60, 0.2);
         }
 
+        /* Mobile menu button enhancement */
+        #mobile-menu-button {
+            position: relative;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.1), rgba(0, 255, 247, 0.1));
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu-button:hover {
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.2), rgba(0, 255, 247, 0.2));
+            border-color: #ff003c;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.4);
+        }
+
+        #mobile-menu-button svg {
+            transition: transform 0.3s ease;
+        }
+
+        #mobile-menu-button.active svg {
+            transform: rotate(90deg);
+        }
+
+        /* Enhanced mobile menu */
+        #mobile-menu {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 2px solid #ff003c;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(255, 0, 60, 0.2);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        #mobile-menu.show {
+            max-height: 400px;
+            opacity: 1;
+        }
+
+        #mobile-menu a {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-left: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(180deg, #ff003c, #00fff7);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        #mobile-menu a:hover::before,
+        #mobile-menu a:active::before {
+            transform: translateX(0);
+        }
+
+        #mobile-menu a:hover {
+            background: linear-gradient(90deg, rgba(255, 0, 60, 0.15), transparent);
+            padding-left: 1.5rem;
+            color: #00fff7;
+        }
+
+        #mobile-menu a:last-child {
+            margin-top: 0.5rem;
+            background: linear-gradient(90deg, #ff003c, #e6003a);
+            border-left: none;
+            text-align: center;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(255, 0, 60, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        #mobile-menu a:last-child:hover {
+            background: linear-gradient(90deg, #ff335c, #ff003c);
+            padding-left: 1rem;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 0, 60, 0.6);
+        }
+
+        /* Mobile menu icons */
+        .mobile-menu-icon {
+            display: inline-block;
+            margin-right: 0.5rem;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
         /* Hero BG */
         .hero-bg {
             cursor: none;
@@ -225,73 +329,176 @@
             text-shadow: 0 0 10px #ff003c, 0 0 20px #ff003c;
         }
 
-        /* Events */
+        /* Events Section - Optimized */
         #events {
-            background-color: rgba(0, 0, 0, 0.75);
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(10, 0, 20, 0.9) 50%, rgba(0, 0, 0, 0.95) 100%);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Cards */
+        #events::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(255, 0, 60, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 50%, rgba(0, 255, 247, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        #events .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            background: linear-gradient(90deg, #ff003c 0%, #00fff7 50%, #ff003c 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s linear infinite;
+            text-shadow: 0 0 80px rgba(255, 0, 60, 0.5);
+            position: relative;
+        }
+
+        @keyframes shimmer {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        /* Cards - 3D Holographic Effect */
         .valorant-card {
             position: relative;
             overflow: hidden;
-            background: rgba(17, 17, 17, 0.7);
+            background: rgba(17, 17, 17, 0.6);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px),
-                    calc(100% - 20px) 100%, 0 100%);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .valorant-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .valorant-card::before,
-        .valorant-card::after {
-            content: '';
-            position: absolute;
-            width: 100px;
-            height: 2px;
-            background: #ff003c;
-            opacity: 0;
-            transition: opacity 0.4s ease, transform 0.4s ease;
-            box-shadow: 0 0 10px #ff003c;
+            border-radius: 20px;
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            will-change: transform;
         }
 
         .valorant-card::before {
-            top: 0;
-            left: 0;
-            transform: translateX(-100%);
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, #ff003c, #00fff7);
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
         }
 
+        .valorant-card:hover::before {
+            opacity: 0.4;
+        }
+
+        .valorant-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow:
+                0 30px 60px rgba(255, 0, 60, 0.4),
+                0 0 40px rgba(0, 255, 247, 0.3);
+            border-color: rgba(255, 0, 60, 0.6);
+        }
+
+        /* Glitch effect on hover */
+        .valorant-card:hover .card-title {
+            animation: glitch 0.5s infinite;
+        }
+
+        @keyframes glitch {
+
+            0%,
+            100% {
+                transform: translate(0);
+            }
+
+            20% {
+                transform: translate(-2px, 2px);
+            }
+
+            40% {
+                transform: translate(-2px, -2px);
+            }
+
+            60% {
+                transform: translate(2px, 2px);
+            }
+
+            80% {
+                transform: translate(2px, -2px);
+            }
+        }
+
+        /* Holographic overlay effect */
         .valorant-card::after {
-            bottom: 0;
-            right: 0;
-            transform: translateX(100%);
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(115deg,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.05) 25%,
+                    transparent 35%,
+                    transparent 75%,
+                    rgba(0, 255, 247, 0.1) 100%);
+            transform: translateX(-100%) skewX(-15deg);
+            transition: transform 0.8s ease;
+            pointer-events: none;
         }
 
-        .valorant-card:hover::before,
         .valorant-card:hover::after {
+            transform: translateX(200%) skewX(-15deg);
+        }
+
+        /* Scan line effect */
+        .valorant-card .card-content::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(0deg,
+                    rgba(0, 255, 247, 0.03) 0px,
+                    transparent 2px,
+                    transparent 4px);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .valorant-card:hover .card-content::before {
             opacity: 1;
-            transform: translateX(0);
         }
 
         .card-bg-image {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 110%;
+            height: 110%;
             background-size: cover;
             background-position: center;
-            opacity: 0.3;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 0.25;
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            filter: brightness(0.7) contrast(1.2);
         }
 
         .valorant-card:hover .card-bg-image {
-            opacity: 0.5;
-            transform: scale(1.05);
+            opacity: 0.6;
+            transform: scale(1.15) translateZ(30px);
+            filter: brightness(1) contrast(1.3) saturate(1.2);
+        }
+
+        /* Add glow to background on hover */
+        .valorant-card .card-bg-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 40%, rgba(255, 0, 60, 0.3) 100%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .valorant-card:hover .card-bg-image::after {
+            opacity: 1;
         }
 
         .card-content {
@@ -305,15 +512,43 @@
 
         .card-category {
             font-family: 'Rajdhani', sans-serif;
-            color: #ff003c;
+            background: linear-gradient(90deg, #ff003c, #00fff7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.15em;
             font-size: 0.75rem;
             font-weight: 700;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .card-category::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, #ff003c, transparent);
+            box-shadow: 0 0 10px #ff003c;
         }
 
         .card-title {
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+            text-shadow:
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 0 20px rgba(255, 0, 60, 0.5),
+                0 0 30px rgba(0, 255, 247, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .valorant-card:hover .card-title {
+            text-shadow:
+                0 0 15px rgba(255, 255, 255, 1),
+                0 0 30px rgba(255, 0, 60, 0.8),
+                0 0 45px rgba(0, 255, 247, 0.6);
+            transform: translateZ(20px);
         }
 
         .card-description {
@@ -322,8 +557,8 @@
 
         .card-button {
             color: #fff;
-            background: rgba(255, 0, 60, 0.2);
-            border: 1px solid rgba(255, 0, 60, 0.5);
+            background: linear-gradient(90deg, rgba(255, 0, 60, 0.18), rgba(0, 255, 247, 0.06));
+            border: 1px solid rgba(255, 0, 60, 0.6);
             padding: 0.5rem 1rem;
             clip-path: polygon(0 0, calc(100% - 10px) 0,
                     100% 10px, 100% 100%, 0 100%);
@@ -332,6 +567,7 @@
 
         .card-button:hover {
             background: #ff003c;
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.6);
         }
 
         /* Timeline */
@@ -432,31 +668,57 @@
         }
 
         /* Modal */
-       .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
-    align-items: start; /* Changed from center */
-    justify-content: center;
-    padding-top: 90%;
-}
+        .modal {
+            display: none;
+            position: absolute;
+            z-index: 1000;
+            left: 0;
+            width: 100vw;
+            min-height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            align-items: flex-start;
+            justify-content: center;
+            /* Remove padding-top, let JS set top dynamically */
+        }
 
-.modal-content {
-    background-color: #111;
-    border: 1px solid #ff003c;
-}
+        .modal-content {
+            background-color: #111;
+            border: 1px solid #ff003c;
+        }
 
         /* About Section */
         #about {
             position: relative;
             overflow: hidden;
+        }
+
+        /* About section particle canvas */
+        #about-particles {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.45;
+            mix-blend-mode: screen;
+        }
+
+        /* About feature cards with gaming aesthetics - Optimized */
+        .about-feature-card {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            position: relative;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, border-width 0.3s ease;
+            will-change: transform;
+        }
+
+        .about-feature-card:hover {
+            transform: scale(1.05) translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(255, 0, 60, 0.5),
+                0 0 30px rgba(0, 255, 247, 0.3);
+            border-width: 3px;
         }
 
         .about-grid-bg {
@@ -719,6 +981,115 @@
                 opacity: 1;
             }
         }
+
+        /* Hide about cards on mobile */
+        @media (max-width: 768px) {
+            #about .grid.md\:grid-cols-3 {
+                display: none;
+            }
+            
+            #about .mb-16 {
+                margin-bottom: 0 !important;
+            }
+            
+            /* Smooth section transitions for mobile */
+            section {
+                position: relative;
+            }
+            
+            /* Add gradient overlays between sections */
+            section::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 60px;
+                background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.3));
+                pointer-events: none;
+                z-index: 1;
+            }
+            
+            section::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 60px;
+                background: linear-gradient(to top, transparent, rgba(0,0,0,0.3));
+                pointer-events: none;
+                z-index: 1;
+            }
+            
+            /* Enhance section backgrounds with subtle gradients */
+            #about {
+                background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%) !important;
+            }
+            
+            #events {
+                background: linear-gradient(180deg, #050505 0%, #0f0f0f 50%, #050505 100%) !important;
+            }
+            
+            #schedule {
+                background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%) !important;
+            }
+            
+            #register {
+                background: linear-gradient(180deg, #050505 0%, #0f0f0f 50%, #050505 100%) !important;
+            }
+            
+            #sponsors {
+                background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%) !important;
+            }
+            
+            /* Add subtle colored accent on section edges */
+            #about::after {
+                background: linear-gradient(to bottom, transparent, rgba(255,0,60,0.05), transparent);
+                height: 80px;
+            }
+            
+            #events::after {
+                background: linear-gradient(to bottom, transparent, rgba(0,255,247,0.05), transparent);
+                height: 80px;
+            }
+            
+            /* Increase padding for better spacing */
+            section {
+                padding-top: 3rem !important;
+                padding-bottom: 3rem !important;
+            }
+            
+            /* Smoother text shadows on mobile */
+            h2, h3 {
+                text-shadow: 0 2px 10px rgba(0,0,0,0.5) !important;
+            }
+        }
+
+        /* Enhanced section title animation */
+        .section-title {
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(135deg, #ff003c 0%, #00fff7 50%, #ff003c 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s linear infinite;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #ff003c, #00fff7, transparent);
+            border-radius: 2px;
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.8), 0 0 40px rgba(0, 255, 247, 0.6);
+        }
     </style>
 </head>
 
@@ -729,7 +1100,7 @@
     <!-- Desktop video background -->
     <video id="desktop-bg-video" playsinline autoplay muted loop preload="none"
         style="position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-1;display:none;"
-        poster="https://envs.sh/LzC.jpg">
+        poster="https://56ktpin8ut.ucarecd.net/1e09c958-9b5a-4501-b491-6c06a5295b34/LzC.png">
         <source src="https://cmsassets.rgpub.io/sanity/files/dsfx7636/news/409ab2fc369ba5e1fe50bac10c6676d7d1365a9f.mp4"
             type="video/mp4">
     </video>
@@ -779,12 +1150,13 @@
                 </svg>
             </button>
         </nav>
-        <div id="mobile-menu" class="hidden md:hidden">
-            <a href="#about" class="block py-2 px-4 text-sm hover:bg-gray-700">About</a>
-            <a href="#events" class="block py-2 px-4 text-sm hover:bg-gray-700">Events</a>
-            <a href="#schedule" class="block py-2 px-4 text-sm hover:bg-gray-700">Schedule</a>
-            <a href="#sponsors" class="block py-2 px-4 text-sm hover:bg-gray-700">Sponsors</a>
-            <a href="#register" class="block py-2 px-4 text-sm hover:bg-red-700 bg-red-600">Register Now</a>
+        <div id="mobile-menu" class="md:hidden">
+            <a href="#about" class="block py-3 px-4 text-sm"><span class="mobile-menu-icon">ℹ️</span>About</a>
+            <a href="#events" class="block py-3 px-4 text-sm"><span class="mobile-menu-icon">🎮</span>Events</a>
+            <a href="#schedule" class="block py-3 px-4 text-sm"><span class="mobile-menu-icon">📅</span>Schedule</a>
+            <a href="#sponsors" class="block py-3 px-4 text-sm"><span class="mobile-menu-icon">🤝</span>Sponsors</a>
+            <a href="#register" class="block py-3 px-6 text-sm mt-2 mb-2 mx-2 rounded"><span
+                    class="mobile-menu-icon">⚡</span>Register Now</a>
         </div>
     </header>
 
@@ -818,72 +1190,167 @@
                     </div>
                 </div>
                 <div class="mt-12">
-                    <a href="#events"
-                        class="bg-transparent border-2 border-red-500 hover:bg-red-500 text-white font-bold py-3 px-8 rounded-sm transition duration-300">
-                        View The Arenas
+                    <a href="#events" id="arena-btn"
+                        class="inline-block px-8 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-rajdhani font-bold text-lg uppercase tracking-wider rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(255,0,60,0.5)] border-2 border-red-500 hover:border-white relative overflow-hidden group">
+                        <span class="relative z-10 flex items-center gap-2">
+                            <span class="inline-block group-hover:animate-pulse">⚔️</span>
+                            View The Arenas
+                            <span class="inline-block group-hover:animate-pulse">⚔️</span>
+                        </span>
+                        <span class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
                     </a>
                 </div>
             </div>
         </section>
 
-        <section id="about" class="py-20 bg-black">
+        <style>
+            #arena-btn:active {
+                transform: scale(0.98) !important;
+            }
+        </style>
+
+        <section id="about" class="py-20 bg-black relative overflow-hidden">
+            <canvas id="about-particles" aria-hidden="true"></canvas>
             <div class="about-grid-bg"></div>
+
+            <!-- Floating orbs animation -->
+            <div class="absolute inset-0 pointer-events-none overflow-hidden">
+                <div class="floating-orb"
+                    style="top: 20%; left: 10%; width: 150px; height: 150px; background: radial-gradient(circle, rgba(255,0,60,0.3), transparent); animation: float 8s ease-in-out infinite;">
+                </div>
+                <div class="floating-orb"
+                    style="top: 60%; right: 15%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(0,255,247,0.3), transparent); animation: float 10s ease-in-out infinite 2s;">
+                </div>
+                <div class="floating-orb"
+                    style="bottom: 10%; left: 20%; width: 120px; height: 120px; background: radial-gradient(circle, rgba(255,0,60,0.2), transparent); animation: float 7s ease-in-out infinite 1s;">
+                </div>
+            </div>
+
             <div class="container mx-auto px-6 text-center reveal relative z-10">
-                <h2 class="text-4xl md:text-5xl font-rajdhani font-bold section-title mb-8">Where Code Meets Combat</h2>
-                <p class="max-w-3xl mx-auto text-lg text-gray-400 mb-16">
-                    ASTRISK is not just an event; it's an arena where the brightest minds in technology and the sharpest
-                    talents in gaming collide. For two electrifying days, the ACM Student Chapter at Amal Jyothi College
-                    of Engineering transforms into a hub of innovation, competition, and creativity. We're calling all
-                    creators, strategists, and tech enthusiasts to prove their mettle.
+                <h2 class="text-4xl md:text-6xl font-rajdhani font-bold mb-12"
+                    style="letter-spacing:0.08em;background: linear-gradient(135deg, #ff003c 0%, #00fff7 50%, #ff003c 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shimmer 4s linear infinite; text-shadow: 0 0 80px rgba(255,0,60,0.8);">
+                    Where Code Meets Combat
+                </h2>
+
+                <p class="max-w-3xl mx-auto text-lg text-gray-300 mb-16 font-rajdhani"
+                    style="font-size:1.3rem;line-height:1.7;text-shadow:0 0 10px #ff003c,0 0 20px #00fff7;">
+                    <span style="color:#ff003c;font-weight:700;">ASTRISK</span> is not just an event; it's an <span
+                        style="color:#00fff7;font-weight:700;">arena</span> where the brightest minds in technology and
+                    the sharpest talents in gaming collide.<br>
+                    <span style="color:#fff;">For two electrifying days, the ACM Student Chapter at Amal Jyothi College
+                        of Engineering transforms into a hub of <span style="color:#ff003c;">innovation</span>, <span
+                            style="color:#00fff7;">competition</span>, and <span
+                            style="color:#fff;">creativity</span>.</span><br>
+                    <span style="color:#ff003c;">We're calling all creators, strategists, and tech enthusiasts to prove
+                        their mettle.</span>
                 </p>
                 <div class="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto">
                     <div class="reveal" style="transition-delay: 100ms;">
-                        <div class="bg-gray-900/50 p-6 rounded-lg border border-gray-800 h-full">
-                            <svg class="w-12 h-12 mx-auto text-red-500 mb-4" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <h3 class="text-xl font-rajdhani font-bold mb-2">Elite Competition</h3>
-                            <p class="text-gray-500">Face off against top-tier talent in high-stakes tournaments with a
-                                massive prize pool on the line.</p>
+                        <div class="about-feature-card p-6 rounded-xl border-2 border-[#ff003c] h-full shadow-2xl hover:scale-105 transition-all duration-300 relative overflow-hidden"
+                            style="background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.75)), url('https://wallpapers.com/images/hd/cool-valorant-pictures-ky7u6zg4p1hzxtfe.jpg'); background-size: cover; background-position: center;">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-[#ff003c]/30 via-transparent to-transparent opacity-60">
+                            </div>
+                            <div class="relative z-10">
+                                <div
+                                    class="w-16 h-16 mx-auto mb-4 bg-[#ff003c]/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-[#ff003c] shadow-[0_0_20px_rgba(255,0,60,0.6)]">
+                                    <span class="text-3xl">🎯</span>
+                                </div>
+                                <h3
+                                    class="text-2xl font-rajdhani font-bold mb-3 text-[#00fff7] tracking-wide drop-shadow-[0_0_10px_rgba(0,255,247,0.8)]">
+                                    Elite Competition</h3>
+                                <p class="text-gray-100 font-rajdhani text-lg leading-relaxed drop-shadow-md">Face off
+                                    against top-tier talent in high-stakes tournaments with a <span
+                                        style="color:#ff003c;font-weight:700;text-shadow:0 0 10px rgba(255,0,60,0.8);">massive
+                                        prize pool</span> on the line.</p>
+                                <span
+                                    class="absolute top-2 right-2 text-xs bg-[#ff003c] text-white px-3 py-1 rounded-full font-bold animate-pulse shadow-lg">🔥
+                                    LIVE</span>
+                            </div>
                         </div>
                     </div>
                     <div class="reveal" style="transition-delay: 200ms;">
-                        <div class="bg-gray-900/50 p-6 rounded-lg border border-gray-800 h-full">
-                            <svg class="w-12 h-12 mx-auto text-red-500 mb-4" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01">
-                                </path>
-                            </svg>
-                            <h3 class="text-xl font-rajdhani font-bold mb-2">Creative Showcases</h3>
-                            <p class="text-gray-500">Unleash your artistic vision in our digital design competitions and
-                                celebrate the aesthetics of gaming.</p>
+                        <div class="about-feature-card p-6 rounded-xl border-2 border-[#00fff7] h-full shadow-2xl hover:scale-105 transition-all duration-300 relative overflow-hidden"
+                            style="background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800'); background-size: cover; background-position: center;">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-[#00fff7]/30 via-transparent to-transparent opacity-60">
+                            </div>
+                            <div class="relative z-10">
+                                <div
+                                    class="w-16 h-16 mx-auto mb-4 bg-[#00fff7]/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-[#00fff7] shadow-[0_0_20px_rgba(0,255,247,0.6)]">
+                                    <span class="text-3xl">🎨</span>
+                                </div>
+                                <h3
+                                    class="text-2xl font-rajdhani font-bold mb-3 text-[#ff003c] tracking-wide drop-shadow-[0_0_10px_rgba(255,0,60,0.8)]">
+                                    Creative Showcases</h3>
+                                <p class="text-gray-100 font-rajdhani text-lg leading-relaxed drop-shadow-md">Unleash
+                                    your <span
+                                        style="color:#00fff7;font-weight:700;text-shadow:0 0 10px rgba(0,255,247,0.8);">artistic
+                                        vision</span> in our digital design competitions and celebrate the aesthetics of
+                                    gaming.</p>
+                                <span
+                                    class="absolute top-2 right-2 text-xs bg-[#00fff7] text-black px-3 py-1 rounded-full font-bold animate-bounce shadow-lg">✨
+                                    NEW</span>
+                            </div>
                         </div>
                     </div>
                     <div class="reveal" style="transition-delay: 300ms;">
-                        <div class="bg-gray-900/50 p-6 rounded-lg border border-gray-800 h-full">
-                            <svg class="w-12 h-12 mx-auto text-red-500 mb-4" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9.663 16.663c.52-1.261 1.231-2.435 2.096-3.527l-.328-.328A3.001 3.001 0 015.663 9.09l7.25-7.25a3 3 0 014.242 0l.94.94a3 3 0 010 4.242l-7.25 7.25a3 3 0 01-4.242 0l-.328-.328z">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12.002 11.002L13 12m-3-3l1-1"></path>
-                            </svg>
-                            <h3 class="text-xl font-rajdhani font-bold mb-2">Pro Insights</h3>
-                            <p class="text-gray-500">Learn from industry professionals in exclusive workshops and gain
-                                invaluable insights from guest speakers.</p>
+                        <div class="about-feature-card p-6 rounded-xl border-2 border-[#ff003c] h-full shadow-2xl hover:scale-105 transition-all duration-300 relative overflow-hidden"
+                            style="background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800'); background-size: cover; background-position: center;">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-[#ff003c]/20 via-transparent to-[#00fff7]/20 opacity-50">
+                            </div>
+                            <div class="relative z-10">
+                                <div
+                                    class="w-16 h-16 mx-auto mb-4 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white shadow-[0_0_20px_rgba(255,255,255,0.6)]">
+                                    <span class="text-3xl">💡</span>
+                                </div>
+                                <h3
+                                    class="text-2xl font-rajdhani font-bold mb-3 text-white tracking-wide drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">
+                                    Pro Insights</h3>
+                                <p class="text-gray-100 font-rajdhani text-lg leading-relaxed drop-shadow-md">Learn from
+                                    <span
+                                        style="color:#ff003c;font-weight:700;text-shadow:0 0 10px rgba(255,0,60,0.8);">industry
+                                        professionals</span> in exclusive workshops and gain invaluable insights from
+                                    guest speakers.
+                                </p>
+                                <span
+                                    class="absolute top-2 right-2 text-xs bg-white text-black px-3 py-1 rounded-full font-bold animate-pulse shadow-lg">🎓
+                                    PRO</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <style>
+                @keyframes float {
+
+                    0%,
+                    100% {
+                        transform: translateY(0) scale(1);
+                        opacity: 0.3;
+                    }
+
+                    50% {
+                        transform: translateY(-30px) scale(1.1);
+                        opacity: 0.5;
+                    }
+                }
+
+                .floating-orb {
+                    position: absolute;
+                    border-radius: 50%;
+                    filter: blur(60px);
+                    pointer-events: none;
+                }
+            </style>
         </section>
 
         <section id="events" class="py-20">
             <div class="container mx-auto px-6">
-                <h2 class="text-4xl md:text-5xl font-rajdhani font-bold section-title mb-16 reveal">The Arenas</h2>
+                <h2 class="text-4xl md:text-5xl font-rajdhani font-bold section-title mb-16 reveal text-center">⚔️ The
+                    Arenas ⚔️</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 
                     <div class="valorant-card reveal" style="transition-delay: 100ms;">
@@ -906,9 +1373,8 @@
                         </div>
                         <div class="card-content text-left">
                             <p class="card-category">Creative</p>
-                            <h3 class="card-title text-2xl font-rajdhani font-bold my-2">Art of the Game</h3>
-                            <p class="card-description text-gray-400 mb-6 text-sm">Unleash your creativity. Submit
-                                original digital art inspired by the world of gaming.</p>
+                            <h3 class="card-title text-2xl font-rajdhani font-bold my-2">Pixel persona</h3>
+                            <p class="card-description text-gray-400 mb-6 text-sm">Design a compelling game concept, a unique character or a breathtaking scenery.</p>
                             <button class="card-button event-details-btn mt-auto self-start" data-modal="artModal">View
                                 Guidelines &rarr;</button>
                         </div>
@@ -951,8 +1417,8 @@
                             <h3 class="card-title text-2xl font-rajdhani font-bold my-2">Interactive Session</h3>
                             <p class="card-description text-gray-400 mb-6 text-sm">Experience high-performance gaming on
                                 top-tier consoles. Relax and compete!</p>
-                            <button class="card-button event-details-btn mt-auto self-start"
-                                data-modal="talkModal">More Info &rarr;</button>
+                            <button class="card-button event-details-btn mt-auto self-start" data-modal="talkModal">More
+                                Info &rarr;</button>
                         </div>
                     </div>
 
@@ -961,10 +1427,9 @@
         </section>
         <section id="schedule" class="py-20 bg-black">
             <div class="container mx-auto px-6">
-                <h2 class="text-4xl md:text-5xl font-rajdhani font-bold text-center section-title mb-20 reveal">Event
+                <h2 class="text-4xl md:text-5xl font-rajdhani font-bold text-center mb-20 reveal text-white">Event
                     Timeline</h2>
                 <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-x-16 gap-y-12">
-
                     <div class="reveal">
                         <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-8 pl-12 md:pl-0">17th October <span
                                 class="text-lg text-gray-400 block font-medium">Internal Events</span></h3>
@@ -1065,15 +1530,15 @@
 
         <section id="register" class="py-20">
             <div class="container mx-auto px-6 text-center reveal">
-                <h2 class="text-4xl md:text-5xl font-rajdhani font-bold section-title mb-6">Join The Battle</h2>
+                <h2 class="text-4xl md:text-5xl font-rajdhani font-bold mb-6 text-white">Join The Battle</h2>
                 <p class="text-gray-400 mb-8 max-w-xl mx-auto">Registration for "The Reckoning" Valorant tournament is
                     now open. Assemble your team and fight for glory.</p>
                 <div class="bg-gray-900/50 p-6 rounded-lg inline-block border border-gray-700">
                     <p class="text-lg font-bold">Registration Fee: <span class="text-red-500">₹100 per person</span></p>
-                    <p class="text-sm text-gray-500">(Team of 6 = ₹600, Team of 7 = ₹700)</p>
+                    <p class="text-sm text-gray-400 mt-2">(5 + 1 substitute (Team of 6), ₹600 per team)</p>
                 </div>
                 <div class="mt-10">
-                    <a href="#"
+                    <a href="reg.html"
                         class="bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-10 text-lg rounded-sm transition duration-300 shadow-lg shadow-red-500/30">
                         Register Your Team Now
                     </a>
@@ -1082,63 +1547,299 @@
             </div>
         </section>
 
-        <section id="sponsors" class="py-20 bg-black">
-            <div class="container mx-auto px-6 text-center reveal">
-                <h2 class="text-4xl md:text-5xl font-rajdhani font-bold section-title mb-10" style="color:#fff;">Our
-                    Partners</h2>
-                <div id="sponsor-carousel" style="overflow:hidden;width:100%;max-width:900px;margin:0 auto;">
-                    <div id="sponsor-track" style="display:flex;gap:48px;animation:sponsorScroll 18s linear infinite;">
-                        <img src="https://placehold.co/150x60/0a0a0a/ffffff?text=SPONSOR" alt="Sponsor Logo"
-                            style="height:60px;width:150px;object-fit:contain;" />
-                        <img src="https://placehold.co/150x60/0a0a0a/ffffff?text=SPONSOR" alt="Sponsor Logo"
-                            style="height:60px;width:150px;object-fit:contain;" />
-                        <img src="https://placehold.co/150x60/0a0a0a/ffffff?text=SPONSOR" alt="Sponsor Logo"
-                            style="height:60px;width:150px;object-fit:contain;" />
-                        <img src="https://placehold.co/150x60/0a0a0a/ffffff?text=SPONSOR" alt="Sponsor Logo"
-                            style="height:60px;width:150px;object-fit:contain;" />
-                        <img src="https://placehold.co/150x60/0a0a0a/ffffff?text=SPONSOR" alt="Sponsor Logo"
-                            style="height:60px;width:150px;object-fit:contain;" />
-                        <img src="https://placehold.co/150x60/0a0a0a/ffffff?text=SPONSOR" alt="Sponsor Logo"
-                            style="height:60px;width:150px;object-fit:contain;" />
-                        <img src="https://placehold.co/150x60/0a0a0a/ffffff?text=SPONSOR" alt="Sponsor Logo"
-                            style="height:60px;width:150px;object-fit:contain;" />
+        <section id="sponsors" class="py-20 bg-black relative overflow-hidden">
+            <!-- Animated hexagon background -->
+            <div class="absolute inset-0 opacity-20">
+                <div class="absolute inset-0" style="background: 
+                    linear-gradient(30deg, transparent 48%, rgba(255,0,60,0.1) 49%, rgba(255,0,60,0.1) 51%, transparent 52%),
+                    linear-gradient(150deg, transparent 48%, rgba(0,255,247,0.1) 49%, rgba(0,255,247,0.1) 51%, transparent 52%),
+                    linear-gradient(90deg, transparent 48%, rgba(255,0,60,0.05) 49%, rgba(255,0,60,0.05) 51%, transparent 52%);
+                    background-size: 60px 104px;
+                    animation: hexMove 30s linear infinite;"></div>
+            </div>
+
+            <div class="container mx-auto px-6 text-center reveal relative z-10">
+                <h2 class="text-4xl md:text-6xl font-rajdhani font-bold mb-8 text-white">
+                    Powered By Our Partners
+                </h2>
+                <p class="text-gray-400 mb-16 text-lg font-rajdhani max-w-2xl mx-auto">Elite organizations fueling the
+                    future of competitive gaming and technology</p>
+
+                <!-- Creative Diamond Sponsor Layout -->
+                <div class="sponsors-diamond-grid max-w-5xl mx-auto mb-12">
+                    <!-- Title Sponsor (Center Large) -->
+                    <div class="sponsor-tile sponsor-title reveal" style="transition-delay: 100ms;">
+                        <div class="sponsor-tile-inner">
+                            <img src="https://placehold.co/280x140/0a0a0a/ffffff?text=TITLE+SPONSOR"
+                                alt="Title Sponsor" />
+                            <div class="sponsor-label">Title Sponsor</div>
+                            <div class="sponsor-glow"></div>
+                        </div>
+                    </div>
+
+                    <!-- Platinum Sponsors -->
+                    <div class="sponsor-tile sponsor-platinum reveal" style="transition-delay: 200ms;">
+                        <div class="sponsor-tile-inner">
+                            <img src="https://placehold.co/220x110/0a0a0a/ffffff?text=PLATINUM" alt="Platinum" />
+                            <div class="sponsor-label">Platinum</div>
+                            <div class="sponsor-glow"></div>
+                        </div>
+                    </div>
+                    <div class="sponsor-tile sponsor-platinum reveal" style="transition-delay: 250ms;">
+                        <div class="sponsor-tile-inner">
+                            <img src="https://placehold.co/220x110/0a0a0a/ffffff?text=PLATINUM" alt="Platinum" />
+                            <div class="sponsor-label">Platinum</div>
+                            <div class="sponsor-glow"></div>
+                        </div>
+                    </div>
+
+                    <!-- Gold Sponsors -->
+                    <div class="sponsor-tile sponsor-gold reveal" style="transition-delay: 300ms;">
+                        <div class="sponsor-tile-inner">
+                            <img src="https://placehold.co/180x90/0a0a0a/ffffff?text=GOLD" alt="Gold" />
+                            <div class="sponsor-label">Gold</div>
+                            <div class="sponsor-glow"></div>
+                        </div>
+                    </div>
+                    <div class="sponsor-tile sponsor-gold reveal" style="transition-delay: 350ms;">
+                        <div class="sponsor-tile-inner">
+                            <img src="https://placehold.co/180x90/0a0a0a/ffffff?text=GOLD" alt="Gold" />
+                            <div class="sponsor-label">Gold</div>
+                            <div class="sponsor-glow"></div>
+                        </div>
+                    </div>
+                    <div class="sponsor-tile sponsor-gold reveal" style="transition-delay: 400ms;">
+                        <div class="sponsor-tile-inner">
+                            <img src="https://placehold.co/180x90/0a0a0a/ffffff?text=GOLD" alt="Gold" />
+                            <div class="sponsor-label">Gold</div>
+                            <div class="sponsor-glow"></div>
+                        </div>
+                    </div>
+
+                    <!-- Partners -->
+                    <div class="sponsor-tile sponsor-partner reveal" style="transition-delay: 450ms;">
+                        <div class="sponsor-tile-inner">
+                            <img src="https://placehold.co/140x70/0a0a0a/ffffff?text=PARTNER" alt="Partner" />
+                            <div class="sponsor-label">Partner</div>
+                            <div class="sponsor-glow"></div>
+                        </div>
+                    </div>
+                    <div class="sponsor-tile sponsor-partner reveal" style="transition-delay: 500ms;">
+                        <div class="sponsor-tile-inner">
+                            <img src="https://placehold.co/140x70/0a0a0a/ffffff?text=PARTNER" alt="Partner" />
+                            <div class="sponsor-label">Partner</div>
+                            <div class="sponsor-glow"></div>
+                        </div>
+                    </div>
+                    <div class="sponsor-tile sponsor-partner reveal" style="transition-delay: 550ms;">
+                        <div class="sponsor-tile-inner">
+                            <img src="https://placehold.co/140x70/0a0a0a/ffffff?text=PARTNER" alt="Partner" />
+                            <div class="sponsor-label">Partner</div>
+                            <div class="sponsor-glow"></div>
+                        </div>
+                    </div>
+                    <div class="sponsor-tile sponsor-partner reveal" style="transition-delay: 600ms;">
+                        <div class="sponsor-tile-inner">
+                            <img src="https://placehold.co/140x70/0a0a0a/ffffff?text=PARTNER" alt="Partner" />
+                            <div class="sponsor-label">Partner</div>
+                            <div class="sponsor-glow"></div>
+                        </div>
                     </div>
                 </div>
-                <style>
-                    @keyframes sponsorScroll {
-                        0% {
-                            transform: translateX(0);
-                        }
-
-                        100% {
-                            transform: translateX(-50%);
-                        }
-                    }
-
-                    #sponsor-track {
-                        min-width: 1400px;
-                    }
-                </style>
             </div>
+
+            <style>
+                @keyframes hexMove {
+                    0% {
+                        background-position: 0 0;
+                    }
+
+                    100% {
+                        background-position: 60px 104px;
+                    }
+                }
+
+                .sponsors-diamond-grid {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 2rem;
+                    padding: 2rem;
+                }
+
+                .sponsor-tile {
+                    position: relative;
+                    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+                    will-change: transform;
+                }
+
+                .sponsor-tile-inner {
+                    position: relative;
+                    background: rgba(17, 17, 17, 0.6);
+                    backdrop-filter: blur(12px);
+                    padding: 2rem;
+                    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+                    border: 2px solid rgba(255, 0, 60, 0.3);
+                    transition: all 0.4s ease;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 1rem;
+                }
+
+                .sponsor-tile:hover .sponsor-tile-inner {
+                    border-color: rgba(0, 255, 247, 0.8);
+                    background: rgba(17, 17, 17, 0.9);
+                    transform: scale(1.05);
+                }
+
+                .sponsor-tile img {
+                    max-width: 100%;
+                    height: auto;
+                    filter: grayscale(100%) brightness(2) contrast(1.2);
+                    transition: filter 0.4s ease;
+                }
+
+                .sponsor-tile:hover img {
+                    filter: grayscale(0%) brightness(1.2) contrast(1.1);
+                }
+
+                .sponsor-label {
+                    font-family: 'Rajdhani', sans-serif;
+                    font-size: 0.7rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.15em;
+                    color: rgba(255, 255, 255, 0.4);
+                    transition: all 0.3s ease;
+                }
+
+                .sponsor-tile:hover .sponsor-label {
+                    color: #00fff7;
+                    text-shadow: 0 0 15px rgba(0, 255, 247, 0.8);
+                }
+
+                .sponsor-glow {
+                    position: absolute;
+                    inset: -4px;
+                    background: linear-gradient(45deg, #ff003c, #00fff7, #ff003c);
+                    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+                    opacity: 0;
+                    filter: blur(12px);
+                    transition: opacity 0.4s ease;
+                    z-index: -1;
+                }
+
+                .sponsor-tile:hover .sponsor-glow {
+                    opacity: 0.6;
+                    animation: pulse 2s ease-in-out infinite;
+                }
+
+                @keyframes pulse {
+
+                    0%,
+                    100% {
+                        opacity: 0.4;
+                    }
+
+                    50% {
+                        opacity: 0.8;
+                    }
+                }
+
+                /* Sizing variants */
+                .sponsor-title {
+                    width: 320px;
+                    height: 200px;
+                }
+
+                .sponsor-platinum {
+                    width: 260px;
+                    height: 160px;
+                }
+
+                .sponsor-gold {
+                    width: 200px;
+                    height: 130px;
+                }
+
+                .sponsor-partner {
+                    width: 160px;
+                    height: 110px;
+                }
+
+                @media (max-width: 768px) {
+                    .sponsors-diamond-grid {
+                        gap: 1rem;
+                        padding: 1rem;
+                    }
+
+                    .sponsor-title {
+                        width: 260px;
+                        height: 160px;
+                    }
+
+                    .sponsor-platinum {
+                        width: 220px;
+                        height: 140px;
+                    }
+
+                    .sponsor-gold {
+                        width: 180px;
+                        height: 120px;
+                    }
+
+                    .sponsor-partner {
+                        width: 140px;
+                        height: 100px;
+                    }
+
+                    .sponsor-tile-inner {
+                        padding: 1.5rem;
+                    }
+                }
+            </style>
         </section>
     </main>
 
-    <footer class="py-10" style="background:rgba(17,17,17,0.85);">
-        <div class="container mx-auto px-6 text-center" style="max-width:900px;">
-            <div style="background:rgba(17,17,17,0.85);padding:2rem 1rem;backdrop-filter:blur(6px);">
-                <p
-                    style="font-family:'valorant',sans-serif;font-size:1.3rem;color:#fff;letter-spacing:0.12em;text-shadow:0 0 8px #ff003c;">
+    <footer class="py-16 relative overflow-hidden" style="background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%); border-top: 1px solid rgba(255,0,60,0.2);">
+        <!-- Animated background -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,0,60,0.3) 1px, transparent 0); background-size: 40px 40px;"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 text-center relative z-10" style="max-width:900px;">
+            <div style="padding:2rem 1rem;">
+                <!-- Logo/Brand -->
+                <h3 class="text-3xl font-bold mb-4" style="font-family:'valorant',sans-serif;background: linear-gradient(135deg, #ff003c 0%, #00fff7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">ASTRISK 2025</h3>
+                
+                <!-- Tagline -->
+                <p class="text-gray-400 mb-6 font-rajdhani text-lg">Where Code Meets Combat</p>
+                
+                <!-- Social Links -->
+                <div class="flex justify-center gap-6 mb-8">
+                    <a href="#" class="social-icon-footer" style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(255,0,60,0.1);border:2px solid #ff003c;border-radius:50%;color:#ff003c;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='#ff003c';this.style.color='#fff';this.style.transform='scale(1.1)';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.color='#ff003c';this.style.transform='scale(1)';">📸</a>
+                    <a href="#" class="social-icon-footer" style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(0,255,247,0.1);border:2px solid #00fff7;border-radius:50%;color:#00fff7;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='#00fff7';this.style.color='#000';this.style.transform='scale(1.1)';" onmouseout="this.style.background='rgba(0,255,247,0.1)';this.style.color='#00fff7';this.style.transform='scale(1)';">🐦</a>
+                    <a href="#" class="social-icon-footer" style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(255,0,60,0.1);border:2px solid #ff003c;border-radius:50%;color:#ff003c;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='#ff003c';this.style.color='#fff';this.style.transform='scale(1.1)';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.color='#ff003c';this.style.transform='scale(1)';">💼</a>
+                </div>
+                
+                <!-- Divider -->
+                <div style="height:2px;background:linear-gradient(90deg, transparent, #ff003c, #00fff7, transparent);margin:2rem 0;opacity:0.3;"></div>
+                
+                <!-- Copyright -->
+                <p style="font-family:'Rajdhani',sans-serif;font-size:1.1rem;color:#fff;letter-spacing:0.08em;margin-bottom:0.5rem;">
                     &copy; 2025 ACM Student Chapter, Amal Jyothi College of Engineering
                 </p>
-                <p
-                    style="color:#ff003c;font-size:1rem;margin-top:0.5rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.08em;">
-                    Designed & Developed by Amarnath C and Amal Benny Joseph
+                
+                <!-- Credits -->
+                <p style="color:#888;font-size:0.9rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.05em;margin-bottom:1.5rem;">
+                    Designed & Developed by <span style="color:#ff003c;font-weight:600;">Amarnath C</span> and <span style="color:#00fff7;font-weight:600;">Amal Benny Joseph</span>
                 </p>
-                <div style="margin-top:1.5rem;">
-                    <a href="#"
-                        style="color:#fff;background:#ff003c;padding:0.5rem 1.2rem;border-radius:6px;text-decoration:none;font-weight:700;box-shadow:0 0 10px #ff003c40;transition:background 0.2s;">Contact
-                        Us</a>
-                </div>
+                
+                <!-- Contact Button -->
+                <a href="tel:+919876543210" style="display:inline-block;color:#fff;background:#ff003c;padding:0.75rem 2rem;border-radius:25px;text-decoration:none;font-weight:700;font-family:'Rajdhani',sans-serif;text-transform:uppercase;letter-spacing:0.1em;box-shadow:0 5px 20px rgba(255,0,60,0.4);transition:all 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(255,0,60,0.6)';this.style.background='#e6003a';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 5px 20px rgba(255,0,60,0.4)';this.style.background='#ff003c';">☎ CALL US</a>
             </div>
         </div>
     </footer>
@@ -1170,8 +1871,7 @@
                     </ul>
                 </div>
                 <div>
-                    <button id="registerBtn" onclick="window.location.href='reg.html'"
-                        class="payment-button">
+                    <button id="registerBtn" onclick="window.location.href='reg.html'" class="payment-button">
                         Register Now
                     </button>
                 </div>
@@ -1182,21 +1882,26 @@
     <div id="artModal" class="modal">
         <div class="modal-content max-w-2xl mx-auto my-12 p-8 rounded-lg shadow-lg relative">
             <button class="close-btn absolute top-4 right-4 text-white text-2xl">&times;</button>
-            <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-4">Art of the Game: Guidelines</h3>
+            <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-4">Pixel persona: Guidelines</h3>
             <div class="text-gray-300 space-y-4">
-                <p>Showcase your talent! Submit original digital art inspired by the vast world of gaming. Celebrate the
-                    aesthetics and imagination that bring virtual worlds to life.</p>
+                <p>Design a compelling game concept, a unique character or a breathtaking scenery. The genre and style are completely up to you. So use your preferred Digital Art or Traditional Art techniques to bring your vision to life.</p>
                 <div>
                     <h4 class="font-bold text-white">Theme:</h4>
-                    <p>Inspired by Gaming</p>
+                    <p>Open - Any genre or style</p>
                 </div>
                 <div>
                     <h4 class="font-bold text-white">Submission:</h4>
-                    <p>Details on submission platform and deadline will be announced soon.</p>
+                    <p>Submit high-resolution images (JPEG/PNG)</p>
                 </div>
                 <div>
                     <h4 class="font-bold text-white">Judging Criteria:</h4>
                     <p>Originality, creativity, technical skill, and relevance to the theme.</p>
+                </div>
+                <div>
+                    <button id="registerBtn" onclick="window.location.href='https://e.ajce.in/g5l4oj'"
+                        class="payment-button">
+                        Register Now
+                    </button>
                 </div>
             </div>
         </div>
@@ -1221,6 +1926,12 @@
                 <div>
                     <h4 class="font-bold text-white">Date & Time:</h4>
                     <p>October 17th. Specific time to be announced.</p>
+                </div>
+                <div>
+                    <button id="registerBtn" onclick="window.location.href='https://e.ajce.in/x09hwy'"
+                        class="payment-button">
+                        Register Now
+                    </button>
                 </div>
             </div>
         </div>
@@ -1455,13 +2166,37 @@
 
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('show');
+                mobileMenuButton.classList.toggle('active');
+            });
+
+            // Close mobile menu when clicking on a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('show');
+                    mobileMenuButton.classList.remove('active');
+                });
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target) && mobileMenu.classList.contains('show')) {
+                    mobileMenu.classList.remove('show');
+                    mobileMenuButton.classList.remove('active');
+                }
+            });
 
             const modalButtons = document.querySelectorAll('.event-details-btn');
             const closeButtons = document.querySelectorAll('.close-btn');
             modalButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                    document.getElementById(button.getAttribute('data-modal')).style.display = 'flex';
+                    const modal = document.getElementById(button.getAttribute('data-modal'));
+                    // Set modal top to current scroll position
+                    modal.style.top = window.scrollY + 'px';
+                    modal.style.display = 'flex';
                 });
             });
             closeButtons.forEach(button => {
@@ -1472,6 +2207,92 @@
             window.addEventListener('click', (event) => {
                 if (event.target.classList.contains('modal')) event.target.style.display = 'none';
             });
+
+            // About section particles (lightweight)
+            (function () {
+                const canvas = document.getElementById('about-particles');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                let w = 0, h = 0, particles = [], rafId = null, running = false;
+
+                function resize() {
+                    const rect = canvas.getBoundingClientRect();
+                    w = Math.max(300, Math.floor(rect.width));
+                    h = Math.max(200, Math.floor(rect.height));
+                    canvas.width = w * devicePixelRatio;
+                    canvas.height = h * devicePixelRatio;
+                    canvas.style.width = rect.width + 'px';
+                    canvas.style.height = rect.height + 'px';
+                    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+                }
+
+                function createParticles(count) {
+                    particles = [];
+                    for (let i = 0; i < count; i++) {
+                        particles.push({
+                            x: Math.random() * w,
+                            y: Math.random() * h,
+                            r: Math.random() * 2 + 0.8,
+                            vx: (Math.random() - 0.5) * 0.4,
+                            vy: -Math.random() * 0.6 - 0.1,
+                            c: Math.random() > 0.6 ? 'rgba(255,0,60,0.9)' : 'rgba(0,255,247,0.9)'
+                        });
+                    }
+                }
+
+                function step() {
+                    ctx.clearRect(0, 0, w, h);
+                    for (let p of particles) {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.vy -= 0.002; // gentle upward drift
+                        if (p.y + p.r < 0) p.y = h + p.r;
+                        if (p.x < -10) p.x = w + 10;
+                        if (p.x > w + 10) p.x = -10;
+                        ctx.beginPath();
+                        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 6);
+                        g.addColorStop(0, p.c);
+                        g.addColorStop(1, 'rgba(0,0,0,0)');
+                        ctx.fillStyle = g;
+                        ctx.arc(p.x, p.y, p.r * 6, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    rafId = requestAnimationFrame(step);
+                }
+
+                function start() {
+                    if (running) return;
+                    running = true;
+                    resize();
+                    createParticles(Math.round((w * h) / 60000)); // scale particles with area
+                    step();
+                }
+
+                function stop() {
+                    running = false;
+                    if (rafId) cancelAnimationFrame(rafId);
+                    rafId = null;
+                    ctx.clearRect(0, 0, w, h);
+                }
+
+                // Observe about section visibility
+                const aboutSection = document.getElementById('about');
+                const aboutObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) start(); else stop();
+                    });
+                }, { threshold: 0.15 });
+                aboutObserver.observe(aboutSection);
+
+                // Resize handling
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => {
+                        if (running) resize();
+                    }, 150);
+                });
+            })();
         });
     </script>
 </body>

@@ -13,12 +13,18 @@
         rel="stylesheet">
     <style>
         /* ================= BASE STYLES ================= */
+        :root {
+            --primary-red: #ff003c;
+            --primary-blue: #00ffff;
+            --dark-bg: #0a0a0a;
+        }
+
         body {
             color: #e5e5e5;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             cursor: auto;
-            background-image: url('https://envs.sh/LzC.jpg');
+            background-image: url('https://56ktpin8ut.ucarecd.net/1e09c958-9b5a-4501-b491-6c06a5295b34/LzC.jpg');
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
@@ -53,7 +59,7 @@
             display: block;
             width: 0;
             height: 0;
-            border-left: 24px solid #ff003c;
+            border-left: 24px solid var(--primary-red);
             border-top: 12px solid transparent;
             border-bottom: 12px solid transparent;
             position: absolute;
@@ -91,7 +97,7 @@
         button:hover~.cursor-outline {
             width: 60px;
             height: 60px;
-            border-color: #00ffff;
+            border-color: var(--primary-blue);
         }
 
         /* Fonts */
@@ -180,12 +186,12 @@
             0%,
             100% {
                 text-shadow: 0 0 5px #fff, 0 0 10px #fff,
-                    0 0 20px #ff003c, 0 0 30px #ff003c, 0 0 40px #ff003c;
+                    0 0 20px var(--primary-red), 0 0 30px var(--primary-red), 0 0 40px var(--primary-red);
             }
 
             50% {
                 text-shadow: 0 0 10px #fff, 0 0 20px #fff,
-                    0 0 30px #ff003c, 0 0 40px #ff003c, 0 0 50px #ff003c;
+                    0 0 30px var(--primary-red), 0 0 40px var(--primary-red), 0 0 50px var(--primary-red);
             }
         }
 
@@ -197,7 +203,7 @@
         }
 
         .section-title {
-            text-shadow: 0 0 10px #ff003c, 0 0 20px #ff003c;
+            text-shadow: 0 0 10px var(--primary-red), 0 0 20px var(--primary-red);
         }
 
         /* Registration Form */
@@ -212,12 +218,13 @@
 
         .form-group {
             margin-bottom: 1.5rem;
+            position: relative;
         }
 
         .form-label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #ff003c;
+            color: var(--primary-red);
             font-family: 'Rajdhani', sans-serif;
             text-transform: uppercase;
             letter-spacing: 0.1em;
@@ -237,12 +244,24 @@
 
         .form-input:focus {
             outline: none;
-            border-color: #ff003c;
+            border-color: var(--primary-red);
             box-shadow: 0 0 10px rgba(255, 0, 60, 0.3);
         }
 
         .form-input::placeholder {
             color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-input.error {
+            border-color: #ff4444;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
         }
 
         .member-section {
@@ -251,10 +270,16 @@
             padding: 1.5rem;
             margin-bottom: 2rem;
             border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+        }
+
+        .member-section.active {
+            background: rgba(255, 0, 60, 0.1);
+            border-left-color: var(--primary-red);
         }
 
         .member-title {
-            color: #ff003c;
+            color: var(--primary-red);
             font-family: 'Rajdhani', sans-serif;
             font-weight: 700;
             margin-bottom: 1rem;
@@ -277,7 +302,7 @@
         }
 
         .payment-button {
-            background: #ff003c;
+            background: var(--primary-red);
             color: white;
             border: none;
             padding: 1rem 2rem;
@@ -291,12 +316,42 @@
                     100% 10px, 100% 100%, 0 100%);
             margin-top: 1.5rem;
             width: 100%;
+            position: relative;
+            overflow: hidden;
         }
 
         .payment-button:hover {
             background: #ff335c;
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(255, 0, 60, 0.3);
+        }
+
+        .payment-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .payment-button.loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
         }
 
         .next-steps {
@@ -308,7 +363,7 @@
         }
 
         .next-steps-title {
-            color: #ff003c;
+            color: var(--primary-red);
             font-family: 'Rajdhani', sans-serif;
             font-weight: 700;
             margin-bottom: 1rem;
@@ -331,7 +386,203 @@
             content: "▶";
             position: absolute;
             left: 0;
-            color: #ff003c;
+            color: var(--primary-red);
+        }
+
+        /* Success Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: rgba(17, 17, 17, 0.95);
+            border: 2px solid var(--primary-red);
+            border-radius: 10px;
+            padding: 2rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        /* Mobile modal positioning */
+        @media (max-width: 768px) {
+            .modal-content {
+                position: fixed;
+                top: auto;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+        }
+
+        .modal-success {
+            color: #00ff88;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-red);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+        }
+
+        @media (max-width: 768px) {
+            .toast-container {
+                top: 80px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+
+        .toast {
+            background: rgba(17, 17, 17, 0.95);
+            border-left: 4px solid;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            max-width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .toast {
+                transform: translateY(-100px);
+            }
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left-color: #00ff88;
+        }
+
+        .toast.error {
+            border-left-color: #ff4444;
+        }
+
+        .toast.warning {
+            border-left-color: #ffaa00;
+        }
+
+        .toast.info {
+            border-left-color: var(--primary-blue);
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .toast.success .toast-icon {
+            color: #00ff88;
+        }
+
+        .toast.error .toast-icon {
+            color: #ff4444;
+        }
+
+        .toast.warning .toast-icon {
+            color: #ffaa00;
+        }
+
+        .toast.info .toast-icon {
+            color: var(--primary-blue);
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 700;
+            font-family: 'Rajdhani', sans-serif;
+            margin-bottom: 4px;
+            color: #fff;
+        }
+
+        .toast-message {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: color 0.2s ease;
+        }
+
+        .toast-close:hover {
+            color: #fff;
         }
 
         /* Scroll Animations */
@@ -355,6 +606,28 @@
             font-family: 'valorant', sans-serif;
             opacity: 95%;
             font-weight: 900;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 2px solid var(--primary-red);
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         /* ================= RESPONSIVE FIXES ================= */
@@ -410,7 +683,7 @@
 
             /* Responsive background for mobile */
             body {
-                background-image: url('https://envs.sh/Lzl.png');
+                background-image: url('https://56ktpin8ut.ucarecd.net/e08e6332-fdd6-46b8-9e3a-e074003c9a46/Lzl.png');
                 background-size: auto;
                 background-position: center top;
                 background-attachment: scroll;
@@ -473,13 +746,29 @@
 
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <!-- Desktop video background -->
     <video id="desktop-bg-video" playsinline autoplay muted loop preload="none"
         style="position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-1;display:none;"
-        poster="https://envs.sh/LzC.jpg">
+        poster="https://56ktpin8ut.ucarecd.net/1e09c958-9b5a-4501-b491-6c06a5295b34/LzC.jpg">
         <source src="https://cmsassets.rgpub.io/sanity/files/dsfx7636/news/409ab2fc369ba5e1fe50bac10c6676d7d1365a9f.mp4"
             type="video/mp4">
     </video>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="modal-success">✓</div>
+            <h3 class="text-2xl font-rajdhani font-bold text-white mb-4">Registration Successful!</h3>
+            <p id="successMessage" class="text-gray-300 mb-6">Your team has been registered successfully.</p>
+            <div id="registrationDetails" class="text-left bg-gray-800 p-4 rounded mb-4"></div>
+            <button onclick="proceedToPayment()" class="payment-button">Continue to Payment</button>
+        </div>
+    </div>
 
     <header class="fixed top-0 left-0 right-0 z-50 glassmorphic-nav">
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
@@ -538,162 +827,190 @@
             <div class="container mx-auto px-6">
                 <div class="max-w-4xl mx-auto">
                     <div class="registration-container p-8 md:p-12 reveal">
+                        <!-- Progress Bar -->
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="formProgress"></div>
+                        </div>
+
                         <form id="registration-form">
                             <!-- Team Information -->
                             <div class="form-group">
                                 <label class="form-label" for="team-name">Team Name</label>
                                 <input type="text" id="team-name" class="form-input" placeholder="Enter your team name"
-                                    required>
+                                    required maxlength="50">
+                                <div class="error-message" id="team-name-error"></div>
                             </div>
 
                             <!-- Team Lead Information -->
-                            <div class="member-section">
+                            <div class="member-section active" id="lead-section">
                                 <h3 class="member-title">Team Lead (Required)</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="form-group">
                                         <label class="form-label" for="lead-name">Full Name</label>
                                         <input type="text" id="lead-name" class="form-input"
                                             placeholder="Team lead's full name" required>
+                                        <div class="error-message" id="lead-name-error"></div>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" for="lead-contact">Contact Number</label>
                                         <input type="tel" id="lead-contact" class="form-input"
-                                            placeholder="Team lead's phone number" required>
+                                            placeholder="Team lead's phone number" required maxlength="10">
+                                        <div class="error-message" id="lead-contact-error"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="lead-email">Email Address</label>
                                     <input type="email" id="lead-email" class="form-input"
                                         placeholder="Team lead's email address" required>
+                                    <div class="error-message" id="lead-email-error"></div>
                                 </div>
                             </div>
 
                             <!-- Required Team Members (Member 1-5) -->
-                            <div class="member-section">
+                            <div class="member-section" id="member1-section">
                                 <h3 class="member-title">Team Member 1 (Required)</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="form-group">
                                         <label class="form-label" for="member1-name">Full Name</label>
                                         <input type="text" id="member1-name" class="form-input"
                                             placeholder="Member 1's full name" required>
+                                        <div class="error-message" id="member1-name-error"></div>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" for="member1-contact">Contact Number</label>
                                         <input type="tel" id="member1-contact" class="form-input"
-                                            placeholder="Member 1's phone number" required>
+                                            placeholder="Member 1's phone number" required maxlength="10">
+                                        <div class="error-message" id="member1-contact-error"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="member1-email">Email Address</label>
                                     <input type="email" id="member1-email" class="form-input"
                                         placeholder="Member 1's email address" required>
+                                    <div class="error-message" id="member1-email-error"></div>
                                 </div>
                             </div>
 
-                            <div class="member-section">
+                            <div class="member-section" id="member2-section">
                                 <h3 class="member-title">Team Member 2 (Required)</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="form-group">
                                         <label class="form-label" for="member2-name">Full Name</label>
                                         <input type="text" id="member2-name" class="form-input"
                                             placeholder="Member 2's full name" required>
+                                        <div class="error-message" id="member2-name-error"></div>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" for="member2-contact">Contact Number</label>
                                         <input type="tel" id="member2-contact" class="form-input"
-                                            placeholder="Member 2's phone number" required>
+                                            placeholder="Member 2's phone number" required maxlength="10">
+                                        <div class="error-message" id="member2-contact-error"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="member2-email">Email Address</label>
                                     <input type="email" id="member2-email" class="form-input"
                                         placeholder="Member 2's email address" required>
+                                    <div class="error-message" id="member2-email-error"></div>
                                 </div>
                             </div>
 
-                            <div class="member-section">
+                            <div class="member-section" id="member3-section">
                                 <h3 class="member-title">Team Member 3 (Required)</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="form-group">
                                         <label class="form-label" for="member3-name">Full Name</label>
                                         <input type="text" id="member3-name" class="form-input"
                                             placeholder="Member 3's full name" required>
+                                        <div class="error-message" id="member3-name-error"></div>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" for="member3-contact">Contact Number</label>
                                         <input type="tel" id="member3-contact" class="form-input"
-                                            placeholder="Member 3's phone number" required>
+                                            placeholder="Member 3's phone number" required maxlength="10">
+                                        <div class="error-message" id="member3-contact-error"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="member3-email">Email Address</label>
                                     <input type="email" id="member3-email" class="form-input"
                                         placeholder="Member 3's email address" required>
+                                    <div class="error-message" id="member3-email-error"></div>
                                 </div>
                             </div>
 
-                            <div class="member-section">
+                            <div class="member-section" id="member4-section">
                                 <h3 class="member-title">Team Member 4 (Required)</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="form-group">
                                         <label class="form-label" for="member4-name">Full Name</label>
                                         <input type="text" id="member4-name" class="form-input"
                                             placeholder="Member 4's full name" required>
+                                        <div class="error-message" id="member4-name-error"></div>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" for="member4-contact">Contact Number</label>
                                         <input type="tel" id="member4-contact" class="form-input"
-                                            placeholder="Member 4's phone number" required>
+                                            placeholder="Member 4's phone number" required maxlength="10">
+                                        <div class="error-message" id="member4-contact-error"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="member4-email">Email Address</label>
                                     <input type="email" id="member4-email" class="form-input"
                                         placeholder="Member 4's email address" required>
+                                    <div class="error-message" id="member4-email-error"></div>
                                 </div>
                             </div>
 
-                            <div class="member-section">
+                            <div class="member-section" id="member5-section">
                                 <h3 class="member-title">Team Member 5 (Required)</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="form-group">
                                         <label class="form-label" for="member5-name">Full Name</label>
                                         <input type="text" id="member5-name" class="form-input"
                                             placeholder="Member 5's full name" required>
+                                        <div class="error-message" id="member5-name-error"></div>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" for="member5-contact">Contact Number</label>
                                         <input type="tel" id="member5-contact" class="form-input"
-                                            placeholder="Member 5's phone number" required>
+                                            placeholder="Member 5's phone number" required maxlength="10">
+                                        <div class="error-message" id="member5-contact-error"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="member5-email">Email Address</label>
                                     <input type="email" id="member5-email" class="form-input"
                                         placeholder="Member 5's email address" required>
+                                    <div class="error-message" id="member5-email-error"></div>
                                 </div>
                             </div>
 
                             <!-- Optional Substitute Member -->
-                            <div class="member-section">
-                                <h3 class="member-title">Substitute Member <span class="optional-label">(Optional)</span>
+                            <div class="member-section" id="sub-section">
+                                <h3 class="member-title">Substitute Member <span
+                                        class="optional-label">(Optional)</span>
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="form-group">
                                         <label class="form-label" for="sub-name">Full Name</label>
                                         <input type="text" id="sub-name" class="form-input"
                                             placeholder="Substitute's full name">
+                                        <div class="error-message" id="sub-name-error"></div>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" for="sub-contact">Contact Number</label>
                                         <input type="tel" id="sub-contact" class="form-input"
-                                            placeholder="Substitute's phone number">
+                                            placeholder="Substitute's phone number" maxlength="10">
+                                        <div class="error-message" id="sub-contact-error"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="sub-email">Email Address</label>
                                     <input type="email" id="sub-email" class="form-input"
                                         placeholder="Substitute's email address">
+                                    <div class="error-message" id="sub-email-error"></div>
                                 </div>
                             </div>
 
@@ -722,7 +1039,8 @@
 
                             <!-- Submit Button -->
                             <button type="button" id="payment-button" class="payment-button">
-                                Proceed to Payment
+                                <span class="spinner" style="display: none;"></span>
+                                <span class="button-text">Proceed to Payment</span>
                             </button>
                         </form>
                     </div>
@@ -752,6 +1070,49 @@
     </footer>
 
     <script>
+        // Backend API URL - Update this to your actual backend URL
+        const API_BASE_URL = 'https://30c61382b1f2.ngrok-free.app';
+
+        // Toast notification system
+        function showToast(type, title, message, duration = 5000) {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                success: '✓',
+                error: '✕',
+                warning: '⚠',
+                info: 'ℹ'
+            };
+
+            toast.innerHTML = `
+                <div class="toast-icon">${icons[type]}</div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            // Trigger animation
+            setTimeout(() => toast.classList.add('show'), 10);
+
+            // Auto remove after duration
+            if (duration > 0) {
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.classList.remove('show');
+                        setTimeout(() => toast.remove(), 300);
+                    }
+                }, duration);
+            }
+
+            return toast;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             // Show custom cursor only in hero section
             const hero = document.querySelector('.hero-bg');
@@ -761,6 +1122,7 @@
                 cursorOutline.style.display = inHero ? 'block' : 'none';
             }
             document.addEventListener('mousemove', setCursorVisibility, true);
+
             // Lazy load and show video background only on desktop
             function showDesktopBgVideo() {
                 const video = document.getElementById('desktop-bg-video');
@@ -768,12 +1130,10 @@
                     video.style.display = 'block';
                     video.load();
                     video.play();
-                    // Only remove background image if it was set for desktop
                     document.body.style.backgroundImage = '';
                 } else {
                     video.style.display = 'none';
-
-                    document.body.style.backgroundImage = "url('https://envs.sh/Lzl.png')";
+                    document.body.style.backgroundImage = "url('https://56ktpin8ut.ucarecd.net/e08e6332-fdd6-46b8-9e3a-e074003c9a46/Lzl.png')";
                     document.body.style.backgroundAttachment = 'fixed';
                     document.body.style.backgroundColor = '#000';
                 }
@@ -797,12 +1157,16 @@
             const mobileMenu = document.getElementById('mobile-menu');
             mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
 
-            // Payment button redirect
+            // Form validation and submission
+            const registrationForm = document.getElementById('registration-form');
             const paymentButton = document.getElementById('payment-button');
-            paymentButton.addEventListener('click', () => {
-                // Replace with your actual payment URL
-                window.location.href = 'https://your-payment-site.com';
-            });
+            const progressBar = document.getElementById('formProgress');
+
+            // Real-time form validation
+            setupFormValidation();
+
+            // Form submission
+            paymentButton.addEventListener('click', handleFormSubmission);
 
             // Scroll animations
             const revealElements = document.querySelectorAll('.reveal');
@@ -820,6 +1184,345 @@
                     document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
                 });
             });
+
+            // Update progress bar
+            updateProgressBar();
+        });
+
+        function setupFormValidation() {
+            // Phone number validation
+            const phoneInputs = document.querySelectorAll('input[type="tel"]');
+            phoneInputs.forEach(input => {
+                input.addEventListener('input', (e) => {
+                    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                    validatePhone(e.target);
+                    updateProgressBar();
+                });
+            });
+
+            // Email validation
+            const emailInputs = document.querySelectorAll('input[type="email"]');
+            emailInputs.forEach(input => {
+                input.addEventListener('blur', (e) => {
+                    validateEmail(e.target);
+                    updateProgressBar();
+                });
+            });
+
+            // Required field validation
+            const requiredInputs = document.querySelectorAll('input[required]');
+            requiredInputs.forEach(input => {
+                input.addEventListener('blur', () => {
+                    validateRequired(input);
+                    updateProgressBar();
+                });
+            });
+
+            // Team name validation
+            const teamNameInput = document.getElementById('team-name');
+            teamNameInput.addEventListener('blur', () => {
+                validateTeamName(teamNameInput);
+                updateProgressBar();
+            });
+
+            // Substitute field validation
+            const subInputs = ['sub-name', 'sub-email', 'sub-contact'];
+            subInputs.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.addEventListener('blur', () => {
+                        validateSubstituteFields();
+                        updateProgressBar();
+                    });
+                }
+            });
+        }
+
+        function validatePhone(input) {
+            const value = input.value.trim();
+            const errorElement = document.getElementById(`${input.id}-error`);
+
+            if (value && !/^[6-9]\d{9}$/.test(value)) {
+                showError(input, errorElement, 'Please enter a valid 10-digit Indian phone number');
+                return false;
+            } else {
+                clearError(input, errorElement);
+                return true;
+            }
+        }
+
+        function validateEmail(input) {
+            const value = input.value.trim();
+            const errorElement = document.getElementById(`${input.id}-error`);
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (value && !emailRegex.test(value)) {
+                showError(input, errorElement, 'Please enter a valid email address');
+                return false;
+            } else {
+                clearError(input, errorElement);
+                return true;
+            }
+        }
+
+        function validateRequired(input) {
+            const value = input.value.trim();
+            const errorElement = document.getElementById(`${input.id}-error`);
+
+            if (!value) {
+                showError(input, errorElement, 'This field is required');
+                return false;
+            } else {
+                clearError(input, errorElement);
+                return true;
+            }
+        }
+
+        function validateTeamName(input) {
+            const value = input.value.trim();
+            const errorElement = document.getElementById(`${input.id}-error`);
+
+            if (!value) {
+                showError(input, errorElement, 'Team name is required');
+                return false;
+            } else if (value.length < 3) {
+                showError(input, errorElement, 'Team name must be at least 3 characters long');
+                return false;
+            } else if (!/^[a-zA-Z0-9\s\-_\.]+$/.test(value)) {
+                showError(input, errorElement, 'Team name can only contain letters, numbers, spaces, hyphens, underscores, and dots');
+                return false;
+            } else {
+                clearError(input, errorElement);
+                return true;
+            }
+        }
+
+        function validateSubstituteFields() {
+            const subName = document.getElementById('sub-name').value.trim();
+            const subEmail = document.getElementById('sub-email').value.trim();
+            const subContact = document.getElementById('sub-contact').value.trim();
+
+            const hasSomeFields = subName || subEmail || subContact;
+            const hasAllFields = subName && subEmail && subContact;
+
+            if (hasSomeFields && !hasAllFields) {
+                showError(document.getElementById('sub-name'), document.getElementById('sub-name-error'), 'All substitute fields must be filled if any are provided');
+                showError(document.getElementById('sub-email'), document.getElementById('sub-email-error'), 'All substitute fields must be filled if any are provided');
+                showError(document.getElementById('sub-contact'), document.getElementById('sub-contact-error'), 'All substitute fields must be filled if any are provided');
+                return false;
+            } else {
+                clearError(document.getElementById('sub-name'), document.getElementById('sub-name-error'));
+                clearError(document.getElementById('sub-email'), document.getElementById('sub-email-error'));
+                clearError(document.getElementById('sub-contact'), document.getElementById('sub-contact-error'));
+                return true;
+            }
+        }
+
+        function showError(input, errorElement, message) {
+            input.classList.add('error');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function clearError(input, errorElement) {
+            input.classList.remove('error');
+            errorElement.style.display = 'none';
+        }
+
+        function updateProgressBar() {
+            const requiredFields = [
+                'team-name', 'lead-name', 'lead-email', 'lead-contact',
+                'member1-name', 'member1-email', 'member1-contact',
+                'member2-name', 'member2-email', 'member2-contact',
+                'member3-name', 'member3-email', 'member3-contact',
+                'member4-name', 'member4-email', 'member4-contact',
+                'member5-name', 'member5-email', 'member5-contact'
+            ];
+
+            let validCount = 0;
+            let totalCount = requiredFields.length;
+
+            requiredFields.forEach(fieldId => {
+                const input = document.getElementById(fieldId);
+                if (input && input.value.trim() && !input.classList.contains('error')) {
+                    validCount++;
+                }
+            });
+
+            // Validate substitute fields if any are filled
+            if (validateSubstituteFields()) {
+                validCount++; // Count substitute as one valid section
+            }
+
+            const progress = (validCount / totalCount) * 100;
+            progressBar.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        async function handleFormSubmission(e) {
+            e.preventDefault();
+
+            if (!validateAllFields()) {
+                showToast('error', 'Validation Error', 'Please fix all validation errors before submitting.', 4000);
+                return;
+            }
+
+            // Show loading state
+            setLoadingState(true);
+
+            try {
+                const formData = collectFormData();
+
+                const response = await fetch(`${API_BASE_URL}/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showSuccessModal(result);
+                } else {
+                    showToast('error', 'Registration Failed', result.message, 5000);
+                }
+
+            } catch (error) {
+                console.error('Registration error:', error);
+                showToast('error', 'Network Error', 'Please check your connection and try again.', 5000);
+            } finally {
+                setLoadingState(false);
+            }
+        }
+
+        function validateAllFields() {
+            let isValid = true;
+
+            // Validate team name
+            isValid = validateTeamName(document.getElementById('team-name')) && isValid;
+
+            // Validate lead
+            isValid = validateRequired(document.getElementById('lead-name')) && isValid;
+            isValid = validateRequired(document.getElementById('lead-email')) && isValid;
+            isValid = validateRequired(document.getElementById('lead-contact')) && isValid;
+            isValid = validateEmail(document.getElementById('lead-email')) && isValid;
+            isValid = validatePhone(document.getElementById('lead-contact')) && isValid;
+
+            // Validate members 1-5
+            for (let i = 1; i <= 5; i++) {
+                isValid = validateRequired(document.getElementById(`member${i}-name`)) && isValid;
+                isValid = validateRequired(document.getElementById(`member${i}-email`)) && isValid;
+                isValid = validateRequired(document.getElementById(`member${i}-contact`)) && isValid;
+                isValid = validateEmail(document.getElementById(`member${i}-email`)) && isValid;
+                isValid = validatePhone(document.getElementById(`member${i}-contact`)) && isValid;
+            }
+
+            // Validate substitute
+            isValid = validateSubstituteFields() && isValid;
+
+            return isValid;
+        }
+
+        function collectFormData() {
+            const formData = {
+                team_name: document.getElementById('team-name').value.trim(),
+                lead: {
+                    name: document.getElementById('lead-name').value.trim(),
+                    email: document.getElementById('lead-email').value.trim(),
+                    contact: document.getElementById('lead-contact').value.trim()
+                },
+                members: []
+            };
+
+            // Add required members
+            for (let i = 1; i <= 5; i++) {
+                formData.members.push({
+                    name: document.getElementById(`member${i}-name`).value.trim(),
+                    email: document.getElementById(`member${i}-email`).value.trim(),
+                    contact: document.getElementById(`member${i}-contact`).value.trim()
+                });
+            }
+
+            // Add substitute if provided
+            const subName = document.getElementById('sub-name').value.trim();
+            const subEmail = document.getElementById('sub-email').value.trim();
+            const subContact = document.getElementById('sub-contact').value.trim();
+
+            if (subName && subEmail && subContact) {
+                formData.substitute = {
+                    name: subName,
+                    email: subEmail,
+                    contact: subContact
+                };
+            }
+
+            return formData;
+        }
+
+        function setLoadingState(loading) {
+            const button = document.getElementById('payment-button');
+            const spinner = button.querySelector('.spinner');
+            const buttonText = button.querySelector('.button-text');
+
+            if (loading) {
+                button.disabled = true;
+                spinner.style.display = 'inline-block';
+                buttonText.textContent = 'Processing...';
+                button.classList.add('loading');
+            } else {
+                button.disabled = false;
+                spinner.style.display = 'none';
+                buttonText.textContent = 'Proceed to Payment';
+                button.classList.remove('loading');
+            }
+        }
+
+        function showSuccessModal(result) {
+            const modal = document.getElementById('successModal');
+            const message = document.getElementById('successMessage');
+            const details = document.getElementById('registrationDetails');
+
+            message.textContent = `Your team "${result.team_name}" has been registered successfully!`;
+
+            details.innerHTML = `
+                <p><strong>Registration ID:</strong> ${result.registration_id}</p>
+                <p><strong>Team Name:</strong> ${result.team_name}</p>
+                <p><strong>Total Members:</strong> ${result.total_members}</p>
+                <p><strong>Amount Due:</strong> ₹${result.amount}</p>
+            `;
+
+            modal.style.display = 'block';
+            
+            // Show success toast
+            showToast('success', 'Registration Successful', `Team ${result.team_name} registered successfully!`, 3000);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('successModal');
+            modal.style.display = 'none';
+        }
+
+        function proceedToPayment() {
+            closeModal();
+            // Show info toast
+            showToast('info', 'Payment Redirect', 'Redirecting to payment gateway...', 3000);
+            
+            // Redirect to payment page (replace with your actual payment URL)
+            // window.location.href = `https://your-payment-gateway.com?team=${encodeURIComponent(teamName)}&amount=${amount}`;
+            
+            // For now, just show a success message
+            setTimeout(() => {
+                showToast('success', 'Payment Complete', 'Your payment has been processed successfully!', 4000);
+            }, 2000);
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('successModal');
+            if (e.target === modal) {
+                closeModal();
+            }
         });
     </script>
 </body>

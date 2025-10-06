@@ -29,7 +29,19 @@
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
-            backdrop-filter: blur(0px);
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            filter: blur(15px) brightness(0.4);
+            z-index: -1;
         }
 
         /* Custom Cursor */
@@ -111,6 +123,107 @@
             -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 0, 60, 0.2);
+        }
+
+        /* Mobile menu button */
+        #mobile-menu-button {
+            position: relative;
+            z-index: 1000;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu-button:hover {
+            background: rgba(255, 0, 60, 0.1);
+            transform: scale(1.05);
+        }
+
+        #mobile-menu-button svg {
+            transition: transform 0.3s ease;
+        }
+
+        #mobile-menu-button.active svg {
+            transform: rotate(90deg);
+        }
+
+        /* Enhanced mobile menu */
+        #mobile-menu {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 2px solid #ff003c;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(255, 0, 60, 0.2);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        #mobile-menu.show {
+            max-height: 400px;
+            opacity: 1;
+        }
+
+        #mobile-menu a {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-left: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(180deg, #ff003c, #00fff7);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        #mobile-menu a:hover::before,
+        #mobile-menu a:active::before {
+            transform: translateX(0);
+        }
+
+        #mobile-menu a:hover {
+            background: linear-gradient(90deg, rgba(255, 0, 60, 0.15), transparent);
+            padding-left: 1.5rem;
+            color: #00fff7;
+        }
+
+        #mobile-menu a:last-child {
+            margin-top: 0.5rem;
+            background: linear-gradient(90deg, #ff003c, #e6003a);
+            border-left: none;
+            text-align: center;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(255, 0, 60, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        #mobile-menu a:last-child:hover {
+            background: linear-gradient(90deg, #ff335c, #ff003c);
+            padding-left: 1rem;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 0, 60, 0.6);
+        }
+
+        /* Mobile menu icons */
+        .mobile-menu-icon {
+            display: inline-block;
+            margin-right: 0.5rem;
+            font-size: 1rem;
+            opacity: 0.8;
         }
 
         /* Hero BG */
@@ -208,12 +321,16 @@
 
         /* Registration Form */
         .registration-container {
-            background: rgba(17, 17, 17, 1.0);
+            background: rgba(5, 5, 5, 0.98);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 0, 60, 0.3);
-            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px),
-                    calc(100% - 20px) 100%, 0 100%);
+            border: 3px solid rgba(255, 0, 60, 0.7);
+            border-radius: 20px;
+            box-shadow: 
+                0 0 50px rgba(255, 0, 60, 0.5),
+                0 0 100px rgba(0, 255, 247, 0.3),
+                inset 0 0 30px rgba(255, 0, 60, 0.15),
+                0 10px 50px rgba(0, 0, 0, 0.8);
         }
 
         .form-group {
@@ -392,11 +509,11 @@
         /* Success Modal */
         .modal {
             display: none;
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            min-height: 100vh;
             background: rgba(0, 0, 0, 0.8);
             z-index: 1000;
             backdrop-filter: blur(5px);
@@ -490,7 +607,7 @@
             border-radius: 8px;
             padding: 16px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(6px);
             display: flex;
             align-items: center;
             gap: 12px;
@@ -726,10 +843,6 @@
             }
         }
 
-        #desktop-bg-video {
-            animation: fadeInVideo 1.5s ease-in-out forwards;
-        }
-
         @keyframes fadeInVideo {
             from {
                 opacity: 0;
@@ -750,14 +863,6 @@
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Desktop video background -->
-    <video id="desktop-bg-video" playsinline autoplay muted loop preload="none"
-        style="position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-1;display:none;"
-        poster="https://56ktpin8ut.ucarecd.net/1e09c958-9b5a-4501-b491-6c06a5295b34/LzC.jpg">
-        <source src="https://cmsassets.rgpub.io/sanity/files/dsfx7636/news/409ab2fc369ba5e1fe50bac10c6676d7d1365a9f.mp4"
-            type="video/mp4">
-    </video>
-
     <!-- Success Modal -->
     <div id="successModal" class="modal">
         <div class="modal-content">
@@ -772,37 +877,39 @@
 
     <header class="fixed top-0 left-0 right-0 z-50 glassmorphic-nav">
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="index.html" class="flex items-center group">
+            <a href="bx.html" class="flex items-center group">
+
                 <span class="text-2xl font-bold text-white ml-3"
                     style="font-family: 'valorant', sans-serif;">ASTRISK</span>
+
             </a>
             <a><img src="https://envs.sh/Lau.png" alt="ASTRISK Logo" class="h-12 w-auto logo">
             </a>
             <div class="hidden md:flex space-x-8 text-white uppercase tracking-wider text-sm">
-                <a href="index.html#about" class="relative group py-1">
+                <a href="bx.html#about" class="relative group py-1">
                     <span>About</span>
                     <span
                         class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
                 </a>
-                <a href="index.html#events" class="relative group py-1">
+                <a href="bx.html#events" class="relative group py-1">
                     <span>Events</span>
                     <span
                         class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
                 </a>
-                <a href="index.html#schedule" class="relative group py-1">
+                <a href="bx.html#schedule" class="relative group py-1">
                     <span>Schedule</span>
                     <span
                         class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
                 </a>
-                <a href="index.html#sponsors" class="relative group py-1">
+                <a href="bx.html#sponsors" class="relative group py-1">
                     <span>Sponsors</span>
                     <span
                         class="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
                 </a>
             </div>
             <img src="https://envs.sh/LaF.png" alt="ASTRISK Logo" class="h-12 w-auto logo">
-            <a href="/"
-                class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-sm transition shadow-lg shadow-blue-500/20 uppercase tracking-wider text-sm">
+            <a href="bx.html"
+                class="hidden md:block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-sm transition shadow-lg shadow-red-500/20 uppercase tracking-wider text-sm">
                 Go Back
             </a>
 
@@ -813,12 +920,13 @@
                 </svg>
             </button>
         </nav>
-        <div id="mobile-menu" class="hidden md:hidden">
-            <a href="index.html#about" class="block py-2 px-4 text-sm hover:bg-gray-700">About</a>
-            <a href="index.html#events" class="block py-2 px-4 text-sm hover:bg-gray-700">Events</a>
-            <a href="index.html#schedule" class="block py-2 px-4 text-sm hover:bg-gray-700">Schedule</a>
-            <a href="index.html#sponsors" class="block py-2 px-4 text-sm hover:bg-gray-700">Sponsors</a>
-            <a href="#" class="block py-2 px-4 text-sm hover:bg-blue-700 bg-red-600">Go Back</a>
+        <div id="mobile-menu" class="md:hidden">
+            <a href="bx.html#about" class="block py-3 px-4 text-sm"><span class="mobile-menu-icon">ℹ️</span>About</a>
+            <a href="bx.html#events" class="block py-3 px-4 text-sm"><span class="mobile-menu-icon">🎮</span>Events</a>
+            <a href="bx.html#schedule" class="block py-3 px-4 text-sm"><span class="mobile-menu-icon">📅</span>Schedule</a>
+            <a href="bx.html#sponsors" class="block py-3 px-4 text-sm"><span class="mobile-menu-icon">🤝</span>Sponsors</a>
+            <a href="bx.html" class="block py-3 px-6 text-sm mt-2 mb-2 mx-2 rounded"><span
+                    class="mobile-menu-icon">🏠</span>Go Back</a>
         </div>
     </header>
 
@@ -843,7 +951,7 @@
 
                             <!-- Team Lead Information -->
                             <div class="member-section active" id="lead-section">
-                                <h3 class="member-title">Team Lead (Required)</h3>
+                                <h3 class="member-title">Team Lead - Member 1 (Required)</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="form-group">
                                         <label class="form-label" for="lead-name">Full Name</label>
@@ -866,9 +974,9 @@
                                 </div>
                             </div>
 
-                            <!-- Required Team Members (Member 1-5) -->
+                            <!-- Required Team Members (Member 2-5) -->
                             <div class="member-section" id="member1-section">
-                                <h3 class="member-title">Team Member 1 (Required)</h3>
+                                <h3 class="member-title">Team Member 2 (Required)</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="form-group">
                                         <label class="form-label" for="member1-name">Full Name</label>
@@ -892,7 +1000,7 @@
                             </div>
 
                             <div class="member-section" id="member2-section">
-                                <h3 class="member-title">Team Member 2 (Required)</h3>
+                                <h3 class="member-title">Team Member 3 (Required)</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="form-group">
                                         <label class="form-label" for="member2-name">Full Name</label>
@@ -916,7 +1024,7 @@
                             </div>
 
                             <div class="member-section" id="member3-section">
-                                <h3 class="member-title">Team Member 3 (Required)</h3>
+                                <h3 class="member-title">Team Member 4 (Required)</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="form-group">
                                         <label class="form-label" for="member3-name">Full Name</label>
@@ -940,7 +1048,7 @@
                             </div>
 
                             <div class="member-section" id="member4-section">
-                                <h3 class="member-title">Team Member 4 (Required)</h3>
+                                <h3 class="member-title">Team Member 5 (Required)</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="form-group">
                                         <label class="form-label" for="member4-name">Full Name</label>
@@ -963,35 +1071,9 @@
                                 </div>
                             </div>
 
-                            <div class="member-section" id="member5-section">
-                                <h3 class="member-title">Team Member 5 (Required)</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="form-group">
-                                        <label class="form-label" for="member5-name">Full Name</label>
-                                        <input type="text" id="member5-name" class="form-input"
-                                            placeholder="Member 5's full name" required>
-                                        <div class="error-message" id="member5-name-error"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label" for="member5-contact">Contact Number</label>
-                                        <input type="tel" id="member5-contact" class="form-input"
-                                            placeholder="Member 5's phone number" required maxlength="10">
-                                        <div class="error-message" id="member5-contact-error"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="member5-email">Email Address</label>
-                                    <input type="email" id="member5-email" class="form-input"
-                                        placeholder="Member 5's email address" required>
-                                    <div class="error-message" id="member5-email-error"></div>
-                                </div>
-                            </div>
-
-                            <!-- Optional Substitute Member -->
+                            <!-- Substitute Member (Required) -->
                             <div class="member-section" id="sub-section">
-                                <h3 class="member-title">Substitute Member <span
-                                        class="optional-label">(Optional)</span>
-                                </h3>
+                                <h3 class="member-title">Substitute Member <span class="optional-label">(Optional)</span></h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="form-group">
                                         <label class="form-label" for="sub-name">Full Name</label>
@@ -1049,22 +1131,42 @@
         </section>
     </main>
 
-    <footer class="py-10" style="background:rgba(17,17,17,0.85);">
-        <div class="container mx-auto px-6 text-center" style="max-width:900px;">
-            <div style="background:rgba(17,17,17,0.85);padding:2rem 1rem;backdrop-filter:blur(6px);">
-                <p
-                    style="font-family:'valorant',sans-serif;font-size:1.3rem;color:#fff;letter-spacing:0.12em;text-shadow:0 0 8px #ff003c;">
+    <footer class="py-16 relative overflow-hidden" style="background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%); border-top: 1px solid rgba(255,0,60,0.2);">
+        <!-- Animated background -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,0,60,0.3) 1px, transparent 0); background-size: 40px 40px;"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 text-center relative z-10" style="max-width:900px;">
+            <div style="padding:2rem 1rem;">
+                <!-- Logo/Brand -->
+                <h3 class="text-3xl font-bold mb-4" style="font-family:'valorant',sans-serif;background: linear-gradient(135deg, #ff003c 0%, #00fff7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">ASTRISK 2025</h3>
+                
+                <!-- Tagline -->
+                <p class="text-gray-400 mb-6 font-rajdhani text-lg">Where Code Meets Combat</p>
+                
+                <!-- Social Links -->
+                <div class="flex justify-center gap-6 mb-8">
+                    <a href="#" class="social-icon-footer" style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(255,0,60,0.1);border:2px solid #ff003c;border-radius:50%;color:#ff003c;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='#ff003c';this.style.color='#fff';this.style.transform='scale(1.1)';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.color='#ff003c';this.style.transform='scale(1)';">📸</a>
+                    <a href="#" class="social-icon-footer" style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(0,255,247,0.1);border:2px solid #00fff7;border-radius:50%;color:#00fff7;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='#00fff7';this.style.color='#000';this.style.transform='scale(1.1)';" onmouseout="this.style.background='rgba(0,255,247,0.1)';this.style.color='#00fff7';this.style.transform='scale(1)';">🐦</a>
+                    <a href="#" class="social-icon-footer" style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(255,0,60,0.1);border:2px solid #ff003c;border-radius:50%;color:#ff003c;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='#ff003c';this.style.color='#fff';this.style.transform='scale(1.1)';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.color='#ff003c';this.style.transform='scale(1)';">💼</a>
+                </div>
+                
+                <!-- Divider -->
+                <div style="height:2px;background:linear-gradient(90deg, transparent, #ff003c, #00fff7, transparent);margin:2rem 0;opacity:0.3;"></div>
+                
+                <!-- Copyright -->
+                <p style="font-family:'Rajdhani',sans-serif;font-size:1.1rem;color:#fff;letter-spacing:0.08em;margin-bottom:0.5rem;">
                     &copy; 2025 ACM Student Chapter, Amal Jyothi College of Engineering
                 </p>
-                <p
-                    style="color:#ff003c;font-size:1rem;margin-top:0.5rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.08em;">
-                    Designed & Developed by Amarnath C and Amal Benny Joseph
+                
+                <!-- Credits -->
+                <p style="color:#888;font-size:0.9rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.05em;margin-bottom:1.5rem;">
+                    Designed & Developed by <span style="color:#ff003c;font-weight:600;">Amarnath C</span> and <span style="color:#00fff7;font-weight:600;">Amal Benny Joseph</span>
                 </p>
-                <div style="margin-top:1.5rem;">
-                    <a href="#"
-                        style="color:#fff;background:#ff003c;padding:0.5rem 1.2rem;border-radius:6px;text-decoration:none;font-weight:700;box-shadow:0 0 10px #ff003c40;transition:background 0.2s;">Contact
-                        Us</a>
-                </div>
+                
+                <!-- Contact Button -->
+                <a href="bx.html" style="display:inline-block;color:#fff;background:#ff003c;padding:0.75rem 2rem;border-radius:25px;text-decoration:none;font-weight:700;font-family:'Rajdhani',sans-serif;text-transform:uppercase;letter-spacing:0.1em;box-shadow:0 5px 20px rgba(255,0,60,0.4);transition:all 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(255,0,60,0.6)';this.style.background='#e6003a';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 5px 20px rgba(255,0,60,0.4)';this.style.background='#ff003c';">← BACK TO HOME</a>
             </div>
         </div>
     </footer>
@@ -1123,24 +1225,6 @@
             }
             document.addEventListener('mousemove', setCursorVisibility, true);
 
-            // Lazy load and show video background only on desktop
-            function showDesktopBgVideo() {
-                const video = document.getElementById('desktop-bg-video');
-                if (window.innerWidth > 768) {
-                    video.style.display = 'block';
-                    video.load();
-                    video.play();
-                    document.body.style.backgroundImage = '';
-                } else {
-                    video.style.display = 'none';
-                    document.body.style.backgroundImage = "url('https://56ktpin8ut.ucarecd.net/e08e6332-fdd6-46b8-9e3a-e074003c9a46/Lzl.png')";
-                    document.body.style.backgroundAttachment = 'fixed';
-                    document.body.style.backgroundColor = '#000';
-                }
-            }
-            showDesktopBgVideo();
-            window.addEventListener('resize', showDesktopBgVideo);
-
             const cursorDot = document.querySelector('.cursor-dot');
             const cursorOutline = document.querySelector('.cursor-outline');
             window.addEventListener('mousemove', (e) => {
@@ -1155,7 +1239,28 @@
             // Mobile menu toggle
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('show');
+                mobileMenuButton.classList.toggle('active');
+            });
+
+            // Close mobile menu when clicking on a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('show');
+                    mobileMenuButton.classList.remove('active');
+                });
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                    mobileMenu.classList.remove('show');
+                    mobileMenuButton.classList.remove('active');
+                }
+            });
 
             // Form validation and submission
             const registrationForm = document.getElementById('registration-form');
@@ -1335,8 +1440,7 @@
                 'member1-name', 'member1-email', 'member1-contact',
                 'member2-name', 'member2-email', 'member2-contact',
                 'member3-name', 'member3-email', 'member3-contact',
-                'member4-name', 'member4-email', 'member4-contact',
-                'member5-name', 'member5-email', 'member5-contact'
+                'member4-name', 'member4-email', 'member4-contact'
             ];
 
             let validCount = 0;
@@ -1409,8 +1513,8 @@
             isValid = validateEmail(document.getElementById('lead-email')) && isValid;
             isValid = validatePhone(document.getElementById('lead-contact')) && isValid;
 
-            // Validate members 1-5
-            for (let i = 1; i <= 5; i++) {
+            // Validate members 1-4
+            for (let i = 1; i <= 4; i++) {
                 isValid = validateRequired(document.getElementById(`member${i}-name`)) && isValid;
                 isValid = validateRequired(document.getElementById(`member${i}-email`)) && isValid;
                 isValid = validateRequired(document.getElementById(`member${i}-contact`)) && isValid;
@@ -1435,8 +1539,7 @@
                 members: []
             };
 
-            // Add required members
-            for (let i = 1; i <= 5; i++) {
+            for (let i = 1; i <= 4; i++) {
                 formData.members.push({
                     name: document.getElementById(`member${i}-name`).value.trim(),
                     email: document.getElementById(`member${i}-email`).value.trim(),
@@ -1444,7 +1547,6 @@
                 });
             }
 
-            // Add substitute if provided
             const subName = document.getElementById('sub-name').value.trim();
             const subEmail = document.getElementById('sub-email').value.trim();
             const subContact = document.getElementById('sub-contact').value.trim();
@@ -1483,7 +1585,7 @@
             const message = document.getElementById('successMessage');
             const details = document.getElementById('registrationDetails');
 
-            message.textContent = `Your team "${result.team_name}" has been registered successfully!`;
+            message.textContent = `Your team "${result.team_name}" has been registered successfully!\nPlease proceed to payment to confirm your registration.`;
 
             details.innerHTML = `
                 <p><strong>Registration ID:</strong> ${result.registration_id}</p>
@@ -1492,9 +1594,9 @@
                 <p><strong>Amount Due:</strong> ₹${result.amount}</p>
             `;
 
+            modal.style.top = window.scrollY + 'px';
             modal.style.display = 'block';
             
-            // Show success toast
             showToast('success', 'Registration Successful', `Team ${result.team_name} registered successfully!`, 3000);
         }
 
@@ -1505,19 +1607,11 @@
 
         function proceedToPayment() {
             closeModal();
-            // Show info toast
             showToast('info', 'Payment Redirect', 'Redirecting to payment gateway...', 3000);
             
-            // Redirect to payment page (replace with your actual payment URL)
-            // window.location.href = `https://your-payment-gateway.com?team=${encodeURIComponent(teamName)}&amount=${amount}`;
-            
-            // For now, just show a success message
-            setTimeout(() => {
-                showToast('success', 'Payment Complete', 'Your payment has been processed successfully!', 4000);
-            }, 2000);
+            window.location.href = `https://e.ajce.in/eqzfhg`;
         }
 
-        // Close modal when clicking outside
         window.addEventListener('click', (e) => {
             const modal = document.getElementById('successModal');
             if (e.target === modal) {

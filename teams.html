@@ -1321,6 +1321,7 @@
                             <div class="flex-1 pr-2">
                                 <div class="text-xs text-gray-600 font-rajdhani uppercase mb-0.5">#${index + 1}</div>
                                 <h3 class="text-sm font-bold text-white font-rajdhani leading-tight" style="color: #fff; word-break: break-word;">${team.team_name}</h3>
+                                ${team.college_name ? `<div class="text-xs text-gray-400 mt-0.5" style="display: flex; align-items: center; gap: 0.25rem;"><span>🏫</span><span>${team.college_name}</span></div>` : ''}
                                 <div class="text-xs text-gray-500 mt-1">👥 ${memberCount} members</div>
                             </div>
                             <div style="width: 32px; height: 32px; border-radius: 50%; background: ${statusBg}; border: 1.5px solid ${statusBorder}; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">
@@ -1389,10 +1390,11 @@
                 filtered = filtered.filter(team => team.payment_status === status);
             }
             
-            // Filter by search term
+            // Filter by search term (search in team name and college name)
             if (searchTerm) {
                 filtered = filtered.filter(team => 
-                    team.team_name.toLowerCase().includes(searchTerm)
+                    team.team_name.toLowerCase().includes(searchTerm) ||
+                    (team.college_name && team.college_name.toLowerCase().includes(searchTerm))
                 );
             }
             

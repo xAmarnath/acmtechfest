@@ -906,7 +906,36 @@
         </div>
     </header>
 
-    <main class="pt-20 pb-12">
+    <!-- Authentication Modal -->
+    <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50" style="display: none;">
+        <div class="bg-gray-900 border-2 border-red-500 rounded-xl p-8 max-w-md w-full mx-4 relative">
+            <div class="text-center mb-6">
+                <div class="text-5xl mb-4">🔐</div>
+                <h2 class="text-2xl font-bold text-red-500 mb-2">Authentication Required</h2>
+                <p class="text-gray-400 text-sm">Enter the 4-digit master password to access the teams page</p>
+            </div>
+            
+            <div class="mb-6">
+                <input type="password" id="password-input" maxlength="4" pattern="[0-9]{4}" 
+                    class="w-full px-4 py-3 bg-black border-2 border-gray-700 rounded-lg text-white text-center text-2xl tracking-widest focus:outline-none focus:border-red-500 transition-all"
+                    placeholder="••••" autocomplete="off">
+                <div id="auth-error" class="text-red-500 text-sm mt-2 text-center" style="display: none;"></div>
+            </div>
+            
+            <button onclick="verifyPassword()" 
+                class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition-all duration-200 uppercase tracking-wider">
+                Verify
+            </button>
+            
+            <div class="mt-4 text-center">
+                <a href="bx.html" class="text-gray-500 hover:text-gray-300 text-sm transition-colors">
+                    ← Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <main class="pt-20 pb-12" id="main-content" style="display: none;">
         <section class="py-6">
             <div class="container mx-auto px-4">
                 <div class="max-w-6xl mx-auto">
@@ -1020,6 +1049,83 @@
 
         let allTeams = [];
         let currentFilter = 'all';
+
+        // Check authentication on page load
+        window.addEventListener('load', () => {
+            checkAuth();
+        });
+
+        function checkAuth() {
+            const isAuthenticated = localStorage.getItem('teams_auth') === 'true';
+            
+            if (isAuthenticated) {
+                showMainContent();
+            } else {
+                showAuthModal();
+            }
+        }
+
+        function showAuthModal() {
+            document.getElementById('auth-modal').style.display = 'flex';
+            document.getElementById('main-content').style.display = 'none';
+            
+            // Focus on password input
+            setTimeout(() => {
+                document.getElementById('password-input').focus();
+            }, 100);
+            
+            // Allow Enter key to submit
+            document.getElementById('password-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    verifyPassword();
+                }
+            });
+        }
+
+        function showMainContent() {
+            document.getElementById('auth-modal').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        }
+
+        async function verifyPassword() {
+            const passwordInput = document.getElementById('password-input');
+            const password = passwordInput.value;
+            const errorDiv = document.getElementById('auth-error');
+            
+            if (password.length !== 4) {
+                errorDiv.textContent = 'Please enter a 4-digit password';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/key`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ password: password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Save authentication to localStorage
+                    localStorage.setItem('teams_auth', 'true');
+                    errorDiv.style.display = 'none';
+                    passwordInput.value = '';
+                    showMainContent();
+                } else {
+                    errorDiv.textContent = 'Invalid password. Please try again.';
+                    errorDiv.style.display = 'block';
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Connection error. Please try again.';
+                errorDiv.style.display = 'block';
+            }
+        }
 
         // Toast notification system
         function showToast(type, title, message, duration = 5000) {
@@ -1169,6 +1275,7 @@
                 const statusBorder = isPaid ? 'rgba(0, 255, 136, 0.2)' : 'rgba(255, 170, 0, 0.2)';
                 const statusText = isPaid ? '#00ff88' : '#ffaa00';
                 const icon = isPaid ? '✓' : '⏱';
+                const memberCount = team.members ? team.members.length : 0;
                 
                 return `
                     <div class="team-card" style="background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 0, 60, 0.2); border-radius: 10px; padding: 1rem; transition: all 0.3s ease; position: relative; overflow: hidden;" 
@@ -1179,6 +1286,7 @@
                             <div class="flex-1 pr-2">
                                 <div class="text-xs text-gray-600 font-rajdhani uppercase mb-0.5">#${index + 1}</div>
                                 <h3 class="text-sm font-bold text-white font-rajdhani leading-tight" style="color: #fff; word-break: break-word;">${team.team_name}</h3>
+                                <div class="text-xs text-gray-500 mt-1">👥 ${memberCount} members</div>
                             </div>
                             <div style="width: 32px; height: 32px; border-radius: 50%; background: ${statusBg}; border: 1.5px solid ${statusBorder}; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">
                                 ${icon}

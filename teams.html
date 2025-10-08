@@ -1284,14 +1284,15 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    // Save authentication to localStorage
+                    // Save authentication token to localStorage (received from server)
                     localStorage.setItem('teams_auth', 'true');
+                    localStorage.setItem('auth_token', data.token);  // Save the token
                     errorDiv.style.display = 'none';
                     passwordInput.value = '';
                     document.getElementById('auth-modal').style.display = 'none';
                     updateAuthButton();
-                    // Re-render teams to show full details
-                    renderTeams(allTeams.length > 0 ? allTeams : []);
+                    // Reload teams with authentication to get full details
+                    await fetchTeams();
                     showToast('success', 'Login Successful', 'You can now view all team details', 3000);
                 } else {
                     errorDiv.textContent = 'Invalid password. Please try again.';
@@ -1309,13 +1310,12 @@
             const isAuthenticated = localStorage.getItem('teams_auth') === 'true';
             
             if (isAuthenticated) {
-                // Logout
+                // Logout - clear both auth flag and token
                 localStorage.removeItem('teams_auth');
+                localStorage.removeItem('auth_token');
                 updateAuthButton();
-                // Re-render teams to hide sensitive details
-                if (allTeams.length > 0) {
-                    renderTeams(allTeams);
-                }
+                // Reload teams to get masked data from backend
+                fetchTeams();
                 showToast('info', 'Logged Out', 'Sensitive information is now hidden', 3000);
             } else {
                 // Show login modal
@@ -1444,7 +1444,18 @@
             const emptyState = document.getElementById('empty-state');
 
             try {
-                const response = await fetch(`${API_BASE_URL}/teams`);
+                // Get authentication status and token from localStorage
+                const isAuthenticated = localStorage.getItem('teams_auth') === 'true';
+                const authToken = localStorage.getItem('auth_token');
+                const headers = {};
+                
+                if (isAuthenticated && authToken) {
+                    headers['X-Auth-Token'] = authToken;  // Use saved token
+                }
+                
+                const response = await fetch(`${API_BASE_URL}/teams`, {
+                    headers: headers
+                });
                 const data = await response.json();
 
                 if (data.success && data.teams.length > 0) {
@@ -1515,8 +1526,8 @@
                                     <span style="color: #ff003c; font-weight: 700; font-size: 0.7rem; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;">LEAD</span>
                                 </div>
                             </div>
-                            <div style="color: #fff; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">${isAuthenticated ? (team.lead.name || 'N/A') : '••••••••'}</div>
-                            ${isAuthenticated ? `
+                            <div style="color: #fff; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">${team.lead.name || 'N/A'}</div>
+                            ${team.lead.contact && team.lead.contact !== '••••••••••' ? `
                             <div style="color: #999; font-size: 0.7rem; display: flex; align-items: center; gap: 0.25rem;">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1541,8 +1552,8 @@
                                     <span style="color: #999; font-weight: 600; font-size: 0.7rem; font-family: 'Rajdhani', sans-serif;">M${idx + 1}</span>
                                 </div>
                             </div>
-                            <div style="color: #fff; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">${isAuthenticated ? (member.name || 'N/A') : '••••••••'}</div>
-                            ${isAuthenticated ? `
+                            <div style="color: #fff; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">${member.name || 'N/A'}</div>
+                            ${member.contact && member.contact !== '••••••••••' ? `
                             <div style="color: #999; font-size: 0.7rem; display: flex; align-items: center; gap: 0.25rem;">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

@@ -1095,15 +1095,29 @@
             <div class="container mx-auto px-4">
                 <div class="max-w-6xl mx-auto">
                     <div class="registration-container p-6 md:p-8 reveal">
-                        <h2 class="text-3xl font-rajdhani font-bold text-center mb-2" style="background: linear-gradient(135deg, #ff003c 0%, #ff003c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">⚔️ Registered Teams ⚔️</h2>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#ff003c" stroke="#ff003c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <h2 class="text-3xl font-rajdhani font-bold text-center" style="background: linear-gradient(135deg, #ff003c 0%, #ff003c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Registered Teams</h2>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#ff003c" stroke="#ff003c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
                         <p class="text-center text-gray-400 mb-6 font-rajdhani text-sm">Track team registration status in real-time</p>
                         
                         <!-- Search and Filter Bar -->
                         <div class="mb-4 flex flex-col md:flex-row gap-3">
-                            <div class="flex-1">
-                                <input type="text" id="search-teams" placeholder="🔍 Search teams..." 
+                            <div class="flex-1 relative">
+                                <div style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); pointer-events: none;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="11" cy="11" r="8" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M21 21l-4.35-4.35" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </div>
+                                <input type="text" id="search-teams" placeholder="Search teams or colleges..." 
                                     class="w-full px-3 py-2 bg-rgba(255,255,255,0.05) border border-rgba(255,255,255,0.1) rounded-lg text-white text-sm focus:outline-none focus:border-red-500 transition-all"
-                                    style="background: rgba(255, 255, 255, 0.05);">
+                                    style="background: rgba(255, 255, 255, 0.05); padding-left: 2.5rem;">
                             </div>
                             <div class="flex gap-2">
                                 <button onclick="filterTeams('all')" class="filter-btn active px-3 py-2 rounded-lg font-rajdhani font-bold uppercase text-xs transition-all" data-filter="all">All</button>
@@ -1143,15 +1157,31 @@
 
                         <!-- Empty State -->
                         <div id="empty-state" class="hidden text-center text-gray-400 mt-6">
-                            <div class="text-5xl mb-3">🏆</div>
-                            <p class="text-lg font-rajdhani">No teams registered yet.</p>
+                            <div class="mb-3" style="display: flex; justify-content: center;">
+                                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M4 22h16" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M14 14.66V17c0 .55.47.98.97 1.21.18.06.35.12.53.21 1.14.53 1.99 1.76 2.36 3.58" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M18 2H6v7c0 3.87 3.13 7 7 7h2c1.87 0 3-1.13 3-3V2z" stroke="#ff003c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 16c-2.21 0-4-1.79-4-4V9h8v3c0 2.21-1.79 4-4 4z" fill="rgba(255, 0, 60, 0.2)"/>
+                                </svg>
+                            </div>
+                            <p class="text-lg font-rajdhani font-bold">No teams registered yet.</p>
                             <p class="text-xs mt-1">Be the first to register!</p>
                         </div>
 
                         <!-- No Results State -->
                         <div id="no-results" class="hidden text-center text-gray-400 mt-6">
-                            <div class="text-5xl mb-3">🔍</div>
-                            <p class="text-lg font-rajdhani">No teams found</p>
+                            <div class="mb-3" style="display: flex; justify-content: center;">
+                                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="11" cy="11" r="8" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M21 21l-4.35-4.35" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 11h6" stroke="#ff003c" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <p class="text-lg font-rajdhani font-bold">No teams found</p>
                             <p class="text-xs mt-1">Try adjusting your search or filter</p>
                         </div>
                     </div>
@@ -1415,6 +1445,7 @@
         function renderTeams(teams) {
             const teamsGrid = document.getElementById('teams-grid');
             const noResults = document.getElementById('no-results');
+            const isAuthenticated = localStorage.getItem('teams_auth') === 'true';
             
             if (teams.length === 0) {
                 teamsGrid.innerHTML = '';
@@ -1429,21 +1460,38 @@
                 const statusBg = isPaid ? 'rgba(0, 255, 136, 0.08)' : 'rgba(255, 170, 0, 0.08)';
                 const statusBorder = isPaid ? 'rgba(0, 255, 136, 0.2)' : 'rgba(255, 170, 0, 0.2)';
                 const statusText = isPaid ? '#00ff88' : '#ffaa00';
-                const icon = isPaid ? '✓' : '⏱';
                 const memberCount = team.members ? team.members.length : 0;
+                
+                // Status icon SVG
+                const statusIconSvg = isPaid 
+                    ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                         <circle cx="12" cy="12" r="10" stroke="#00ff88" stroke-width="2"/>
+                         <path d="M8 12L11 15L16 9" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                       </svg>`
+                    : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                         <circle cx="12" cy="12" r="10" stroke="#ffaa00" stroke-width="2"/>
+                         <circle cx="12" cy="12" r="3" fill="#ffaa00"/>
+                       </svg>`;
                 
                 // Generate team lead HTML
                 const teamLeadHtml = team.lead && team.lead.name 
                     ? `
-                        <div style="padding: 0.5rem; background: rgba(255, 0, 60, 0.15); border-radius: 6px; margin-bottom: 0.5rem; border: 1px solid rgba(255, 0, 60, 0.3);">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-                                <span style="color: #ff003c; font-weight: 700; font-size: 0.75rem;">👑 TEAM LEAD</span>
+                        <div class="team-lead-item">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#ff003c" stroke="#ff003c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span style="color: #ff003c; font-weight: 700; font-size: 0.75rem; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;">TEAM LEAD</span>
                             </div>
-                            <div style="color: #fff; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.25rem;">${team.lead.name || 'N/A'}</div>
-                            <div style="color: #999; font-size: 0.75rem; display: flex; align-items: center; gap: 0.25rem;">
-                                <span>📞</span>
+                            <div style="color: #fff; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem;">${isAuthenticated ? (team.lead.name || 'N/A') : '••••••••'}</div>
+                            ${isAuthenticated ? `
+                            <div style="color: #999; font-size: 0.75rem; display: flex; align-items: center; gap: 0.375rem;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
                                 <span>${team.lead.contact || 'N/A'}</span>
                             </div>
+                            ` : ''}
                         </div>
                     `
                     : '';
@@ -1451,15 +1499,23 @@
                 // Generate members list HTML
                 const membersHtml = team.members && team.members.length > 0 
                     ? team.members.map((member, idx) => `
-                        <div style="padding: 0.5rem; background: rgba(0, 0, 0, 0.3); border-radius: 6px; margin-bottom: 0.5rem;">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-                                <span style="color: #ff003c; font-weight: 700; font-size: 0.75rem;">Member ${idx + 1}</span>
+                        <div class="member-item">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="#ff003c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <circle cx="12" cy="7" r="4" stroke="#ff003c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span style="color: #ff003c; font-weight: 700; font-size: 0.75rem; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;">Member ${idx + 1}</span>
                             </div>
-                            <div style="color: #fff; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.25rem;">${member.name || 'N/A'}</div>
-                            <div style="color: #999; font-size: 0.75rem; display: flex; align-items: center; gap: 0.25rem;">
-                                <span>📞</span>
+                            <div style="color: #fff; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem;">${isAuthenticated ? (member.name || 'N/A') : '••••••••'}</div>
+                            ${isAuthenticated ? `
+                            <div style="color: #999; font-size: 0.75rem; display: flex; align-items: center; gap: 0.375rem;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
                                 <span>${member.contact || 'N/A'}</span>
                             </div>
+                            ` : ''}
                         </div>
                     `).join('')
                     : '<div style="color: #666; text-align: center; padding: 1rem;">No members listed</div>';
@@ -1468,19 +1524,32 @@
                 const allMembersHtml = teamLeadHtml + membersHtml;
                 
                 return `
-                    <div class="team-card" style="background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 0, 60, 0.2); border-radius: 10px; padding: 1rem; transition: all 0.3s ease; position: relative; overflow: hidden;" 
-                        onmouseover="this.style.background='rgba(255, 0, 60, 0.08)'; this.style.borderColor='rgba(255, 0, 60, 0.4)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 20px rgba(255, 0, 60, 0.25)';" 
-                        onmouseout="this.style.background='rgba(0, 0, 0, 0.4)'; this.style.borderColor='rgba(255, 0, 60, 0.2)'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                        
+                    <div class="team-card">
                         <div class="flex items-start justify-between mb-2">
                             <div class="flex-1 pr-2">
                                 <div class="text-xs text-gray-600 font-rajdhani uppercase mb-0.5">#${index + 1}</div>
                                 <h3 class="text-sm font-bold text-white font-rajdhani leading-tight" style="color: #fff; word-break: break-word;">${team.team_name}</h3>
-                                ${team.college_name ? `<div class="text-xs text-gray-400 mt-0.5" style="display: flex; align-items: center; gap: 0.25rem;"><span>🏫</span><span>${team.college_name}</span></div>` : ''}
-                                <div class="text-xs text-gray-500 mt-1">👥 ${memberCount+1} members</div>
+                                ${team.college_name ? `
+                                <div class="text-xs text-gray-400 mt-0.5" style="display: flex; align-items: center; gap: 0.375rem;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <polyline points="9 22 9 12 15 12 15 22" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>${team.college_name}</span>
+                                </div>
+                                ` : ''}
+                                <div class="text-xs text-gray-500 mt-1" style="display: flex; align-items: center; gap: 0.375rem;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <circle cx="9" cy="7" r="4" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>${memberCount + 1} members</span>
+                                </div>
                             </div>
-                            <div style="width: 32px; height: 32px; border-radius: 50%; background: ${statusBg}; border: 1.5px solid ${statusBorder}; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">
-                                ${icon}
+                            <div class="status-badge" style="background: ${statusBg}; border: 1.5px solid ${statusBorder};">
+                                ${statusIconSvg}
                             </div>
                         </div>
                         
@@ -1488,21 +1557,42 @@
                             <span class="px-2 py-0.5 rounded-full text-xs font-bold font-rajdhani uppercase" style="background: ${statusBg}; color: ${statusText}; border: 1px solid ${statusBorder};">
                                 ${team.payment_status}
                             </span>
-                            ${isPaid ? '<span class="text-xs text-green-400">⚡</span>' : '<span class="text-xs text-yellow-400">⏳</span>'}
+                            ${isPaid 
+                                ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="#00ff88" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                   </svg>` 
+                                : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                     <circle cx="12" cy="12" r="10" stroke="#ffaa00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                     <polyline points="12 6 12 12 16 14" stroke="#ffaa00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                   </svg>`
+                            }
                         </div>
                         
                         <!-- Members Toggle Button -->
-                        <button onclick="toggleMembers(${index})" 
-                            class="w-full py-2 px-3 rounded-lg text-xs font-bold font-rajdhani uppercase transition-all"
-                            style="background: rgba(255, 0, 60, 0.1); color: #ff003c; border: 1px solid rgba(255, 0, 60, 0.3);"
-                            onmouseover="this.style.background='rgba(255, 0, 60, 0.2)'; this.style.borderColor='#ff003c';"
-                            onmouseout="this.style.background='rgba(255, 0, 60, 0.1)'; this.style.borderColor='rgba(255, 0, 60, 0.3)';">
-                            <span id="toggle-text-${index}">Show Members ▼</span>
+                        <button onclick="toggleMembers(${index})" class="toggle-btn">
+                            <span id="toggle-text-${index}" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                                    <circle cx="12" cy="5" r="1" fill="currentColor"/>
+                                    <circle cx="12" cy="19" r="1" fill="currentColor"/>
+                                </svg>
+                                <span>Show Members</span>
+                            </span>
                         </button>
                         
                         <!-- Members List (Hidden by default) -->
-                        <div id="members-${index}" style="display: none; margin-top: 0.75rem; max-height: 300px; overflow-y: auto;">
+                        <div id="members-${index}" class="members-list" style="display: none;">
                             ${allMembersHtml}
+                            ${!isAuthenticated ? `
+                            <div style="background: rgba(255, 170, 0, 0.1); border: 1px solid rgba(255, 170, 0, 0.3); border-radius: 8px; padding: 0.75rem; margin-top: 0.5rem; text-align: center;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 0.5rem;">
+                                    <rect x="5" y="11" width="14" height="10" rx="2" stroke="#ffaa00" stroke-width="2"/>
+                                    <path d="M8 11V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V11" stroke="#ffaa00" stroke-width="2" stroke-linecap="round"/>
+                                    <circle cx="12" cy="16" r="1.5" fill="#ffaa00"/>
+                                </svg>
+                                <p style="color: #ffaa00; font-size: 0.75rem; font-weight: 600; font-family: 'Rajdhani', sans-serif;">Login to view contact details</p>
+                            </div>
+                            ` : ''}
                         </div>
                     </div>
                 `;
@@ -1515,10 +1605,22 @@
             
             if (membersDiv.style.display === 'none') {
                 membersDiv.style.display = 'block';
-                toggleText.textContent = 'Hide Members ▲';
+                toggleText.innerHTML = `
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <polyline points="18 15 12 9 6 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Hide Members</span>
+                `;
             } else {
                 membersDiv.style.display = 'none';
-                toggleText.textContent = 'Show Members ▼';
+                toggleText.innerHTML = `
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                        <circle cx="12" cy="5" r="1" fill="currentColor"/>
+                        <circle cx="12" cy="19" r="1" fill="currentColor"/>
+                    </svg>
+                    <span>Show Members</span>
+                `;
             }
         }
 

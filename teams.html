@@ -1271,82 +1271,100 @@
             teamsGrid.innerHTML = teams.map((team, index) => {
                 const isPaid = team.payment_status === 'completed';
                 const statusColor = isPaid ? 'green' : 'yellow';
-                const statusBg = isPaid ? 'rgba(0, 255, 136, 0.08)' : 'rgba(255, 170, 0, 0.08)';
-                const statusBorder = isPaid ? 'rgba(0, 255, 136, 0.2)' : 'rgba(255, 170, 0, 0.2)';
+                const statusBg = isPaid ? 'rgba(0, 255, 136, 0.12)' : 'rgba(255, 170, 0, 0.12)';
+                const statusBorder = isPaid ? 'rgba(0, 255, 136, 0.4)' : 'rgba(255, 170, 0, 0.4)';
                 const statusText = isPaid ? '#00ff88' : '#ffaa00';
+                const statusGlow = isPaid ? 'rgba(0, 255, 136, 0.2)' : 'rgba(255, 170, 0, 0.2)';
                 const icon = isPaid ? '✓' : '⏱';
                 const memberCount = team.members ? team.members.length : 0;
                 
-                // Generate team lead HTML
+                // Generate team lead HTML with enhanced styling
                 const teamLeadHtml = team.lead && team.lead.name 
                     ? `
-                        <div style="padding: 0.5rem; background: rgba(255, 0, 60, 0.15); border-radius: 6px; margin-bottom: 0.5rem; border: 1px solid rgba(255, 0, 60, 0.3);">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-                                <span style="color: #ff003c; font-weight: 700; font-size: 0.75rem;">👑 TEAM LEAD</span>
+                        <div style="padding: 0.875rem; background: linear-gradient(135deg, rgba(255, 0, 60, 0.2) 0%, rgba(255, 0, 60, 0.05) 100%); border-radius: 10px; margin-bottom: 0.625rem; border: 1.5px solid rgba(255, 0, 60, 0.4); position: relative; overflow: hidden;">
+                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, transparent 0%, rgba(255, 0, 60, 0.1) 50%, transparent 100%); pointer-events: none;"></div>
+                            <div style="display: flex; align-items: center; gap: 0.625rem; margin-bottom: 0.5rem; position: relative; z-index: 1;">
+                                <div style="width: 28px; height: 28px; background: linear-gradient(135deg, #ff003c 0%, #ff4466 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; box-shadow: 0 2px 8px rgba(255, 0, 60, 0.4);">👑</div>
+                                <span style="color: #ff003c; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.5px; text-transform: uppercase;">Team Lead</span>
                             </div>
-                            <div style="color: #fff; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.25rem;">${team.lead.name || 'N/A'}</div>
-                            <div style="color: #999; font-size: 0.75rem; display: flex; align-items: center; gap: 0.25rem;">
-                                <span>📞</span>
-                                <span>${team.lead.contact || 'N/A'}</span>
+                            <div style="color: #fff; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.375rem; position: relative; z-index: 1;">${team.lead.name || 'N/A'}</div>
+                            <div style="color: #aaa; font-size: 0.8rem; display: flex; align-items: center; gap: 0.375rem; position: relative; z-index: 1;">
+                                <span style="font-size: 1rem;">📞</span>
+                                <span style="font-family: monospace; letter-spacing: 0.5px;">${team.lead.contact || 'N/A'}</span>
                             </div>
                         </div>
                     `
                     : '';
                 
-                // Generate members list HTML
+                // Generate members list HTML with enhanced styling
                 const membersHtml = team.members && team.members.length > 0 
                     ? team.members.map((member, idx) => `
-                        <div style="padding: 0.5rem; background: rgba(0, 0, 0, 0.3); border-radius: 6px; margin-bottom: 0.5rem;">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-                                <span style="color: #ff003c; font-weight: 700; font-size: 0.75rem;">Member ${idx + 1}</span>
+                        <div style="padding: 0.75rem; background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%); border-radius: 8px; margin-bottom: 0.625rem; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.2s ease;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.375rem;">
+                                <div style="width: 24px; height: 24px; background: linear-gradient(135deg, rgba(255, 0, 60, 0.3) 0%, rgba(255, 0, 60, 0.1) 100%); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: #ff003c; border: 1px solid rgba(255, 0, 60, 0.3);">${idx + 1}</div>
+                                <span style="color: #999; font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Member</span>
                             </div>
-                            <div style="color: #fff; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.25rem;">${member.name || 'N/A'}</div>
-                            <div style="color: #999; font-size: 0.75rem; display: flex; align-items: center; gap: 0.25rem;">
-                                <span>📞</span>
-                                <span>${member.contact || 'N/A'}</span>
+                            <div style="color: #fff; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.375rem;">${member.name || 'N/A'}</div>
+                            <div style="color: #888; font-size: 0.75rem; display: flex; align-items: center; gap: 0.375rem;">
+                                <span style="font-size: 0.9rem;">📞</span>
+                                <span style="font-family: monospace; letter-spacing: 0.5px;">${member.contact || 'N/A'}</span>
                             </div>
                         </div>
                     `).join('')
-                    : '<div style="color: #666; text-align: center; padding: 1rem;">No members listed</div>';
+                    : '<div style="color: #666; text-align: center; padding: 1.5rem; font-style: italic;">No members listed</div>';
                 
                 // Combine team lead and members
                 const allMembersHtml = teamLeadHtml + membersHtml;
                 
                 return `
-                    <div class="team-card" style="background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 0, 60, 0.2); border-radius: 10px; padding: 1rem; transition: all 0.3s ease; position: relative; overflow: hidden;" 
-                        onmouseover="this.style.background='rgba(255, 0, 60, 0.08)'; this.style.borderColor='rgba(255, 0, 60, 0.4)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 20px rgba(255, 0, 60, 0.25)';" 
-                        onmouseout="this.style.background='rgba(0, 0, 0, 0.4)'; this.style.borderColor='rgba(255, 0, 60, 0.2)'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                    <div class="team-card" style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(20, 20, 20, 0.4) 100%); border: 1.5px solid rgba(255, 0, 60, 0.25); border-radius: 16px; padding: 1.25rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; backdrop-filter: blur(10px);" 
+                        onmouseover="this.style.background='linear-gradient(135deg, rgba(255, 0, 60, 0.12) 0%, rgba(20, 20, 20, 0.6) 100%)'; this.style.borderColor='rgba(255, 0, 60, 0.6)'; this.style.transform='translateY(-4px) scale(1.01)'; this.style.boxShadow='0 12px 40px rgba(255, 0, 60, 0.3), 0 0 0 1px rgba(255, 0, 60, 0.2) inset';" 
+                        onmouseout="this.style.background='linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(20, 20, 20, 0.4) 100%)'; this.style.borderColor='rgba(255, 0, 60, 0.25)'; this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
                         
-                        <div class="flex items-start justify-between mb-2">
-                            <div class="flex-1 pr-2">
-                                <div class="text-xs text-gray-600 font-rajdhani uppercase mb-0.5">#${index + 1}</div>
-                                <h3 class="text-sm font-bold text-white font-rajdhani leading-tight" style="color: #fff; word-break: break-word;">${team.team_name}</h3>
-                                ${team.college_name ? `<div class="text-xs text-gray-400 mt-0.5" style="display: flex; align-items: center; gap: 0.25rem;"><span>🏫</span><span>${team.college_name}</span></div>` : ''}
-                                <div class="text-xs text-gray-500 mt-1">👥 ${memberCount} members</div>
+                        <!-- Decorative corner accent -->
+                        <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: radial-gradient(circle, ${statusGlow} 0%, transparent 70%); pointer-events: none;"></div>
+                        
+                        <!-- Top section with team info -->
+                        <div style="display: flex; align-items: start; justify-content: space-between; margin-bottom: 1rem; position: relative; z-index: 1;">
+                            <div style="flex: 1; padding-right: 0.75rem;">
+                                <div style="display: inline-block; padding: 0.25rem 0.625rem; background: rgba(255, 0, 60, 0.15); border: 1px solid rgba(255, 0, 60, 0.3); border-radius: 20px; margin-bottom: 0.5rem;">
+                                    <span style="color: #ff6b8a; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-family: 'Rajdhani', sans-serif;">#${String(index + 1).padStart(2, '0')}</span>
+                                </div>
+                                <h3 style="font-size: 1.125rem; font-weight: 800; color: #fff; font-family: 'Rajdhani', sans-serif; line-height: 1.3; margin-bottom: 0.375rem; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">${team.team_name}</h3>
+                                ${team.college_name ? `<div style="display: flex; align-items: center; gap: 0.375rem; margin-bottom: 0.375rem; padding: 0.25rem 0.5rem; background: rgba(255, 255, 255, 0.05); border-radius: 6px; width: fit-content;"><span style="font-size: 0.875rem;">🏫</span><span style="color: #aaa; font-size: 0.8rem; font-weight: 500;">${team.college_name}</span></div>` : ''}
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+                                    <div style="display: flex; align-items: center; gap: 0.375rem; padding: 0.25rem 0.625rem; background: rgba(255, 255, 255, 0.05); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                                        <span style="font-size: 0.875rem;">👥</span>
+                                        <span style="color: #ccc; font-size: 0.8rem; font-weight: 600;">${memberCount + 1}</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div style="width: 32px; height: 32px; border-radius: 50%; background: ${statusBg}; border: 1.5px solid ${statusBorder}; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">
-                                ${icon}
+                            <div style="width: 48px; height: 48px; border-radius: 12px; background: ${statusBg}; border: 2px solid ${statusBorder}; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; box-shadow: 0 4px 12px ${statusGlow}; position: relative;">
+                                <span style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">${icon}</span>
                             </div>
                         </div>
                         
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="px-2 py-0.5 rounded-full text-xs font-bold font-rajdhani uppercase" style="background: ${statusBg}; color: ${statusText}; border: 1px solid ${statusBorder};">
-                                ${team.payment_status}
-                            </span>
-                            ${isPaid ? '<span class="text-xs text-green-400">⚡</span>' : '<span class="text-xs text-yellow-400">⏳</span>'}
+                        <!-- Status badge -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; position: relative; z-index: 1;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="padding: 0.375rem 0.875rem; border-radius: 20px; font-size: 0.75rem; font-weight: 800; font-family: 'Rajdhani', sans-serif; text-transform: uppercase; letter-spacing: 1px; background: ${statusBg}; color: ${statusText}; border: 1.5px solid ${statusBorder}; box-shadow: 0 2px 8px ${statusGlow};">
+                                    ${team.payment_status}
+                                </span>
+                                ${isPaid ? '<span style="font-size: 1rem; filter: drop-shadow(0 0 4px #00ff88);">⚡</span>' : '<span style="font-size: 1rem; filter: drop-shadow(0 0 4px #ffaa00);">⏳</span>'}
+                            </div>
                         </div>
                         
-                        <!-- Members Toggle Button -->
+                        <!-- Members Toggle Button with modern design -->
                         <button onclick="toggleMembers(${index})" 
-                            class="w-full py-2 px-3 rounded-lg text-xs font-bold font-rajdhani uppercase transition-all"
-                            style="background: rgba(255, 0, 60, 0.1); color: #ff003c; border: 1px solid rgba(255, 0, 60, 0.3);"
-                            onmouseover="this.style.background='rgba(255, 0, 60, 0.2)'; this.style.borderColor='#ff003c';"
-                            onmouseout="this.style.background='rgba(255, 0, 60, 0.1)'; this.style.borderColor='rgba(255, 0, 60, 0.3)';">
-                            <span id="toggle-text-${index}">Show Members ▼</span>
+                            class="w-full py-2.5 px-4 rounded-xl text-xs font-bold font-rajdhani uppercase transition-all"
+                            style="background: linear-gradient(135deg, rgba(255, 0, 60, 0.15) 0%, rgba(255, 0, 60, 0.05) 100%); color: #ff003c; border: 1.5px solid rgba(255, 0, 60, 0.4); position: relative; overflow: hidden;"
+                            onmouseover="this.style.background='linear-gradient(135deg, rgba(255, 0, 60, 0.25) 0%, rgba(255, 0, 60, 0.15) 100%)'; this.style.borderColor='#ff003c'; this.style.transform='scale(1.02)'; this.style.boxShadow='0 4px 12px rgba(255, 0, 60, 0.3)';"
+                            onmouseout="this.style.background='linear-gradient(135deg, rgba(255, 0, 60, 0.15) 0%, rgba(255, 0, 60, 0.05) 100%)'; this.style.borderColor='rgba(255, 0, 60, 0.4)'; this.style.transform='scale(1)'; this.style.boxShadow='none';">
+                            <span id="toggle-text-${index}" style="position: relative; z-index: 1; letter-spacing: 1px;">Show Team Members ▼</span>
                         </button>
                         
-                        <!-- Members List (Hidden by default) -->
-                        <div id="members-${index}" style="display: none; margin-top: 0.75rem; max-height: 300px; overflow-y: auto;">
+                        <!-- Members List (Hidden by default) with custom scrollbar -->
+                        <div id="members-${index}" style="display: none; margin-top: 1rem; max-height: 320px; overflow-y: auto; padding-right: 0.25rem;">
                             ${allMembersHtml}
                         </div>
                     </div>
@@ -1360,10 +1378,10 @@
             
             if (membersDiv.style.display === 'none') {
                 membersDiv.style.display = 'block';
-                toggleText.textContent = 'Hide Members ▲';
+                toggleText.textContent = 'Hide Team Members ▲';
             } else {
                 membersDiv.style.display = 'none';
-                toggleText.textContent = 'Show Members ▼';
+                toggleText.textContent = 'Show Team Members ▼';
             }
         }
 
@@ -1421,6 +1439,53 @@
             color: #fff;
             box-shadow: 0 0 15px rgba(255, 0, 60, 0.3);
         }
+
+        /* Custom scrollbar for members list */
+        [id^="members-"]::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        [id^="members-"]::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        [id^="members-"]::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #ff003c 0%, #ff4466 100%);
+            border-radius: 10px;
+        }
+
+        [id^="members-"]::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #ff4466 0%, #ff003c 100%);
+        }
+
+        /* Smooth animation for card appearance */
+        .team-card {
+            animation: fadeInUp 0.4s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stagger animation for cards */
+        .team-card:nth-child(1) { animation-delay: 0.05s; }
+        .team-card:nth-child(2) { animation-delay: 0.1s; }
+        .team-card:nth-child(3) { animation-delay: 0.15s; }
+        .team-card:nth-child(4) { animation-delay: 0.2s; }
+        .team-card:nth-child(5) { animation-delay: 0.25s; }
+        .team-card:nth-child(6) { animation-delay: 0.3s; }
+        .team-card:nth-child(7) { animation-delay: 0.35s; }
+        .team-card:nth-child(8) { animation-delay: 0.4s; }
+        .team-card:nth-child(n+9) { animation-delay: 0.45s; }
     </style>
 </body>
 

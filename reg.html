@@ -871,7 +871,7 @@
             <h3 class="text-2xl font-rajdhani font-bold text-white mb-4">Registration Successful!</h3>
             <p id="successMessage" class="text-gray-300 mb-6">Your team has been registered successfully.</p>
             <div id="registrationDetails" class="text-left bg-gray-800 p-4 rounded mb-4"></div>
-            <button onclick="proceedToPayment()" class="payment-button">Continue to Payment</button>
+            <button onclick="proceedToPayment()" class="payment-button">Open Signup Portal</button>
         </div>
     </div>
 
@@ -947,6 +947,14 @@
                                 <input type="text" id="team-name" class="form-input" placeholder="Enter your team name"
                                     required maxlength="50">
                                 <div class="error-message" id="team-name-error"></div>
+                            </div>
+
+                            <!-- College Name -->
+                            <div class="form-group">
+                                <label class="form-label" for="college-name">College Name (Optional)</label>
+                                <input type="text" id="college-name" class="form-input" placeholder="Enter your college name"
+                                    maxlength="100">
+                                <div class="error-message" id="college-name-error"></div>
                             </div>
 
                             <!-- Team Lead Information -->
@@ -1330,6 +1338,13 @@
                 updateProgressBar();
             });
 
+            // College name validation
+            const collegeNameInput = document.getElementById('college-name');
+            collegeNameInput.addEventListener('blur', () => {
+                validateCollegeName(collegeNameInput);
+                updateProgressBar();
+            });
+
             // Substitute field validation
             const subInputs = ['sub-name', 'sub-email', 'sub-contact'];
             subInputs.forEach(id => {
@@ -1395,6 +1410,23 @@
                 return false;
             } else if (!/^[a-zA-Z0-9\s\-_\.]+$/.test(value)) {
                 showError(input, errorElement, 'Team name can only contain letters, numbers, spaces, hyphens, underscores, and dots');
+                return false;
+            } else {
+                clearError(input, errorElement);
+                return true;
+            }
+        }
+
+        function validateCollegeName(input) {
+            const value = input.value.trim();
+            const errorElement = document.getElementById(`${input.id}-error`);
+
+            // College name is optional, so if empty, it's valid
+            if (!value) {
+                clearError(input, errorElement);
+                return true;
+            } else if (value.length < 3) {
+                showError(input, errorElement, 'College name must be at least 3 characters long');
                 return false;
             } else {
                 clearError(input, errorElement);
@@ -1506,6 +1538,12 @@
             // Validate team name
             isValid = validateTeamName(document.getElementById('team-name')) && isValid;
 
+            // Validate college name (optional, but validate if filled)
+            const collegeNameInput = document.getElementById('college-name');
+            if (collegeNameInput.value.trim()) {
+                isValid = validateCollegeName(collegeNameInput) && isValid;
+            }
+
             // Validate lead
             isValid = validateRequired(document.getElementById('lead-name')) && isValid;
             isValid = validateRequired(document.getElementById('lead-email')) && isValid;
@@ -1531,6 +1569,7 @@
         function collectFormData() {
             const formData = {
                 team_name: document.getElementById('team-name').value.trim(),
+                college_name: document.getElementById('college-name').value.trim(),
                 lead: {
                     name: document.getElementById('lead-name').value.trim(),
                     email: document.getElementById('lead-email').value.trim(),
@@ -1585,7 +1624,10 @@
             const message = document.getElementById('successMessage');
             const details = document.getElementById('registrationDetails');
 
-            message.textContent = `Your team "${result.team_name}" has been registered successfully!\nPlease proceed to payment to confirm your registration.`;
+            // Store registration data in sessionStorage for later use
+            sessionStorage.setItem('registrationData', JSON.stringify(result));
+
+            message.textContent = `Your team "${result.team_name}" has been registered successfully!\nPlease complete the signup process to confirm your registration.`;
 
             details.innerHTML = `
                 <p><strong>Registration ID:</strong> ${result.registration_id}</p>
@@ -1605,11 +1647,54 @@
             modal.style.display = 'none';
         }
 
+        let signupWindow = null;
+
         function proceedToPayment() {
-            closeModal();
-            showToast('info', 'Payment Redirect', 'Redirecting to payment gateway...', 3000);
+            // Open signup page in new window
+            signupWindow = window.open('https://events.amaljyothi.ac.in/', '_blank', 'width=1200,height=800');
             
-            window.location.href = `https://e.ajce.in/eqzfhg`;
+            // Update modal content to show next step
+            const message = document.getElementById('successMessage');
+            const paymentButton = document.querySelector('#successModal .payment-button');
+            
+            message.innerHTML = `
+                <div style="background: rgba(255, 170, 0, 0.1); border: 1px solid rgba(255, 170, 0, 0.3); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                    <p style="color: #ffaa00; font-weight: 600; margin-bottom: 0.5rem;">📝 Step 1: Sign up on the events portal</p>
+                    <p style="color: #ccc; font-size: 0.9rem;">A new window has been opened. Please complete your signup there.</p>
+                </div>
+                <div style="background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 8px; padding: 1rem;">
+                    <p style="color: #00ff88; font-weight: 600; margin-bottom: 0.5rem;">✓ Step 2: Return here after signup</p>
+                    <p style="color: #ccc; font-size: 0.9rem;">Click the button below after completing signup.</p>
+                </div>
+            `;
+            
+            // Change button text and function
+            paymentButton.innerHTML = '<span class="button-text">I\'ve Completed Signup - Continue</span>';
+            paymentButton.onclick = confirmSignupAndRedirect;
+            
+            showToast('info', 'Signup Portal Opened', 'Complete signup in the new window and return here', 5000);
+        }
+
+        function confirmSignupAndRedirect() {
+            const registrationData = JSON.parse(sessionStorage.getItem('registrationData'));
+            
+            if (!registrationData) {
+                showToast('error', 'Error', 'Registration data not found. Please try again.', 3000);
+                return;
+            }
+            
+            // Close the signup window if still open
+            if (signupWindow && !signupWindow.closed) {
+                signupWindow.close();
+            }
+            
+            closeModal();
+            showToast('success', 'Redirecting', 'Taking you to the event page...', 2000);
+            
+            // Redirect to the specific event page
+            setTimeout(() => {
+                window.location.href = `https://e.ajce.in/eqzfhg`;
+            }, 2000);
         }
 
         window.addEventListener('click', (e) => {

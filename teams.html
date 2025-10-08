@@ -941,10 +941,15 @@
                 </a>
             </div>
             <img src="https://envs.sh/LaF.png" alt="ASTRISK Logo" class="h-12 w-auto logo">
-            <a href="bx.html"
-                class="hidden md:block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-sm transition shadow-lg shadow-red-500/20 uppercase tracking-wider text-sm">
-                Go Back
-            </a>
+            <div class="hidden md:flex items-center gap-3">
+                <button id="auth-btn" onclick="toggleAuth()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-sm transition shadow-lg shadow-red-500/20 uppercase tracking-wider text-sm">
+                    <span id="auth-btn-text">Login</span>
+                </button>
+                <a href="bx.html"
+                    class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-sm transition shadow-lg uppercase tracking-wider text-sm">
+                    Go Back
+                </a>
+            </div>
 
             <button id="mobile-menu-button" class="md:hidden text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -958,7 +963,10 @@
             <a href="bx.html#events" class="block py-3 px-4 text-sm"><span class="mobile-menu-icon">🎮</span>Events</a>
             <a href="bx.html#schedule" class="block py-3 px-4 text-sm"><span class="mobile-menu-icon">📅</span>Schedule</a>
             <a href="bx.html#sponsors" class="block py-3 px-4 text-sm"><span class="mobile-menu-icon">🤝</span>Sponsors</a>
-            <a href="bx.html" class="block py-3 px-6 text-sm mt-2 mb-2 mx-2 rounded"><span
+            <button onclick="toggleAuth()" class="block py-3 px-6 text-sm mt-2 mb-2 mx-2 rounded w-auto text-left" style="background: linear-gradient(90deg, #ff003c, #e6003a); border: none; color: white; font-weight: 700;">
+                <span class="mobile-menu-icon">🔐</span><span id="mobile-auth-btn-text">Login</span>
+            </button>
+            <a href="bx.html" class="block py-3 px-6 text-sm mb-2 mx-2 rounded"><span
                     class="mobile-menu-icon">🏠</span>Go Back</a>
         </div>
     </header>
@@ -966,6 +974,11 @@
     <!-- Authentication Modal -->
     <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50" style="display: none;">
         <div class="bg-gray-900 border-2 border-red-500 rounded-xl p-8 max-w-md w-full mx-4 relative" style="background: linear-gradient(145deg, rgba(15, 15, 15, 0.95), rgba(5, 5, 5, 0.98)); box-shadow: 0 20px 60px rgba(255, 0, 60, 0.4);">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
             <div class="text-center mb-6">
                 <div class="mb-4" style="display: flex; justify-content: center;">
                     <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -992,12 +1005,12 @@
             </button>
             
             <div class="mt-4 text-center">
-                <a href="bx.html" class="text-gray-500 hover:text-gray-300 text-sm transition-colors inline-flex items-center gap-2">
+                <button onclick="closeAuthModal()" class="text-gray-500 hover:text-gray-300 text-sm transition-colors inline-flex items-center gap-2">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    Back to Home
-                </a>
+                    Continue Without Login
+                </button>
             </div>
         </div>
     </div>
@@ -1149,22 +1162,18 @@
 
         // Check authentication on page load
         window.addEventListener('load', () => {
-            checkAuth();
+            // Don't require auth on load - just show content
+            showMainContent();
+            fetchTeams();
         });
 
         function checkAuth() {
             const isAuthenticated = localStorage.getItem('teams_auth') === 'true';
-            
-            if (isAuthenticated) {
-                showMainContent();
-            } else {
-                showAuthModal();
-            }
+            return isAuthenticated;
         }
 
         function showAuthModal() {
             document.getElementById('auth-modal').style.display = 'flex';
-            document.getElementById('main-content').style.display = 'none';
             
             // Focus on password input
             setTimeout(() => {
@@ -1182,6 +1191,14 @@
         function showMainContent() {
             document.getElementById('auth-modal').style.display = 'none';
             document.getElementById('main-content').style.display = 'block';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').style.display = 'none';
+            const passwordInput = document.getElementById('password-input');
+            const errorDiv = document.getElementById('auth-error');
+            passwordInput.value = '';
+            errorDiv.style.display = 'none';
         }
 
         async function verifyPassword() {
@@ -1211,7 +1228,11 @@
                     localStorage.setItem('teams_auth', 'true');
                     errorDiv.style.display = 'none';
                     passwordInput.value = '';
-                    showMainContent();
+                    document.getElementById('auth-modal').style.display = 'none';
+                    updateAuthButton();
+                    // Re-render teams to show full details
+                    renderTeams(allTeams.length > 0 ? allTeams : []);
+                    showToast('success', 'Login Successful', 'You can now view all team details', 3000);
                 } else {
                     errorDiv.textContent = 'Invalid password. Please try again.';
                     errorDiv.style.display = 'block';
@@ -1221,6 +1242,43 @@
             } catch (error) {
                 errorDiv.textContent = 'Connection error. Please try again.';
                 errorDiv.style.display = 'block';
+            }
+        }
+
+        function toggleAuth() {
+            const isAuthenticated = localStorage.getItem('teams_auth') === 'true';
+            
+            if (isAuthenticated) {
+                // Logout
+                localStorage.removeItem('teams_auth');
+                updateAuthButton();
+                // Re-render teams to hide sensitive details
+                if (allTeams.length > 0) {
+                    renderTeams(allTeams);
+                }
+                showToast('info', 'Logged Out', 'Sensitive information is now hidden', 3000);
+            } else {
+                // Show login modal
+                showAuthModal();
+            }
+        }
+
+        function updateAuthButton() {
+            const isAuthenticated = localStorage.getItem('teams_auth') === 'true';
+            const authBtnText = document.getElementById('auth-btn-text');
+            const mobileAuthBtnText = document.getElementById('mobile-auth-btn-text');
+            const authBtn = document.getElementById('auth-btn');
+            
+            if (isAuthenticated) {
+                authBtnText.textContent = 'Logout';
+                mobileAuthBtnText.textContent = 'Logout';
+                authBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
+                authBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+            } else {
+                authBtnText.textContent = 'Login';
+                mobileAuthBtnText.textContent = 'Login';
+                authBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+                authBtn.classList.add('bg-red-600', 'hover:bg-red-700');
             }
         }
 
@@ -1265,6 +1323,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Update auth button state
+            updateAuthButton();
+            
             // Mobile menu toggle
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
@@ -1297,9 +1358,6 @@
                 const searchTerm = e.target.value.toLowerCase();
                 filterAndRenderTeams(searchTerm, currentFilter);
             });
-
-            // Fetch teams
-            fetchTeams();
 
             // Scroll animations
             const revealElements = document.querySelectorAll('.reveal');

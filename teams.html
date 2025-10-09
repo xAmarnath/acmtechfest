@@ -1020,17 +1020,17 @@
             </div>
             <img src="https://envs.sh/LaF.png" alt="ASTRISK Logo" class="h-12 w-auto logo">
             <div class="hidden md:flex items-center gap-3">
-                <button id="export-btn" onclick="exportToJSON()" class="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-6 rounded-sm transition shadow-lg shadow-cyan-500/20 uppercase tracking-wider text-sm hidden">
+                <button id="export-btn" onclick="exportToJSON()" class="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-6 rounded transition shadow-lg shadow-cyan-500/20 uppercase tracking-wider text-sm hidden">
                     <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
                     Export
                 </button>
-                <button id="auth-btn" onclick="toggleAuth()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-sm transition shadow-lg shadow-red-500/20 uppercase tracking-wider text-sm">
+                <button id="auth-btn" onclick="toggleAuth()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded transition shadow-lg shadow-red-500/20 uppercase tracking-wider text-sm">
                     <span id="auth-btn-text">Login</span>
                 </button>
                 <a href="/"
-                    class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-sm transition shadow-lg uppercase tracking-wider text-sm">
+                    class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded transition shadow-lg uppercase tracking-wider text-sm">
                     Go Back
                 </a>
             </div>
@@ -1428,6 +1428,33 @@
             }
         }
 
+        // Copy to clipboard function
+        function copyToClipboard(text, label = 'Text') {
+            if (!text || text === 'N/A' || text === '••••••••••' || text === '••••••••') {
+                showToast('warning', 'Cannot Copy', 'No data available to copy', 2000);
+                return;
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('success', 'Copied!', `${label} copied to clipboard`, 2000);
+            }).catch(err => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('success', 'Copied!', `${label} copied to clipboard`, 2000);
+                } catch (err) {
+                    showToast('error', 'Copy Failed', 'Failed to copy to clipboard', 3000);
+                }
+                document.body.removeChild(textArea);
+            });
+        }
+
         // Toast notification system
         function showToast(type, title, message, duration = 5000) {
             const toastContainer = document.getElementById('toastContainer');
@@ -1612,13 +1639,29 @@
                                     <span style="color: #ff003c; font-weight: 700; font-size: 0.7rem; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;">LEAD</span>
                                 </div>
                             </div>
-                            <div style="color: #fff; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">${team.lead.name || 'N/A'}</div>
+                            <div style="color: #fff; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span>${team.lead.name || 'N/A'}</span>
+                                ${team.lead.name && team.lead.name !== 'N/A' && team.lead.name !== '••••••••' ? `
+                                <button onclick="copyToClipboard('${team.lead.name}', 'Name')" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;" title="Copy name">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.6; transition: opacity 0.2s;">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                                ` : ''}
+                            </div>
                             ${team.lead.contact && team.lead.contact !== '••••••••••' ? `
                             <div style="color: #999; font-size: 0.7rem; display: flex; align-items: center; gap: 0.25rem;">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <span>${team.lead.contact || 'N/A'}</span>
+                                <button onclick="copyToClipboard('${team.lead.contact}', 'Phone')" style="background: none; border: none; cursor: pointer; padding: 0; margin-left: 0.25rem; display: flex; align-items: center;" title="Copy phone">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.6; transition: opacity 0.2s;">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
                             </div>
                             ` : ''}
                         </div>
@@ -1638,13 +1681,29 @@
                                     <span style="color: #999; font-weight: 600; font-size: 0.7rem; font-family: 'Rajdhani', sans-serif;">M${idx + 1}</span>
                                 </div>
                             </div>
-                            <div style="color: #fff; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">${member.name || 'N/A'}</div>
+                            <div style="color: #fff; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span>${member.name || 'N/A'}</span>
+                                ${member.name && member.name !== 'N/A' && member.name !== '••••••••' ? `
+                                <button onclick="copyToClipboard('${member.name}', 'Name')" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;" title="Copy name">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.6; transition: opacity 0.2s;">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                                ` : ''}
+                            </div>
                             ${member.contact && member.contact !== '••••••••••' ? `
                             <div style="color: #999; font-size: 0.7rem; display: flex; align-items: center; gap: 0.25rem;">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <span>${member.contact || 'N/A'}</span>
+                                <button onclick="copyToClipboard('${member.contact}', 'Phone')" style="background: none; border: none; cursor: pointer; padding: 0; margin-left: 0.25rem; display: flex; align-items: center;" title="Copy phone">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.6; transition: opacity 0.2s;">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
                             </div>
                             ` : ''}
                         </div>
@@ -1666,13 +1725,29 @@
                                     <span style="color: #00fff7; font-weight: 700; font-size: 0.7rem; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;">SUB</span>
                                 </div>
                             </div>
-                            <div style="color: #fff; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">${team.substitute.name || 'N/A'}</div>
+                            <div style="color: #fff; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span>${team.substitute.name || 'N/A'}</span>
+                                ${team.substitute.name && team.substitute.name !== 'N/A' && team.substitute.name !== '••••••••' ? `
+                                <button onclick="copyToClipboard('${team.substitute.name}', 'Name')" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;" title="Copy name">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.6; transition: opacity 0.2s;">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                                ` : ''}
+                            </div>
                             ${team.substitute.contact && team.substitute.contact !== '••••••••••' ? `
                             <div style="color: #999; font-size: 0.7rem; display: flex; align-items: center; gap: 0.25rem;">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <span>${team.substitute.contact || 'N/A'}</span>
+                                <button onclick="copyToClipboard('${team.substitute.contact}', 'Phone')" style="background: none; border: none; cursor: pointer; padding: 0; margin-left: 0.25rem; display: flex; align-items: center;" title="Copy phone">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.6; transition: opacity 0.2s;">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
                             </div>
                             ` : ''}
                         </div>

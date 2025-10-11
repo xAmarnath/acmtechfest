@@ -173,7 +173,7 @@
         }
 
         #mobile-menu.show {
-            max-height: 400px;
+            max-height: 500px;
             opacity: 1;
         }
 
@@ -836,6 +836,43 @@
                 display: none;
             }
 
+            /* Show logos in mobile menu */
+            .mobile-logos-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 1.5rem;
+                padding: 1rem 1rem 1.5rem;
+                border-top: 1px solid rgba(255, 0, 60, 0.2);
+                background: rgba(0, 0, 0, 0.3);
+            }
+
+            .mobile-logo-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+                transition: transform 0.3s ease;
+            }
+
+            .mobile-logo-item:hover {
+                transform: translateY(-3px);
+            }
+
+            .mobile-logo-item img {
+                height: 40px;
+                width: auto;
+                filter: drop-shadow(0 2px 8px rgba(255, 0, 60, 0.3));
+            }
+
+            .mobile-logo-item span {
+                font-size: 0.65rem;
+                color: #999;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                font-family: 'Rajdhani', sans-serif;
+            }
+
             body::before {
                 content: "";
                 position: fixed;
@@ -1339,6 +1376,18 @@
                         <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="currentColor" fill-opacity="0.5"/>
                     </svg>
                 </span>Register Now</a>
+            
+            <!-- Mobile Logos Section -->
+            <div class="mobile-logos-container">
+                <div class="mobile-logo-item">
+                    <img src="https://envs.sh/Lau.png" alt="ACM Logo">
+                    <span>ACM Chapter</span>
+                </div>
+                <div class="mobile-logo-item">
+                    <img src="https://envs.sh/LaF.png" alt="College Logo">
+                    <span>AJCE</span>
+                </div>
+            </div>
         </div>
     </header>
 

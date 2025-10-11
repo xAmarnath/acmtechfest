@@ -11,6 +11,7 @@ from datetime import datetime
 import logging
 import secrets
 import hashlib
+import html
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -89,6 +90,60 @@ def verify_token(token):
         del active_tokens[token]
         return False
     return True
+
+def sanitize_input(text):
+    """Sanitize user input to prevent XSS attacks"""
+    if not text:
+        return text
+    # HTML escape to prevent XSS
+    sanitized = html.escape(str(text).strip())
+    return sanitized
+
+def validate_and_sanitize_registration(data):
+    """Validate and sanitize registration data"""
+    sanitized = {}
+    
+    # Sanitize team name
+    if 'team_name' in data:
+        sanitized['team_name'] = sanitize_input(data['team_name'])
+    
+    # Sanitize college name
+    if 'college_name' in data:
+        sanitized['college_name'] = sanitize_input(data['college_name'])
+    
+    # Sanitize lead information
+    if 'lead' in data:
+        sanitized['lead'] = {
+            'name': sanitize_input(data['lead'].get('name', '')),
+            'email': data['lead'].get('email', '').lower().strip(),  # Email doesn't need HTML escaping
+            'contact': data['lead'].get('contact', '').strip()
+        }
+    
+    # Sanitize members
+    if 'members' in data:
+        sanitized['members'] = []
+        for member in data['members']:
+            sanitized['members'].append({
+                'name': sanitize_input(member.get('name', '')),
+                'email': member.get('email', '').lower().strip(),
+                'contact': member.get('contact', '').strip()
+            })
+    
+    # Sanitize substitute
+    if 'substitute' in data and data['substitute']:
+        substitute = data['substitute']
+        if substitute.get('name'):
+            sanitized['substitute'] = {
+                'name': sanitize_input(substitute.get('name', '')),
+                'email': substitute.get('email', '').lower().strip(),
+                'contact': substitute.get('contact', '').strip()
+            }
+        else:
+            sanitized['substitute'] = {}
+    else:
+        sanitized['substitute'] = {}
+    
+    return sanitized
 
 # SQLite setup (backup database)
 SQLITE_DB = 'registrations_backup.db'
@@ -247,11 +302,14 @@ def register_team():
                     'message': f'Missing required field: {field}'
                 }), 400
 
-        team_name = data['team_name'].strip()
-        college_name = data.get('college_name', '').strip()
-        lead = data['lead']
-        members = data['members']
-        substitute = data.get('substitute', {})
+        # Sanitize all user inputs
+        sanitized_data = validate_and_sanitize_registration(data)
+        
+        team_name = sanitized_data['team_name']
+        college_name = sanitized_data.get('college_name', '')
+        lead = sanitized_data['lead']
+        members = sanitized_data['members']
+        substitute = sanitized_data.get('substitute', {})
 
         if not validate_team_name(team_name):
             return jsonify({
@@ -364,19 +422,19 @@ def register_team():
             'team_name': team_name,
             'college_name': college_name,
             'lead': {
-                'name': lead['name'].strip(),
-                'email': lead['email'].lower().strip(),
-                'contact': lead['contact'].strip()
+                'name': lead['name'],
+                'email': lead['email'],
+                'contact': lead['contact']
             },
             'members': [{
-                'name': member['name'].strip(),
-                'email': member['email'].lower().strip(),
-                'contact': member['contact'].strip()
+                'name': member['name'],
+                'email': member['email'],
+                'contact': member['contact']
             } for member in members],
             'substitute': {
-                'name': substitute.get('name', '').strip(),
-                'email': substitute.get('email', '').lower().strip(),
-                'contact': substitute.get('contact', '').strip()
+                'name': substitute.get('name', ''),
+                'email': substitute.get('email', ''),
+                'contact': substitute.get('contact', '')
             } if substitute and substitute.get('name') else {},
             'ip_address': get_remote_address(),
             'timestamp': datetime.utcnow(),
@@ -533,7 +591,8 @@ def update_payment_status():
             return jsonify({'success': False, 'message': 'Unauthorized'}), 401
         
         data = request.get_json()
-        team_name = data.get('team_name', '').strip()
+        # Sanitize team name input
+        team_name = sanitize_input(data.get('team_name', ''))
         new_status = data.get('status', '').strip()
         
         if not team_name:

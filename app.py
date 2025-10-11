@@ -9,12 +9,17 @@ import sqlite3
 import json
 from datetime import datetime
 import logging
+import secrets
+import hashlib
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-CORS(app)
+
+# Configure CORS with specific origins (update with your actual domains)
+ALLOWED_ORIGINS = os.environ.get('ALLOWED_ORIGINS', '*').split(',')
+CORS(app, origins=ALLOWED_ORIGINS, supports_credentials=True)
 
 limiter = Limiter(
     get_remote_address,
@@ -24,11 +29,26 @@ limiter = Limiter(
 )
 
 # MongoDB setup
-MONGO_URI = os.environ.get('MONGO_URI', '<HEHE>')
+MONGO_URI = os.environ.get('MONGO_URI')
+if not MONGO_URI:
+    logger.error("MONGO_URI environment variable is not set")
+    raise ValueError("MONGO_URI must be set in environment variables")
+
 DB_NAME = 'astrisk_tournament'
 client = MongoClient(MONGO_URI)
 db = client[DB_NAME]
 registrations = db.registrations
+
+# Master password from environment variable (hashed)
+MASTER_PASSWORD_HASH = os.environ.get('MASTER_PASSWORD_HASH')
+if not MASTER_PASSWORD_HASH:
+    logger.warning("MASTER_PASSWORD_HASH not set, generating temporary hash for '0022'")
+    # For backwards compatibility, hash the old password
+    MASTER_PASSWORD_HASH = hashlib.sha256("0022".encode()).hexdigest()
+
+# Store active tokens with expiration (in-memory for simplicity)
+# In production, use Redis or database
+active_tokens = {}
 
 registrations.create_index([("team_name", 1)], unique=True)
 registrations.create_index([("members.email", 1)], unique=True, sparse=True)
@@ -37,6 +57,38 @@ registrations.create_index([("timestamp", 1)], expireAfterSeconds=8640000)
 # remove last create_index
 
 registrations.drop_index([("timestamp", 1)])
+
+# Security headers middleware
+@app.after_request
+def add_security_headers(response):
+    """Add security headers to all responses"""
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.cdnfonts.com; font-src 'self' https://fonts.gstatic.com https://fonts.cdnfonts.com; img-src 'self' data: https:; connect-src 'self'"
+    return response
+
+def hash_password(password):
+    """Hash password using SHA-256"""
+    return hashlib.sha256(password.encode()).hexdigest()
+
+def generate_token():
+    """Generate a secure random token"""
+    return secrets.token_urlsafe(32)
+
+def verify_token(token):
+    """Verify if token is valid and not expired"""
+    if not token:
+        return False
+    token_data = active_tokens.get(token)
+    if not token_data:
+        return False
+    # Check if token is expired (24 hours)
+    if (datetime.utcnow() - token_data['created_at']).total_seconds() > 86400:
+        del active_tokens[token]
+        return False
+    return True
 
 # SQLite setup (backup database)
 SQLITE_DB = 'registrations_backup.db'
@@ -366,9 +418,9 @@ def register_team():
 @limiter.limit("10 per minute")
 def get_teams():
     try:
-        # Check if request is authenticated
+        # Check if request is authenticated using the new token system
         auth_header = request.headers.get('X-Auth-Token', '')
-        is_authenticated = auth_header == "0022"  # Match the master password
+        is_authenticated = verify_token(auth_header)
         
         teams = []
         for reg in registrations.find(
@@ -442,17 +494,26 @@ def verify_key():
         data = request.get_json()
         password = data.get('password', '')
         
-        # Master password - change this to your desired 4-digit password
-        MASTER_PASSWORD = "0022"
+        # Hash the provided password and compare with stored hash
+        password_hash = hash_password(password)
         
-        if password == MASTER_PASSWORD:
-            # Return the password as token for future requests
+        if password_hash == MASTER_PASSWORD_HASH:
+            # Generate a secure token instead of returning the password
+            token = generate_token()
+            active_tokens[token] = {
+                'created_at': datetime.utcnow(),
+                'ip_address': get_remote_address()
+            }
+            
+            logger.info(f"Successful authentication from IP {get_remote_address()}")
+            
             return jsonify({
                 'success': True, 
                 'message': 'Authentication successful',
-                'token': password
+                'token': token
             }), 200
         else:
+            logger.warning(f"Failed authentication attempt from IP {get_remote_address()}")
             return jsonify({'success': False, 'message': 'Invalid password'}), 401
     except Exception as e:
         logger.error(f"Key verification error: {str(e)}")
@@ -464,11 +525,11 @@ def verify_key():
 def update_payment_status():
     """Update payment status of a team (requires authentication)"""
     try:
-        # Check authentication
+        # Check authentication using the new token system
         auth_header = request.headers.get('X-Auth-Token', '')
-        MASTER_PASSWORD = "0022"
         
-        if auth_header != MASTER_PASSWORD:
+        if not verify_token(auth_header):
+            logger.warning(f"Unauthorized payment update attempt from IP {get_remote_address()}")
             return jsonify({'success': False, 'message': 'Unauthorized'}), 401
         
         data = request.get_json()
@@ -510,6 +571,12 @@ def update_payment_status():
         logger.error(f"Payment update error: {str(e)}")
         return jsonify({'success': False, 'message': 'Internal server error'}), 500
 
-
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Use debug mode only in development, controlled by environment variable
+    debug_mode = os.environ.get('FLASK_DEBUG', 'False').lower() in ('true', '1', 't')
+    port = int(os.environ.get('PORT', 5000))
+    
+    if debug_mode:
+        logger.warning("Running in DEBUG mode - not suitable for production!")
+    
+    app.run(debug=debug_mode, host='0.0.0.0', port=port)

@@ -3693,6 +3693,9 @@
             }
 
             teams.forEach(team => {
+                if (!team.is_open) {
+                    return;
+                }
                 const card = document.createElement('div');
                 card.className = 'team-card-glassmorphic';
                 

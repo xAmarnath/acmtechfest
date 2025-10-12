@@ -1190,26 +1190,28 @@
             document.getElementById('newMemberName').value = '';
             document.getElementById('newMemberEmail').value = '';
             document.getElementById('newMemberContact').value = '';
+            document.getElementById('newMemberRiotID').value = '';
         });
 
         confirmAddMemberBtn.addEventListener('click', async () => {
             const name = document.getElementById('newMemberName').value.trim();
             const email = document.getElementById('newMemberEmail').value.trim();
             const contact = document.getElementById('newMemberContact').value.trim();
+            const riotId = document.getElementById('newMemberRiotID').value.trim();
 
-            if (!name || !email || !contact) {
-                showToast('warning', 'Missing Information', 'Please fill all fields');
+            if (!name || !email || !contact || !riotId) {
+                showToast('warning', 'Missing Information', 'Please fill all fields including Riot ID');
                 return;
             }
 
             try {
-                // Create join request
+                // Create join request with Riot ID
                 const response = await fetch(`${API_BASE_URL}/team/join-request`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         team_name: teamName,
-                        requester: { name, email, contact }
+                        requester: { name, email, contact, riot_id: riotId }
                     })
                 });
 
@@ -1245,6 +1247,7 @@
                     document.getElementById('newMemberName').value = '';
                     document.getElementById('newMemberEmail').value = '';
                     document.getElementById('newMemberContact').value = '';
+                    document.getElementById('newMemberRiotID').value = '';
                     await loadTeamData();
                 } else {
                     showToast('error', 'Error', acceptData.message || 'Could not accept member');
@@ -1476,6 +1479,10 @@
                 nameDisplay.textContent = `Team: ${teamName}`;
                 modal.style.display = 'flex';
                 
+                // Store the auth code and team name for auto-login after modal closes
+                modal.dataset.authCode = authCode;
+                modal.dataset.teamName = teamName;
+                
                 // Prevent body scroll
                 document.body.style.overflow = 'hidden';
             }
@@ -1484,12 +1491,22 @@
         function closeWelcomeModal() {
             const modal = document.getElementById('welcomeModal');
             if (modal) {
+                // Get the stored auth code and team name from modal dataset
+                const authCode = modal.dataset.authCode;
+                const storedTeamName = modal.dataset.teamName;
+                
                 modal.style.display = 'none';
                 document.body.style.overflow = 'auto';
+                
+                // Set the teamName and auth code for auto-login
+                if (authCode && storedTeamName) {
+                    teamName = storedTeamName;
+                    teamCodeInput.value = authCode;
+                    
+                    // Auto-login with the code
+                    verifyAndUnlock();
+                }
             }
-            
-            // Auto-login with the code
-            verifyAndUnlock();
         }
         
         function copyWelcomeCode() {

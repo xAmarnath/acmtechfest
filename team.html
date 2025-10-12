@@ -422,6 +422,12 @@
                 <div class="hidden md:flex space-x-4">
                     <a href="/" class="btn-outline" style="padding: 0.5rem 1rem;">Home</a>
                     <a href="/teams" class="btn-outline" style="padding: 0.5rem 1rem;">All Teams</a>
+                    <button id="logoutBtn" class="btn-outline" style="padding: 0.5rem 1rem; display: none;">
+                        <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="vertical-align: middle;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                        Logout
+                    </button>
                 </div>
             </div>
         </div>
@@ -722,6 +728,9 @@
                     // Show dashboard
                     authScreen.style.display = 'none';
                     dashboardScreen.style.display = 'block';
+                    
+                    // Show logout button
+                    document.getElementById('logoutBtn').style.display = 'inline-block';
                     
                     showToast('success', 'Success', 'Dashboard unlocked successfully!');
                     
@@ -1392,6 +1401,37 @@
 
         document.getElementById('paymentBtn').addEventListener('click', proceedToPayment);
 
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear localStorage auth for this team
+                if (teamName) {
+                    localStorage.removeItem(`team_auth_${teamName}`);
+                    localStorage.removeItem('last_team_name');
+                }
+                
+                // Clear session data
+                teamAuth = null;
+                teamName = null;
+                teamData = null;
+                
+                // Hide dashboard, show auth screen
+                dashboardScreen.style.display = 'none';
+                authScreen.style.display = 'block';
+                
+                // Hide logout button
+                document.getElementById('logoutBtn').style.display = 'none';
+                
+                // Clear input
+                teamCodeInput.value = '';
+                
+                showToast('success', 'Logged Out', 'You have been logged out successfully');
+            }
+        }
+
+        // Logout button
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+
         // Unlock button
         unlockBtn.addEventListener('click', verifyAndUnlock);
 
@@ -1460,6 +1500,8 @@
                         teamCodeInput.value = storedAuth;
                         authScreen.style.display = 'none';
                         dashboardScreen.style.display = 'block';
+                        // Show logout button
+                        document.getElementById('logoutBtn').style.display = 'inline-block';
                         await loadTeamData();
                     }
                 }

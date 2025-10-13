@@ -1186,7 +1186,7 @@
 
         .team-join-btn {
             width: 100%;
-            background: linear-gradient(135deg, #009dff, #0080cc);
+            background: linear-gradient(135deg, #ff335c, #ff003c);
             color: #fff;
             border: none;
             padding: 0.65rem 1rem;
@@ -1198,7 +1198,7 @@
             transition: all 0.25s ease;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            box-shadow: 0 4px 12px rgba(0, 157, 255, 0.25);
+            box-shadow: 0 4px 12px rgba(255, 0, 60, 0.22);
             position: relative;
             overflow: hidden;
         }
@@ -1216,8 +1216,8 @@
 
         .team-join-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 157, 255, 0.4), 0 0 30px rgba(0, 157, 255, 0.2);
-            background: linear-gradient(135deg, #00b3ff, #0095e6);
+            box-shadow: 0 6px 20px rgba(255, 0, 60, 0.4), 0 0 30px rgba(255, 0, 60, 0.18);
+            background: linear-gradient(135deg, #ff5a78, #ff003c);
         }
 
         .team-join-btn:hover::before {
@@ -3693,9 +3693,6 @@
             }
 
             teams.forEach(team => {
-                if (!team.is_open) {
-                    return;
-                }
                 const card = document.createElement('div');
                 card.className = 'team-card-glassmorphic';
                 
@@ -3734,12 +3731,12 @@
                         <div class="team-card-info">
                             ${collegeName ? `
                             <div class="team-info-item">
-                                <svg class="team-info-icon" style="color: #00d4ff;" viewBox="0 0 24 24" fill="none">
+                                <svg class="team-info-icon" style="color: #00fff7;" viewBox="0 0 24 24" fill="none">
                                     <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                     <polyline points="2 17 12 22 22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                     <polyline points="2 12 12 17 22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
-                                <span class="team-info-text" style="color: #00d4ff;">${escapeHtml(collegeName)}</span>
+                                <span class="team-info-text" style="color: #00fff7;">${escapeHtml(collegeName)}</span>
                             </div>
                             ` : ''}
                             

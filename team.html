@@ -28,6 +28,18 @@
             background-color: #000000;
         }
 
+        /* Subtle global overlay to blend background with content */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.55));
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
         .font-rajdhani {
             font-family: 'Rajdhani', sans-serif;
         }
@@ -49,14 +61,16 @@
 
         /* Cards */
         .team-card {
-            background: linear-gradient(145deg, rgba(15, 15, 15, 0.7), rgba(5, 5, 5, 0.8));
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: linear-gradient(145deg, rgba(12, 12, 12, 0.75), rgba(6, 6, 6, 0.85));
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             border: 1px solid rgba(255, 0, 60, 0.2);
             border-radius: 10px;
             padding: 1rem;
             margin-bottom: 1rem;
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .team-card:hover {

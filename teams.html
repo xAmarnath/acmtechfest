@@ -28,7 +28,7 @@
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
-            backdrop-filter: blur(0px);
+            backdrop-filter: blur(6px);
             background-color: #000000;
         }
 
@@ -300,9 +300,9 @@
             box-shadow: 0 0 40px rgba(255, 0, 60, 0.2);
         }
 
-        /* Enhanced Team Cards */
+    /* Enhanced Team Cards */
         .team-card {
-            background: linear-gradient(145deg, rgba(15, 15, 15, 0.9), rgba(5, 5, 5, 0.95));
+            background: linear-gradient(145deg, rgba(10, 10, 12, 0.85), rgba(6, 6, 8, 0.9));
             border: 1px solid rgba(255, 0, 60, 0.2);
             border-radius: 12px;
             padding: 1.25rem;
@@ -1265,6 +1265,49 @@
                             </div>
                         </div>
 
+                        <!-- Join Request Modal -->
+                        <div id="joinRequestModal" class="modal" style="display:none;">
+                            <div class="modal-content">
+                                <button class="modal-close" onclick="closeJoinRequestModal()">&times;</button>
+                                <h3 class="text-xl font-rajdhani font-bold text-white mb-4">Request to Join Team</h3>
+                                <p id="jr-team-label" class="text-gray-300 mb-2"></p>
+                                <div class="form-group">
+                                    <label class="form-label">Your Name</label>
+                                    <input id="jr-name" class="form-input" placeholder="Full name">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Your Email</label>
+                                    <input id="jr-email" class="form-input" placeholder="Email">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Contact</label>
+                                    <input id="jr-contact" class="form-input" placeholder="10 digit phone">
+                                </div>
+                                <div style="display:flex; gap:0.5rem;">
+                                    <button onclick="submitJoinRequestFromModal()" class="payment-button">Send Request</button>
+                                    <button onclick="closeJoinRequestModal()" class="payment-button" style="background:#444;">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Team Lead Code Modal (to view/manage requests) -->
+                        <div id="teamKeyModal" class="modal" style="display:none;">
+                            <div class="modal-content">
+                                <button class="modal-close" onclick="closeTeamKeyModal()">&times;</button>
+                                <h3 class="text-xl font-rajdhani font-bold text-white mb-4">Team Lead Access</h3>
+                                <p id="tk-team-label" class="text-gray-300 mb-2">Enter your 4-digit team code to manage requests for <strong id="tk-team-name"></strong></p>
+                                <div class="form-group">
+                                    <label class="form-label">Team Code (4 digits)</label>
+                                    <input id="tk-code" class="form-input" maxlength="4" placeholder="e.g. 0421">
+                                </div>
+                                <div style="display:flex; gap:0.5rem;">
+                                    <button onclick="verifyTeamKeyFromModal()" class="payment-button">Verify & View Requests</button>
+                                    <button onclick="closeTeamKeyModal()" class="payment-button" style="background:#444;">Cancel</button>
+                                </div>
+                                <div id="tk-requests" style="margin-top:1rem;"></div>
+                            </div>
+                        </div>
+
                         <!-- Empty State -->
                         <div id="empty-state" class="hidden text-center text-gray-400 mt-6">
                             <div class="mb-3" style="display: flex; justify-content: center;">
@@ -1345,7 +1388,7 @@
 
     <script>
         // Backend API URL - Update this to your actual backend URL
-        const API_BASE_URL = 'https://30c61382b1f2.ngrok-free.app';
+        const API_BASE_URL = '';
 
         let allTeams = [];
         let currentFilter = 'all';
@@ -1859,6 +1902,8 @@
                 
                 // Combine team lead, members, and substitute
                 const allMembersHtml = teamLeadHtml + membersHtml + substituteHtml;
+                // ensure team name is safe for inline onclick attribute
+                const safeTeamName = (team.team_name || '').replace(/'/g, "\\'");
                 
                 return `
                     <div class="team-card">
@@ -1933,6 +1978,11 @@
                         ` : ''}
                         
                         <!-- Members Toggle Button -->
+                        <div style="display:flex;gap:0.5rem;margin-bottom:0.5rem;">
+                            ${team.is_open ? `<button onclick="openJoinRequestModal('${safeTeamName}')" class="toggle-btn" style="flex:1;background:linear-gradient(135deg,#00fff7,#00c8f0);color:#000;">Request to Join</button>` : ''}
+                            <button onclick="openTeamKeyModal('${safeTeamName}')" class="toggle-btn" style="flex:0 0 160px;background:#222;">Manage Requests</button>
+                        </div>
+
                         <button onclick="toggleMembers(${index})" class="toggle-btn">
                             <span id="toggle-text-${index}" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2055,6 +2105,108 @@
             }
             
             renderTeams(filtered);
+        }
+
+        // --- Join Request & Team-Lead access helpers ---
+        let pendingTargetTeam = null;
+
+        function openJoinRequestModal(teamName) {
+            pendingTargetTeam = teamName;
+            document.getElementById('jr-team-label').textContent = `Request to join: ${teamName}`;
+            document.getElementById('joinRequestModal').style.display = 'block';
+        }
+
+        function closeJoinRequestModal(){
+            document.getElementById('joinRequestModal').style.display = 'none';
+            ['jr-name','jr-email','jr-contact'].forEach(id=>{const el=document.getElementById(id); if(el) el.value='';});
+        }
+
+        async function submitJoinRequestFromModal(){
+            const name = document.getElementById('jr-name').value.trim();
+            const email = document.getElementById('jr-email').value.trim();
+            const contact = document.getElementById('jr-contact').value.trim();
+
+            if(!pendingTargetTeam){ showToast('error','No team selected','Please try again',3000); return; }
+            if(!name || !email || !contact){ showToast('error','Missing fields','Please fill name, email and contact',3000); return; }
+
+            try{
+                const resp = await fetch(`${API_BASE_URL}/team/join-request`, {
+                    method: 'POST', headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({team_name: pendingTargetTeam, requester:{name, email, contact}})
+                });
+                const data = await resp.json();
+                if(data.success){
+                    closeJoinRequestModal();
+                    showToast('success','Request Sent', data.message || 'Join request submitted',4000);
+                } else {
+                    showToast('error','Request Failed', data.message || 'Failed to submit request',4000);
+                }
+            }catch(err){
+                console.error(err); showToast('error','Network Error','Failed to contact server',3000);
+            }
+        }
+
+        // Team-lead modal to verify 4-digit code and show pending requests
+        let activeKeyTeam = null;
+        function openTeamKeyModal(teamName){
+            activeKeyTeam = teamName;
+            document.getElementById('tk-team-name').textContent = teamName;
+            document.getElementById('teamKeyModal').style.display = 'block';
+            document.getElementById('tk-requests').innerHTML = '';
+        }
+
+        function closeTeamKeyModal(){
+            document.getElementById('teamKeyModal').style.display = 'none';
+            document.getElementById('tk-code').value = '';
+            document.getElementById('tk-requests').innerHTML = '';
+            activeKeyTeam = null;
+        }
+
+        async function verifyTeamKeyFromModal(){
+            const code = document.getElementById('tk-code').value.trim();
+            if(!activeKeyTeam || !code){ showToast('error','Missing','Team and code required',3000); return; }
+            try{
+                const resp = await fetch(`${API_BASE_URL}/team/key`, {
+                    method: 'POST', headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({team_name: activeKeyTeam, code})
+                });
+                const data = await resp.json();
+                if(data.success){
+                    // store team auth in localStorage for viewing join requests via /teams
+                    localStorage.setItem('team_auth_token', code);
+                    showToast('success','Verified','Team code accepted. Reloading teams...',2000);
+                    await fetchTeams();
+                    // render pending requests in modal by reading allTeams
+                    const team = allTeams.find(t=>t.team_name === activeKeyTeam) || {};
+                    const requests = team.join_requests || [];
+                    renderRequestsInModal(requests);
+                } else {
+                    showToast('error','Invalid','Code invalid for this team',3000);
+                }
+            }catch(err){ console.error(err); showToast('error','Network Error','Failed to contact server',3000); }
+        }
+
+        function renderRequestsInModal(requests){
+            const container = document.getElementById('tk-requests');
+            if(!requests || requests.length===0){ container.innerHTML = '<p class="text-gray-400">No pending requests</p>'; return; }
+            container.innerHTML = requests.map(r=>{
+                return `<div style="padding:0.5rem;border:1px solid rgba(255,255,255,0.05);margin-bottom:0.5rem;border-radius:6px;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
+                    <div><div style="font-weight:700">${r.name}</div><div style="font-size:0.85rem;color:#ccc">${r.email} · ${r.contact}</div></div>
+                    <div style="display:flex;gap:0.5rem;"><button onclick="respondToJoin('${activeKeyTeam}','${r.email}','accept')" class="approve-btn" style="background:#00ff88;color:#000;padding:0.4rem 0.6rem;border-radius:6px;border:none;">Accept</button>
+                    <button onclick="respondToJoin('${activeKeyTeam}','${r.email}','decline')" class="revert-btn" style="background:#ff3366;color:#fff;padding:0.4rem 0.6rem;border-radius:6px;border:none;">Decline</button></div></div>`
+            }).join('');
+        }
+
+        async function respondToJoin(teamName, requesterEmail, action){
+            try{
+                const teamAuth = localStorage.getItem('team_auth_token');
+                const headers = {'Content-Type':'application/json'};
+                if(teamAuth) headers['X-Team-Auth'] = teamAuth;
+                const resp = await fetch(`${API_BASE_URL}/team/respond-join`, {method:'POST', headers, body: JSON.stringify({team_name:teamName, requester_email: requesterEmail, action})});
+                const data = await resp.json();
+                if(data.success){ showToast('success','Done', data.message || 'Updated',2000); await fetchTeams(); if(activeKeyTeam) verifyTeamKeyFromModal(); }
+                else showToast('error','Error', data.message || 'Failed to update',3000);
+            }catch(err){ console.error(err); showToast('error','Network Error','Failed to contact server',3000); }
         }
     </script>
     <style>

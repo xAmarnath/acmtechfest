@@ -3533,6 +3533,55 @@
                 showMatchEnded(data.team1, data.team2, data.winner, data.matchTitle);
             });
             
+            // Score updated event
+            eventSource.addEventListener('score_updated', (e) => {
+                const data = JSON.parse(e.data);
+                console.log('📊 Score updated:', data);
+                if (data.state) {
+                    updateScore(1, data.state.team1.score);
+                    updateScore(2, data.state.team2.score);
+                }
+            });
+            
+            // Teams updated event
+            eventSource.addEventListener('teams_updated', (e) => {
+                const data = JSON.parse(e.data);
+                console.log('👥 Teams updated:', data);
+                if (data.state) {
+                    updateTeamName(1, data.state.team1.name);
+                    updateTeamSubtitle(1, data.state.team1.subtitle);
+                    updateTeamName(2, data.state.team2.name);
+                    updateTeamSubtitle(2, data.state.team2.subtitle);
+                }
+            });
+            
+            // Match info updated event
+            eventSource.addEventListener('match_info_updated', (e) => {
+                const data = JSON.parse(e.data);
+                console.log('🗺️ Match info updated:', data);
+                if (data.state) {
+                    updateMatchInfo(data.state.map, data.state.round, data.state.bestOf);
+                    updateEventTitle(data.state.matchTitle);
+                }
+            });
+            
+            // Match reset event
+            eventSource.addEventListener('match_reset', (e) => {
+                const data = JSON.parse(e.data);
+                console.log('🔄 Match reset:', data);
+                if (data.state) {
+                    updateScore(1, data.state.team1.score);
+                    updateScore(2, data.state.team2.score);
+                    updateTeamName(1, data.state.team1.name);
+                    updateTeamSubtitle(1, data.state.team1.subtitle);
+                    updateTeamName(2, data.state.team2.name);
+                    updateTeamSubtitle(2, data.state.team2.subtitle);
+                    updateMatchInfo(data.state.map, data.state.round, data.state.bestOf);
+                    updateEventTitle(data.state.matchTitle);
+                    showNotification('Match Reset', 'primary-cyan', 'mdi:refresh');
+                }
+            });
+            
             // Connection errors
             eventSource.addEventListener('error', (e) => {
                 console.error('❌ SSE Connection error:', e);

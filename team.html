@@ -436,6 +436,7 @@
                 <div class="hidden md:flex space-x-4">
                     <a href="/" class="btn-outline" style="padding: 0.5rem 1rem;">Home</a>
                     <a href="/teams" class="btn-outline" style="padding: 0.5rem 1rem;">All Teams</a>
+                    <a href="/game.html" class="btn-outline" style="padding: 0.5rem 1rem;">Rules</a>
                     <button id="logoutBtn" class="btn-outline" style="padding: 0.5rem 1rem; display: none;">
                         <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="vertical-align: middle;">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -650,6 +651,50 @@
             </div>
         </div>
     </div>
+    <footer class="py-16 relative overflow-hidden" style="background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%); border-top: 1px solid rgba(255,0,60,0.2);">
+        <!-- Animated background -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,0,60,0.3) 1px, transparent 0); background-size: 40px 40px;"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 text-center relative z-10" style="max-width:900px;">
+            <div style="padding:2rem 1rem;">
+                <!-- Logo/Brand -->
+                <h3 class="text-3xl font-bold mb-4" style="font-family:'valorant',sans-serif;background: linear-gradient(135deg, #ff003c 0%, #ff6b6b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">ASTERISK 2025</h3>
+                
+                <!-- Tagline -->
+                <p class="text-gray-400 mb-6 font-rajdhani text-lg">Where Code Meets Combat</p>
+                
+                <!-- Social Links -->
+                <div class="flex justify-center gap-6 mb-8">
+                    <a href="#" class="social-icon-footer" style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(255,0,60,0.1);border:2px solid #ff003c;border-radius:50%;color:#ff003c;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='#ff003c';this.style.color='#fff';this.style.transform='scale(1.1)';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.color='#ff003c';this.style.transform='scale(1)';">📸</a>
+                    <a href="#" class="social-icon-footer" style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(255,0,60,0.1);border:2px solid #ff003c;border-radius:50%;color:#ff003c;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='#ff003c';this.style.color='#fff';this.style.transform='scale(1.1)';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.color='#ff003c';this.style.transform='scale(1)';">🐦</a>
+                    <a href="#" class="social-icon-footer" style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(255,0,60,0.1);border:2px solid #ff003c;border-radius:50%;color:#ff003c;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='#ff003c';this.style.color='#fff';this.style.transform='scale(1.1)';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.color='#ff003c';this.style.transform='scale(1)';">💼</a>
+                </div>
+                
+                <!-- Divider -->
+                <div style="height:2px;background:linear-gradient(90deg, transparent, #ff003c, #ff6b6b, transparent);margin:2rem 0;opacity:0.3;"></div>
+                
+                <!-- Copyright -->
+                <p style="font-family:'Rajdhani',sans-serif;font-size:1.1rem;color:#fff;letter-spacing:0.08em;margin-bottom:0.5rem;">
+                    &copy; 2025 ACM Student Chapter, Amal Jyothi College of Engineering
+                </p>
+                
+                <!-- Credits -->
+                <p style="color:#888;font-size:0.9rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.05em;margin-bottom:1rem;">
+                    Designed & Developed by <span style="color:#ff003c;font-weight:600;">Amarnath C</span> and <span style="color:#ff003c;font-weight:600;">Amal Benny Joseph</span>
+                </p>
+                
+                <!-- Contact Info -->
+                <p style="color:#999;font-size:0.95rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.05em;margin-bottom:1.5rem;">
+                    <span style="color:#ff003c;font-weight:600;">Edwin</span> - <a href="tel:+916282325276" style="color:#ddd;text-decoration:none;transition:color 0.3s ease;" onmouseover="this.style.color='#ff003c';" onmouseout="this.style.color='#ddd';">+91 62823 25276</a>
+                </p>
+                
+                <!-- Contact Button -->
+                <a href="tel:+916282325276" style="display:inline-block;color:#fff;background:#ff003c;padding:0.75rem 2rem;border-radius:25px;text-decoration:none;font-weight:700;font-family:'Rajdhani',sans-serif;text-transform:uppercase;letter-spacing:0.1em;box-shadow:0 5px 20px rgba(255,0,60,0.4);transition:all 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(255,0,60,0.6)';this.style.background='#e6003a';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 5px 20px rgba(255,0,60,0.4)';this.style.background='#ff003c';">☎ CALL US</a>
+            </div>
+        </div>
+    </footer>
 
     <script>
         const API_BASE_URL = 'https://30c61382b1f2.ngrok-free.app';

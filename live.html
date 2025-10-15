@@ -2248,7 +2248,7 @@
             display: none;
             align-items: center;
             justify-content: center;
-            z-index: 999998;
+            z-index: 999999;
             animation: fadeIn 0.5s ease;
             background-attachment: fixed;
             overflow-y: auto;
@@ -2256,7 +2256,14 @@
         }
 
         .pause-screen-overlay.active {
-            display: flex;
+            display: flex !important;
+        }
+        
+        /* Ensure pause screen works in fullscreen mode */
+        :fullscreen .pause-screen-overlay,
+        :-webkit-full-screen .pause-screen-overlay,
+        :-moz-full-screen .pause-screen-overlay {
+            z-index: 2147483647 !important;
         }
 
         .pause-screen-overlay::before {

@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Match Control Dashboard | ASTERISK</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Tournament Control | ASTERISK</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.cdnfonts.com/css/valorant" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
-        
         * {
             margin: 0;
             padding: 0;
@@ -15,150 +16,308 @@
         }
 
         body {
+            color: #e5e5e5;
             font-family: 'Inter', sans-serif;
-            background: #000;
-            color: #fff;
+            overflow-x: hidden;
+            background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1920&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
             min-height: 100vh;
-            position: relative;
         }
 
         body::before {
             content: '';
             position: fixed;
             inset: 0;
-            background-image: 
-                linear-gradient(rgba(255, 8, 68, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 8, 68, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
             z-index: 0;
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Rajdhani', sans-serif;
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255, 0, 60, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 60, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        .glassmorphic {
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 100;
             background: rgba(10, 10, 10, 0.7);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 8, 68, 0.3);
-            border-radius: 12px;
+            border-bottom: 2px solid rgba(255, 0, 60, 0.3);
+            padding: 1.5rem 2rem;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #ff0844, #d4003a);
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-family: 'Valorant', 'Rajdhani', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .header h1 span {
+            color: #ff003c;
+            text-shadow: 0 0 20px rgba(255, 0, 60, 0.8);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, rgba(255, 50, 50, 0.8), rgba(200, 0, 0, 0.8));
+            color: white;
             border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #ff2060, #ff0844);
+        .logout-btn:hover {
+            background: linear-gradient(135deg, rgba(255, 50, 50, 1), rgba(200, 0, 0, 1));
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 8, 68, 0.4);
+            box-shadow: 0 8px 20px rgba(255, 50, 50, 0.4);
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 8, 68, 0.3);
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            color: white;
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 30px rgba(255, 0, 60, 0.5);
+        }
+
+        .page-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+        }
+
+        .stat-card:hover {
+            border-color: #ff003c;
+            box-shadow: 0 10px 40px rgba(255, 0, 60, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            font-family: 'Rajdhani', sans-serif;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             font-weight: 600;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #ff003c, #ff335c);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
             cursor: pointer;
             transition: all 0.3s ease;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
         }
 
-        .btn-secondary:hover {
-            background: rgba(255, 8, 68, 0.1);
-            border-color: rgba(255, 8, 68, 0.5);
+        .btn:hover {
+            background: linear-gradient(135deg, #ff335c, #ff003c);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 0, 60, 0.4);
         }
 
         .btn-warning {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.8), rgba(245, 158, 11, 0.8));
         }
 
         .btn-warning:hover {
-            background: linear-gradient(135deg, #fcd34d, #fbbf24);
-            transform: translateY(-2px);
+            background: linear-gradient(135deg, rgba(251, 191, 36, 1), rgba(245, 158, 11, 1));
             box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
         }
 
-        .input-field {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 8, 68, 0.3);
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            color: white;
-            width: 100%;
-            transition: all 0.3s ease;
+        /* Matches Section */
+        .matches-section {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
         }
 
-        .input-field:focus {
-            outline: none;
-            border-color: #ff0844;
-            box-shadow: 0 0 20px rgba(255, 8, 68, 0.3);
-            background: rgba(0, 0, 0, 0.8);
+        .section-header {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
         }
 
-        select.input-field option {
-            background: #1a1a1a;
-            color: white;
+        .matches-grid {
+            display: grid;
+            gap: 1rem;
         }
 
         .match-card {
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 8, 68, 0.3);
-            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 0, 60, 0.2);
+            border-radius: 10px;
             padding: 1.5rem;
             transition: all 0.3s ease;
         }
 
         .match-card:hover {
-            border-color: rgba(255, 8, 68, 0.6);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 8, 68, 0.2);
+            border-color: rgba(255, 0, 60, 0.6);
+            background: rgba(0, 0, 0, 0.6);
+            transform: translateX(5px);
+        }
+
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .match-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .match-number {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ff003c;
+        }
+
+        .match-round {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
         }
 
         .status-badge {
-            padding: 0.25rem 0.75rem;
+            padding: 0.3rem 0.8rem;
             border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .status-upcoming, .status-pending {
+        .status-pending {
             background: rgba(59, 130, 246, 0.2);
             color: #60a5fa;
-            border: 1px solid rgba(59, 130, 246, 0.3);
+            border: 1px solid rgba(59, 130, 246, 0.4);
         }
 
         .status-live {
-            background: rgba(255, 8, 68, 0.2);
-            color: #ff0844;
-            border: 1px solid rgba(255, 8, 68, 0.4);
+            background: rgba(255, 0, 60, 0.2);
+            color: #ff003c;
+            border: 1px solid rgba(255, 0, 60, 0.4);
             animation: pulse 2s infinite;
         }
 
         .status-completed {
             background: rgba(34, 197, 94, 0.2);
             color: #4ade80;
-            border: 1px solid rgba(34, 197, 94, 0.3);
+            border: 1px solid rgba(34, 197, 94, 0.4);
         }
 
         @keyframes pulse {
@@ -166,140 +325,458 @@
             50% { opacity: 0.6; }
         }
 
+        .match-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-small:hover {
+            background: rgba(255, 0, 60, 0.2);
+            border-color: rgba(255, 0, 60, 0.6);
+        }
+
+        .btn-small.delete:hover {
+            background: rgba(255, 50, 50, 0.2);
+            border-color: rgba(255, 50, 50, 0.6);
+            color: #ff3232;
+        }
+
+        .match-teams {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .team-box {
+            text-align: center;
+        }
+
+        .team-box.left {
+            text-align: right;
+        }
+
+        .team-box.right {
+            text-align: left;
+        }
+
+        .team-name {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 0.3rem;
+        }
+
+        .team-seed {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+        }
+
+        .vs-text {
+            font-family: 'Valorant', 'Rajdhani', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .match-winner {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .match-winner span {
+            color: #4ade80;
+            font-weight: 700;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-label {
+            display: block;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.9rem;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            color: #fff;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #ff003c;
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.3);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-select option {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 0, 60, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 0, 60, 0.5);
+        }
+
+        /* Auth Modal */
         .auth-modal {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            padding: 2rem;
         }
 
-        .hidden {
+        .auth-content {
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 0, 60, 0.5);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff003c, #ff335c, #ff003c);
+        }
+
+        .auth-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff003c, #ff335c);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 40px rgba(255, 0, 60, 0.4);
+        }
+
+        .auth-title {
+            font-family: 'Valorant', 'Rajdhani', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .auth-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .auth-error {
+            background: rgba(255, 50, 50, 0.1);
+            border: 1px solid rgba(255, 50, 50, 0.3);
+            color: #ff3232;
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
             display: none;
+        }
+
+        .auth-error.show {
+            display: block;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 0, 60, 0.5);
+            border-left: 4px solid #ff003c;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            max-width: 350px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .notification.success {
+            border-left-color: #00ff64;
+        }
+
+        .notification.error {
+            border-left-color: #ff3232;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .match-teams {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .team-box {
+                text-align: center !important;
+            }
+
+            .vs-text {
+                display: none;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .empty-state .iconify {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
         }
     </style>
 </head>
 <body>
-    <!-- Authentication Modal -->
+    <!-- Auth Modal -->
     <div id="authModal" class="auth-modal">
-        <div class="glassmorphic p-8 max-w-md w-full mx-4 relative overflow-hidden">
-            <!-- Decorative Elements -->
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 via-pink-500 to-red-600"></div>
-            <div class="absolute -top-10 -right-10 w-32 h-32 bg-red-600/20 rounded-full blur-3xl"></div>
-            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-pink-600/20 rounded-full blur-3xl"></div>
-            
-            <div class="relative">
-                <!-- Logo/Icon -->
-                <div class="flex justify-center mb-6">
-                    <div class="w-20 h-20 bg-gradient-to-br from-red-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg">
-                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                        </svg>
-                    </div>
-                </div>
-                
-                <h2 class="text-3xl font-bold mb-2 text-center bg-gradient-to-r from-red-400 to-pink-400 bg-clip-text text-transparent">Tournament Control</h2>
-                <p class="text-gray-400 text-center mb-6">Admin Authentication Required</p>
-                
-                <form id="authForm" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-2 text-gray-300">Admin Password</label>
-                        <div class="relative">
-                            <input type="password" id="authPassword" class="input-field pr-12" placeholder="Enter your password" required autofocus>
-                            <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
-                                <svg id="eyeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn-primary w-full flex items-center justify-center gap-2 text-lg font-bold">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
-                        Access Dashboard
-                    </button>
-                    <p id="authError" class="text-red-400 text-sm text-center hidden bg-red-900/20 border border-red-500/30 rounded-lg py-2"></p>
-                </form>
-                
-                <div class="mt-6 text-center">
-                    <p class="text-xs text-gray-500">
-                        🔒 Protected by ASTERISK Security
-                    </p>
-                </div>
+        <div class="auth-content">
+            <div class="auth-icon">
+                <span class="iconify" data-icon="mdi:shield-lock" style="font-size: 3rem; color: white;"></span>
             </div>
+            <h2 class="auth-title">Tournament Control</h2>
+            <p class="auth-subtitle">Admin Authentication Required</p>
+            
+            <form id="authForm">
+                <div class="form-group" style="text-align: left;">
+                    <label class="form-label">Admin Password</label>
+                    <input type="password" id="authPassword" class="form-input" placeholder="Enter password" required autofocus>
+                </div>
+                
+                <div id="authError" class="auth-error">Invalid password. Please try again.</div>
+                
+                <button type="submit" class="btn" style="width: 100%;">
+                    <span class="iconify" data-icon="mdi:login"></span>
+                    Access Dashboard
+                </button>
+            </form>
         </div>
     </div>
 
     <!-- Main Dashboard -->
-    <div id="dashboard" class="hidden min-h-screen p-6">
-        <div class="max-w-7xl mx-auto">
-            <!-- Header -->
-            <div class="flex justify-between items-center mb-8">
-                <div>
-                    <h1 class="text-4xl font-bold mb-2">Match Control Dashboard</h1>
-                    <p class="text-gray-400">Manage tournament matches in real-time</p>
-                </div>
-                <button onclick="logout()" class="btn-secondary">Logout</button>
-            </div>
-
-            <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-                <div class="glassmorphic p-4 hover:border-[#ff0844] transition-all">
-                    <div class="text-3xl font-bold text-[#ff0844]" id="totalMatches">0</div>
-                    <div class="text-sm text-gray-400">Total Matches</div>
-                </div>
-                <div class="glassmorphic p-4 hover:border-blue-500 transition-all">
-                    <div class="text-3xl font-bold text-blue-400" id="upcomingMatches">0</div>
-                    <div class="text-sm text-gray-400">Upcoming</div>
-                </div>
-                <div class="glassmorphic p-4 hover:border-[#ff0844] transition-all">
-                    <div class="text-3xl font-bold text-[#ff0844]" id="liveMatches">0</div>
-                    <div class="text-sm text-gray-400">Live Now</div>
-                </div>
-                <div class="glassmorphic p-4 hover:border-green-500 transition-all">
-                    <div class="text-3xl font-bold text-green-400" id="completedMatches">0</div>
-                    <div class="text-sm text-gray-400">Completed</div>
+    <div id="dashboard" style="display: none;">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1>
+                    <span class="iconify" data-icon="mdi:tournament" style="color: #ff003c;"></span>
+                    <span>ASTERISK</span> CONTROL
+                </h1>
+                <div class="header-actions">
+                    <button onclick="logout()" class="logout-btn">
+                        <span class="iconify" data-icon="mdi:logout"></span>
+                        Logout
+                    </button>
                 </div>
             </div>
+        </div>
 
-            <!-- Create Match Button -->
-            <div class="mb-6 flex gap-4">
-                <button onclick="showCreateMatchModal()" class="btn-primary">
-                    ➕ Create New Match
+        <!-- Container -->
+        <div class="container">
+            <h2 class="page-title">TOURNAMENT CONTROL</h2>
+            <p class="page-subtitle">Manage all matches, teams, and tournament progression</p>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" style="color: #ff003c;" id="totalMatches">0</div>
+                    <div class="stat-label">Total Matches</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" style="color: #60a5fa;" id="upcomingMatches">0</div>
+                    <div class="stat-label">Upcoming</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" style="color: #ff003c;" id="liveMatches">0</div>
+                    <div class="stat-label">Live Now</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" style="color: #4ade80;" id="completedMatches">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button onclick="showCreateMatchModal()" class="btn">
+                    <span class="iconify" data-icon="mdi:plus-circle"></span>
+                    Create New Match
                 </button>
-                <button onclick="showBroadcastModal()" class="btn-warning">
-                    📱 Broadcast WhatsApp to All Teams
+                <button onclick="showBroadcastModal()" class="btn-warning btn">
+                    <span class="iconify" data-icon="mdi:whatsapp"></span>
+                    Broadcast WhatsApp
                 </button>
             </div>
 
-            <!-- Matches List -->
-            <div class="glassmorphic p-6">
-                <h2 class="text-2xl font-bold mb-4">All Matches</h2>
-                <div id="matchesList" class="space-y-4">
+            <!-- Matches Section -->
+            <div class="matches-section">
+                <h3 class="section-header">
+                    <span class="iconify" data-icon="mdi:sword-cross" style="color: #ff003c;"></span>
+                    All Matches
+                </h3>
+                <div id="matchesList" class="matches-grid">
                     <!-- Matches will be loaded here -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Create/Edit Match Modal -->
-    <div id="matchModal" class="auth-modal hidden">
-        <div class="glassmorphic p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <h2 id="modalTitle" class="text-2xl font-bold mb-6">Create New Match</h2>
-            <form id="matchForm" class="space-y-4">
+    <!-- Match Modal -->
+    <div id="matchModal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-header" id="modalTitle">Create New Match</h3>
+            <form id="matchForm">
                 <input type="hidden" id="matchId">
                 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Round</label>
-                        <select id="matchRound" class="input-field" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Round</label>
+                        <select id="matchRound" class="form-select" required>
                             <option value="">Select Round</option>
                             <option value="Round of 16">Round of 16</option>
                             <option value="Quarterfinals">Quarterfinals</option>
@@ -307,130 +784,111 @@
                             <option value="Grand Final">Grand Final</option>
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Match Number</label>
-                        <input type="text" id="matchNumber" class="input-field" placeholder="e.g., M1" required>
+                    <div class="form-group">
+                        <label class="form-label">Match Number</label>
+                        <input type="text" id="matchNumber" class="form-input" placeholder="e.g., M1" required>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Team 1</label>
-                        <input type="text" id="team1" class="input-field" placeholder="Team name" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Team 1</label>
+                        <input type="text" id="team1" class="form-input" placeholder="Team name" required>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Team 1 Seed</label>
-                        <input type="number" id="team1Seed" class="input-field" placeholder="Seed" min="1">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Team 2</label>
-                        <input type="text" id="team2" class="input-field" placeholder="Team name" required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Team 2 Seed</label>
-                        <input type="number" id="team2Seed" class="input-field" placeholder="Seed" min="1">
+                    <div class="form-group">
+                        <label class="form-label">Team 1 Seed</label>
+                        <input type="number" id="team1Seed" class="form-input" placeholder="Seed" min="1">
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Status</label>
-                        <select id="matchStatus" class="input-field" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Team 2</label>
+                        <input type="text" id="team2" class="form-input" placeholder="Team name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Team 2 Seed</label>
+                        <input type="number" id="team2Seed" class="form-input" placeholder="Seed" min="1">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <select id="matchStatus" class="form-select" required>
                             <option value="pending">Pending</option>
                             <option value="live">Live</option>
                             <option value="completed">Completed</option>
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Winner (if completed)</label>
-                        <input type="text" id="matchWinner" class="input-field" placeholder="Winner team name">
+                    <div class="form-group">
+                        <label class="form-label">Winner</label>
+                        <input type="text" id="matchWinner" class="form-input" placeholder="Winner (if completed)">
                     </div>
                 </div>
 
-                <div class="flex gap-4 pt-4">
-                    <button type="submit" class="btn-primary flex-1">Save Match</button>
-                    <button type="button" onclick="closeMatchModal()" class="btn-secondary flex-1">Cancel</button>
+                <div class="modal-actions">
+                    <button type="button" onclick="closeMatchModal()" class="btn btn-secondary" style="flex: 1;">
+                        <span class="iconify" data-icon="mdi:close"></span>
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn" style="flex: 1;">
+                        <span class="iconify" data-icon="mdi:check"></span>
+                        Save Match
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Broadcast WhatsApp Modal -->
-    <div id="broadcastModal" class="auth-modal hidden">
-        <div class="glassmorphic p-8 max-w-2xl w-full mx-4">
-            <h2 class="text-2xl font-bold mb-6">📱 Broadcast WhatsApp to All Team Leads</h2>
-            <form id="broadcastForm" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">Message</label>
-                    <textarea id="broadcastMessage" class="input-field" rows="6" placeholder="Enter your message..." required></textarea>
-                    <p class="text-sm text-gray-400 mt-2">This message will be sent to all registered team leads via WhatsApp</p>
+    <!-- Broadcast Modal -->
+    <div id="broadcastModal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-header">📱 Broadcast WhatsApp</h3>
+            <form id="broadcastForm">
+                <div class="form-group">
+                    <label class="form-label">Message</label>
+                    <textarea id="broadcastMessage" class="form-input" rows="6" placeholder="Enter message to broadcast..." required style="resize: vertical;"></textarea>
+                    <p style="color: rgba(255, 255, 255, 0.5); font-size: 0.85rem; margin-top: 0.5rem;">
+                        This will be sent to all registered team leads via WhatsApp
+                    </p>
                 </div>
 
-                <div id="broadcastProgress" class="hidden">
-                    <div class="bg-gray-800 rounded-lg p-4">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm font-medium">Broadcasting...</span>
-                            <span id="broadcastStatus" class="text-sm text-gray-400">0 / 0</span>
+                <div id="broadcastProgress" style="display: none; margin-bottom: 1rem;">
+                    <div style="background: rgba(0, 0, 0, 0.4); border-radius: 8px; padding: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span>Broadcasting...</span>
+                            <span id="broadcastStatus">0 / 0</span>
                         </div>
-                        <div class="w-full bg-gray-700 rounded-full h-2">
-                            <div id="broadcastProgressBar" class="bg-[#00fff7] h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        <div style="background: rgba(255, 255, 255, 0.1); border-radius: 4px; height: 8px; overflow: hidden;">
+                            <div id="broadcastProgressBar" style="background: #00fff7; height: 100%; width: 0%; transition: width 0.3s ease;"></div>
                         </div>
-                        <div id="broadcastResults" class="mt-4 max-h-40 overflow-y-auto space-y-1"></div>
+                        <div id="broadcastResults" style="margin-top: 1rem; max-height: 200px; overflow-y: auto;"></div>
                     </div>
                 </div>
 
-                <div class="flex gap-4 pt-4">
-                    <button type="submit" class="btn-primary flex-1" id="broadcastBtn">
-                        📤 Send Broadcast
+                <div class="modal-actions">
+                    <button type="button" onclick="closeBroadcastModal()" class="btn btn-secondary" style="flex: 1;">
+                        Cancel
                     </button>
-                    <button type="button" onclick="closeBroadcastModal()" class="btn-secondary flex-1">Cancel</button>
+                    <button type="submit" class="btn" id="broadcastBtn" style="flex: 1;">
+                        <span class="iconify" data-icon="mdi:send"></span>
+                        Send Broadcast
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        let authToken = localStorage.getItem('adminToken');
         const API_BASE = "https://30c61382b1f2.ngrok-free.app";
+        let authToken = localStorage.getItem('adminToken');
 
-        // Password toggle function
-        function togglePassword() {
-            const passwordInput = document.getElementById('authPassword');
-            const eyeIcon = document.getElementById('eyeIcon');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeIcon.innerHTML = `
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
-                `;
-            } else {
-                passwordInput.type = 'password';
-                eyeIcon.innerHTML = `
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                `;
-            }
-        }
-
-        // Authentication
+        // Auth functions
         document.getElementById('authForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const password = document.getElementById('authPassword').value;
-            const errorElement = document.getElementById('authError');
-            const submitButton = e.target.querySelector('button[type="submit"]');
-            
-            // Disable button and show loading
-            submitButton.disabled = true;
-            submitButton.innerHTML = `
-                <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Authenticating...
-            `;
+            const errorDiv = document.getElementById('authError');
             
             try {
                 const response = await fetch(`${API_BASE}/key`, {
@@ -444,56 +902,29 @@
                 if (data.success) {
                     authToken = data.token;
                     localStorage.setItem('adminToken', authToken);
-                    
-                    // Success animation
-                    submitButton.innerHTML = `
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Success!
-                    `;
-                    
-                    setTimeout(() => {
-                        document.getElementById('authModal').classList.add('hidden');
-                        document.getElementById('dashboard').classList.remove('hidden');
-                        loadMatches();
-                    }, 500);
+                    document.getElementById('authModal').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                    loadMatches();
                 } else {
-                    errorElement.textContent = '❌ Invalid password. Please try again.';
-                    errorElement.classList.remove('hidden');
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = `
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
-                        Access Dashboard
-                    `;
+                    errorDiv.classList.add('show');
                 }
             } catch (error) {
-                console.error('Auth error:', error);
-                errorElement.textContent = '⚠️ Connection error. Please check your internet.';
-                errorElement.classList.remove('hidden');
-                submitButton.disabled = false;
-                submitButton.innerHTML = `
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                    Access Dashboard
-                `;
+                errorDiv.textContent = 'Connection error. Please try again.';
+                errorDiv.classList.add('show');
             }
         });
 
         function logout() {
             localStorage.removeItem('adminToken');
             authToken = null;
-            document.getElementById('dashboard').classList.add('hidden');
-            document.getElementById('authModal').classList.remove('hidden');
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('authModal').style.display = 'flex';
         }
 
         // Check auth on load
         if (authToken) {
-            document.getElementById('authModal').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
+            document.getElementById('authModal').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
             loadMatches();
         }
 
@@ -501,9 +932,7 @@
         async function loadMatches() {
             try {
                 const response = await fetch(`${API_BASE}/api/matches`, {
-                    headers: {
-                        'X-Auth-Token': authToken
-                    }
+                    headers: {'X-Auth-Token': authToken}
                 });
 
                 const data = await response.json();
@@ -521,45 +950,50 @@
             const container = document.getElementById('matchesList');
             
             if (matches.length === 0) {
-                container.innerHTML = '<p class="text-gray-400 text-center py-8">No matches created yet</p>';
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span class="iconify" data-icon="mdi:trophy-outline"></span>
+                        <p>No matches created yet</p>
+                    </div>
+                `;
                 return;
             }
 
             container.innerHTML = matches.map(match => `
                 <div class="match-card">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <div class="flex items-center gap-3 mb-2">
-                                <span class="text-lg font-bold">${match.match_number || 'Match'}</span>
-                                <span class="text-gray-400">${match.round}</span>
-                                <span class="status-badge status-${match.status}">${match.status}</span>
-                            </div>
+                    <div class="match-header">
+                        <div class="match-info">
+                            <span class="match-number">${match.match_number || 'Match'}</span>
+                            <span class="match-round">${match.round}</span>
+                            <span class="status-badge status-${match.status}">${match.status}</span>
                         </div>
-                        <div class="flex gap-2">
-                            <button onclick="editMatch('${match._id}')" class="btn-secondary px-3 py-1 text-sm">Edit</button>
-                            <button onclick="deleteMatch('${match._id}')" class="btn-secondary px-3 py-1 text-sm text-red-400">Delete</button>
+                        <div class="match-actions">
+                            <button onclick="editMatch('${match._id}')" class="btn-small">
+                                <span class="iconify" data-icon="mdi:pencil"></span> Edit
+                            </button>
+                            <button onclick="deleteMatch('${match._id}')" class="btn-small delete">
+                                <span class="iconify" data-icon="mdi:delete"></span> Delete
+                            </button>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-4 items-center">
-                        <div class="text-right">
-                            <div class="font-bold text-lg">${match.team1}</div>
-                            ${match.team1_seed ? `<div class="text-sm text-gray-400">Seed ${match.team1_seed}</div>` : ''}
+                    <div class="match-teams">
+                        <div class="team-box left">
+                            <div class="team-name">${match.team1}</div>
+                            ${match.team1_seed ? `<div class="team-seed">Seed ${match.team1_seed}</div>` : ''}
                         </div>
                         
-                        <div class="text-center">
-                            <div class="text-[#ffd700] font-bold text-xl">VS</div>
-                        </div>
+                        <div class="vs-text">VS</div>
                         
-                        <div>
-                            <div class="font-bold text-lg">${match.team2}</div>
-                            ${match.team2_seed ? `<div class="text-sm text-gray-400">Seed ${match.team2_seed}</div>` : ''}
+                        <div class="team-box right">
+                            <div class="team-name">${match.team2}</div>
+                            ${match.team2_seed ? `<div class="team-seed">Seed ${match.team2_seed}</div>` : ''}
                         </div>
                     </div>
 
                     ${match.winner ? `
-                        <div class="mt-4 pt-4 border-t border-gray-700">
-                            <div class="text-sm text-gray-400">Winner: <span class="text-green-400 font-bold">${match.winner}</span></div>
+                        <div class="match-winner">
+                            Winner: <span>${match.winner}</span>
                         </div>
                     ` : ''}
                 </div>
@@ -573,12 +1007,12 @@
             document.getElementById('completedMatches').textContent = matches.filter(m => m.status === 'completed').length;
         }
 
-        // Create/Edit Match
+        // Match modal functions
         function showCreateMatchModal() {
             document.getElementById('modalTitle').textContent = 'Create New Match';
             document.getElementById('matchForm').reset();
             document.getElementById('matchId').value = '';
-            document.getElementById('matchModal').classList.remove('hidden');
+            document.getElementById('matchModal').classList.add('active');
         }
 
         async function editMatch(matchId) {
@@ -600,7 +1034,7 @@
                     document.getElementById('team2Seed').value = match.team2_seed || '';
                     document.getElementById('matchStatus').value = match.status;
                     document.getElementById('matchWinner').value = match.winner || '';
-                    document.getElementById('matchModal').classList.remove('hidden');
+                    document.getElementById('matchModal').classList.add('active');
                 }
             } catch (error) {
                 console.error('Error loading match:', error);
@@ -608,7 +1042,7 @@
         }
 
         function closeMatchModal() {
-            document.getElementById('matchModal').classList.add('hidden');
+            document.getElementById('matchModal').classList.remove('active');
         }
 
         document.getElementById('matchForm').addEventListener('submit', async (e) => {
@@ -644,17 +1078,15 @@
                 if (data.success) {
                     closeMatchModal();
                     loadMatches();
-                } else {
-                    alert('Error: ' + data.message);
+                    showNotification(matchId ? 'Match updated!' : 'Match created!', 'success');
                 }
             } catch (error) {
-                console.error('Error saving match:', error);
-                alert('Error saving match');
+                showNotification('Error saving match', 'error');
             }
         });
 
         async function deleteMatch(matchId) {
-            if (!confirm('Are you sure you want to delete this match?')) return;
+            if (!confirm('Delete this match?')) return;
             
             try {
                 const response = await fetch(`${API_BASE}/api/matches/${matchId}`, {
@@ -662,52 +1094,39 @@
                     headers: {'X-Auth-Token': authToken}
                 });
 
-                const data = await response.json();
-                
-                if (data.success) {
+                if (response.ok) {
                     loadMatches();
-                } else {
-                    alert('Error: ' + data.message);
+                    showNotification('Match deleted', 'success');
                 }
             } catch (error) {
-                console.error('Error deleting match:', error);
-                alert('Error deleting match');
+                showNotification('Error deleting match', 'error');
             }
         }
 
-        // Broadcast WhatsApp Functions
+        // Broadcast modal
         function showBroadcastModal() {
             document.getElementById('broadcastForm').reset();
-            document.getElementById('broadcastProgress').classList.add('hidden');
-            document.getElementById('broadcastModal').classList.remove('hidden');
+            document.getElementById('broadcastProgress').style.display = 'none';
+            document.getElementById('broadcastModal').classList.add('active');
         }
 
         function closeBroadcastModal() {
-            document.getElementById('broadcastModal').classList.add('hidden');
+            document.getElementById('broadcastModal').classList.remove('active');
         }
 
         document.getElementById('broadcastForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const message = document.getElementById('broadcastMessage').value.trim();
-            
-            if (!message) {
-                alert('Please enter a message');
-                return;
-            }
-            
-            if (!confirm('Are you sure you want to send this message to ALL team leads via WhatsApp?')) {
-                return;
-            }
+            if (!confirm('Send this message to ALL team leads?')) return;
             
             const progressDiv = document.getElementById('broadcastProgress');
             const resultsDiv = document.getElementById('broadcastResults');
             const broadcastBtn = document.getElementById('broadcastBtn');
             
-            // Show progress
-            progressDiv.classList.remove('hidden');
+            progressDiv.style.display = 'block';
             broadcastBtn.disabled = true;
-            broadcastBtn.textContent = '📤 Sending...';
+            broadcastBtn.textContent = 'Sending...';
             resultsDiv.innerHTML = '';
             
             try {
@@ -723,45 +1142,49 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    // Update progress bar
                     document.getElementById('broadcastProgressBar').style.width = '100%';
-                    document.getElementById('broadcastStatus').textContent = 
-                        `${data.total_sent} sent, ${data.total_failed} failed`;
+                    document.getElementById('broadcastStatus').textContent = `${data.total_sent} sent, ${data.total_failed} failed`;
                     
-                    // Show results
-                    resultsDiv.innerHTML = '<div class="text-sm font-medium mb-2">Results:</div>';
+                    resultsDiv.innerHTML = '<div style="font-weight: 600; margin-bottom: 0.5rem;">Results:</div>';
                     data.results.forEach(result => {
-                        const statusColor = result.status === 'sent' ? 'text-green-400' : 'text-red-400';
                         const icon = result.status === 'sent' ? '✅' : '❌';
-                        const reason = result.reason ? ` (${result.reason})` : '';
-                        resultsDiv.innerHTML += `
-                            <div class="text-sm ${statusColor}">
-                                ${icon} ${result.team}${reason}
-                            </div>
-                        `;
+                        const color = result.status === 'sent' ? '#4ade80' : '#ff3232';
+                        resultsDiv.innerHTML += `<div style="color: ${color}; font-size: 0.9rem;">${icon} ${result.team}</div>`;
                     });
                     
-                    broadcastBtn.textContent = '✅ Broadcast Complete';
-                    
-                    setTimeout(() => {
-                        closeBroadcastModal();
-                    }, 5000);
-                } else {
-                    alert('Error: ' + data.message);
-                    broadcastBtn.disabled = false;
-                    broadcastBtn.textContent = '📤 Send Broadcast';
+                    broadcastBtn.textContent = '✅ Complete';
+                    setTimeout(() => closeBroadcastModal(), 5000);
                 }
             } catch (error) {
-                console.error('Error broadcasting:', error);
-                alert('Error broadcasting message');
+                showNotification('Error broadcasting', 'error');
                 broadcastBtn.disabled = false;
-                broadcastBtn.textContent = '📤 Send Broadcast';
+                broadcastBtn.innerHTML = '<span class="iconify" data-icon="mdi:send"></span> Send Broadcast';
             }
         });
 
-        // Real-time updates via SSE
+        // Notification
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            const icon = type === 'success' ? 'mdi:check-circle' : 'mdi:alert-circle';
+            const iconColor = type === 'success' ? '#00ff64' : '#ff3232';
+            
+            notification.innerHTML = `
+                <span class="iconify" data-icon="${icon}" style="font-size: 1.5rem; color: ${iconColor};"></span>
+                <span style="font-weight: 600;">${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            setTimeout(() => notification.classList.add('show'), 100);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => document.body.removeChild(notification), 500);
+            }, 3000);
+        }
+
+        // SSE for real-time updates
         const eventSource = new EventSource(`${API_BASE}/api/sse`);
-        
         eventSource.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
@@ -773,9 +1196,7 @@
             }
         };
 
-        eventSource.onerror = (error) => {
-            console.error('SSE connection error:', error);
-        };
+        console.log('🎮 ASTERISK Tournament Control initialized');
     </script>
 </body>
 </html>

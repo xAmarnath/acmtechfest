@@ -626,6 +626,56 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Broadcast Message Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>
+                        <span class="iconify" data-icon="mdi:message-flash" style="color: #ffd700;"></span>
+                        Broadcast Message
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <p class="helper-text" style="margin-bottom: 1rem;">
+                        Send a chat message to all viewers watching the stream
+                    </p>
+
+                    <button class="btn btn-success" onclick="openChatModal()" style="width: 100%;">
+                        <span class="iconify" data-icon="mdi:message-text"></span>
+                        Send Chat Message
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(10px); z-index: 10000; align-items: center; justify-content: center;">
+        <div class="card" style="width: 90%; max-width: 500px; margin: 2rem;">
+            <div class="card-header">
+                <h3>
+                    <span class="iconify" data-icon="mdi:message-text" style="color: #00fff7;"></span>
+                    Send Broadcast Message
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="form-label">Message (Max 150 characters)</label>
+                    <input type="text" id="chatMessage" class="form-input" placeholder="Type your message..." maxlength="150">
+                    <p class="helper-text" id="charCount">0 / 150 characters</p>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="closeChatModal()">
+                        <span class="iconify" data-icon="mdi:close"></span>
+                        Cancel
+                    </button>
+                    <button class="btn btn-success" onclick="sendChat()">
+                        <span class="iconify" data-icon="mdi:send"></span>
+                        Send Message
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -853,6 +903,66 @@
                 showNotification('Failed to reset match', 'error');
             }
         }
+
+        // Chat Modal Functions
+        function openChatModal() {
+            document.getElementById('chatModal').style.display = 'flex';
+            document.getElementById('chatMessage').focus();
+        }
+
+        function closeChatModal() {
+            document.getElementById('chatModal').style.display = 'none';
+            document.getElementById('chatMessage').value = '';
+            document.getElementById('charCount').textContent = '0 / 150 characters';
+        }
+
+        async function sendChat() {
+            const message = document.getElementById('chatMessage').value.trim();
+            
+            if (!message) {
+                showNotification('Please enter a message', 'error');
+                return;
+            }
+            
+            try {
+                await fetch(`${API_BASE}/send-chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message, viewerId: 'admin-panel' })
+                });
+                
+                closeChatModal();
+                showNotification('💬 Message broadcasted to all viewers!', 'success');
+            } catch (error) {
+                console.error('Error sending chat:', error);
+                showNotification('Failed to send message', 'error');
+            }
+        }
+
+        // Character counter for chat
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatInput = document.getElementById('chatMessage');
+            if (chatInput) {
+                chatInput.addEventListener('input', (e) => {
+                    const count = e.target.value.length;
+                    document.getElementById('charCount').textContent = `${count} / 150 characters`;
+                });
+                
+                // Send on Enter key
+                chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        sendChat();
+                    }
+                });
+            }
+            
+            // Close modal on ESC key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && document.getElementById('chatModal').style.display === 'flex') {
+                    closeChatModal();
+                }
+            });
+        });
 
         // Viewer count update
         async function updateViewerCount() {

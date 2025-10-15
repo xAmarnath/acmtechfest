@@ -3210,6 +3210,9 @@
     </div>
 
     <script>
+        // Base URL for API calls
+        const API_BASE_URL = 'https://30c61382b1f2.ngrok-free.app';
+        
         // HLS Stream Setup with Premium Features
         const video = document.getElementById('video');
         const loading = document.getElementById('loading');
@@ -3219,7 +3222,7 @@
         // Fetch ingress server URL from API
         async function getIngressServer() {
             try {
-                const response = await fetch('/api/ingress-server');
+                const response = await fetch(`${API_BASE_URL}/api/ingress-server`);
                 const data = await response.json();
                 if (data.ingress_server && data.ingress_server.trim()) {
                     console.log('📡 Using configured ingress server:', data.ingress_server);
@@ -3448,7 +3451,7 @@
         // Fetch Match State from API
         async function fetchMatchState() {
             try {
-                const response = await fetch('/api/match-state');
+                const response = await fetch(`${API_BASE_URL}/api/match-state`);
                 const state = await response.json();
                 
                 // Update teams
@@ -3499,7 +3502,7 @@
         
         // Initialize SSE connection
         function initializeSSE() {
-            eventSource = new EventSource('/api/stream-events');
+            eventSource = new EventSource(`${API_BASE_URL}/api/stream-events`);
             
             eventSource.addEventListener('open', () => {
                 console.log('✅ SSE Connected - Real-time updates active');
@@ -3550,7 +3553,7 @@
         // Send ping to server every 20 seconds
         function sendViewerPing() {
             if (viewerId) {
-                fetch('/api/viewer-ping', {
+                fetch(`${API_BASE_URL}/api/viewer-ping`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ viewerId: viewerId })
@@ -3566,7 +3569,7 @@
         window.addEventListener('beforeunload', () => {
             if (viewerId) {
                 // Send disconnect notification
-                fetch('/api/viewer-disconnect', {
+                fetch(`${API_BASE_URL}/api/viewer-disconnect`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ viewerId: viewerId }),
@@ -3597,7 +3600,7 @@
             
             if (message) {
                 // Send to server for broadcast
-                fetch('/api/send-chat', {
+                fetch(`${API_BASE_URL}/api/send-chat`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 

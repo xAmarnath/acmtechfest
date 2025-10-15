@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Panel - ASTERISK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            font-family: 'Inter', sans-serif;
+            color: #e0e0e0;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255, 8, 68, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 8, 68, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .header {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 8, 68, 0.3);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .header h1 span {
+            color: #ff0844;
+        }
+
+        .viewer-badge {
+            background: rgba(255, 8, 68, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 8, 68, 0.3);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .viewer-count {
+            color: #ff0844;
+            font-size: 1.5rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 8, 68, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(255, 8, 68, 0.5);
+            box-shadow: 0 8px 30px rgba(255, 8, 68, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(255, 8, 68, 0.2);
+        }
+
+        .card-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .card-header .iconify {
+            font-size: 1.5rem;
+            color: #ff0844;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #b0b0b0;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 0.7rem;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 8, 68, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: rgba(255, 8, 68, 0.6);
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 20px rgba(255, 8, 68, 0.2);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff0844, #d4003a);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #ff2060, #ff0844);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(255, 8, 68, 0.4);
+        }
+
+        .btn-secondary {
+            background: #2a2a2a;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #3a3a3a;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #00d4aa, #00a388);
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #00e4ba, #00d4aa);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 212, 170, 0.4);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #ff0844, #d4003a);
+            color: #fff;
+        }
+
+        .btn-gold:hover {
+            background: linear-gradient(135deg, #ff2060, #ff0844);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(255, 8, 68, 0.4);
+        }
+
+        .score-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .quick-actions {
+            grid-column: 1 / -1;
+        }
+
+        .status-alert {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            display: none;
+            align-items: center;
+            gap: 0.8rem;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .status-alert.success {
+            border-color: #00d4aa;
+            color: #00d4aa;
+        }
+
+        .status-alert.error {
+            border-color: #ff0844;
+            color: #ff0844;
+        }
+
+        .broadcast-section {
+            background: rgba(255, 8, 68, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 8, 68, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 30px rgba(255, 8, 68, 0.1);
+        }
+
+        .broadcast-section h2 {
+            font-size: 1.5rem;
+            color: #ff0844;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .broadcast-section p {
+            color: #999;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .broadcast-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .quick-link {
+            color: #00d4aa;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .quick-link:hover {
+            color: #00e4ba;
+            gap: 0.8rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            border-top: 1px solid #2a2a2a;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .score-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.4rem;
+            }
+
+            .viewer-badge {
+                font-size: 0.9rem;
+            }
+
+            .viewer-count {
+                font-size: 1.2rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .broadcast-section {
+                padding: 1.5rem;
+            }
+
+            .broadcast-section h2 {
+                font-size: 1.2rem;
+            }
+
+            .broadcast-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 1.2rem;
+            }
+
+            .status-alert {
+                top: 1rem;
+                right: 1rem;
+                left: 1rem;
+                max-width: calc(100vw - 2rem);
+            }
+
+            .waiting-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.2rem;
+                gap: 0.5rem;
+            }
+
+            .header h1 .iconify {
+                font-size: 1.2rem;
+            }
+
+            .broadcast-section h2 {
+                font-size: 1rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .btn {
+                font-size: 0.85rem;
+                padding: 0.7rem 1rem;
+            }
+
+            input[type="text"],
+            input[type="number"] {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>
+            <span class="iconify" data-icon="mdi:gamepad-variant"></span>
+            <span>ASTERISK</span> Control Panel
+        </h1>
+        <div class="viewer-badge">
+            <span class="iconify" data-icon="mdi:eye"></span>
+            <span class="viewer-count" id="viewerCount">-</span>
+            <span style="font-size: 0.9rem; color: #888;">viewers</span>
+        </div>
+    </div>
+
+    <!-- Status Alert -->
+    <div id="statusAlert" class="status-alert">
+        <span class="iconify" data-icon="mdi:check-circle"></span>
+        <span id="statusMessage"></span>
+    </div>
+
+    <div class="container">
+        <!-- Live Broadcast Section -->
+        <div class="broadcast-section">
+            <h2>
+                <span class="iconify" data-icon="mdi:broadcast"></span>
+                Live Broadcast Controls
+            </h2>
+            <p>Instantly broadcast animations and messages to all connected viewers</p>
+            <div class="broadcast-buttons">
+                <button class="btn btn-gold" onclick="triggerMatchStart()">
+                    <span class="iconify" data-icon="mdi:sword-cross"></span>
+                    Start Match
+                </button>
+                <button class="btn btn-gold" onclick="triggerMatchEnd()">
+                    <span class="iconify" data-icon="mdi:trophy"></span>
+                    End Match
+                </button>
+                <button class="btn btn-success" onclick="document.getElementById('chatModal').style.display='flex'">
+                    <span class="iconify" data-icon="mdi:message-text"></span>
+                    Send Chat
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="grid">
+            <!-- Team 1 Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="iconify" data-icon="mdi:shield"></span>
+                    <h3>Team 1</h3>
+                </div>
+                <div class="form-group">
+                    <label>Team Name</label>
+                    <input type="text" id="team1Name" placeholder="PHOENIX RISING">
+                </div>
+                <div class="form-group">
+                    <label>Subtitle</label>
+                    <input type="text" id="team1Subtitle" placeholder="Attackers">
+                </div>
+                <div class="form-group">
+                    <label>Score</label>
+                    <input type="number" id="team1Score" min="0" placeholder="0">
+                </div>
+                <button class="btn btn-primary" onclick="updateTeam(1)">
+                    <span class="iconify" data-icon="mdi:content-save"></span>
+                    Update Team 1
+                </button>
+            </div>
+
+            <!-- Team 2 Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="iconify" data-icon="mdi:shield"></span>
+                    <h3>Team 2</h3>
+                </div>
+                <div class="form-group">
+                    <label>Team Name</label>
+                    <input type="text" id="team2Name" placeholder="DRAGON FURY">
+                </div>
+                <div class="form-group">
+                    <label>Subtitle</label>
+                    <input type="text" id="team2Subtitle" placeholder="Defenders">
+                </div>
+                <div class="form-group">
+                    <label>Score</label>
+                    <input type="number" id="team2Score" min="0" placeholder="0">
+                </div>
+                <button class="btn btn-primary" onclick="updateTeam(2)">
+                    <span class="iconify" data-icon="mdi:content-save"></span>
+                    Update Team 2
+                </button>
+            </div>
+
+            <!-- Match Info Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="iconify" data-icon="mdi:information"></span>
+                    <h3>Match Information</h3>
+                </div>
+                <div class="form-group">
+                    <label>Match Title</label>
+                    <input type="text" id="matchTitle" placeholder="Grand Finals — ASTERISK 2025">
+                </div>
+                <div class="form-group">
+                    <label>Map Name</label>
+                    <input type="text" id="mapName" placeholder="HAVEN">
+                </div>
+                <div class="form-group">
+                    <label>Round</label>
+                    <input type="text" id="roundNumber" placeholder="8/24">
+                </div>
+                <div class="form-group">
+                    <label>Best Of</label>
+                    <input type="text" id="bestOf" placeholder="BO3">
+                </div>
+                <button class="btn btn-primary" onclick="updateMatchInfo()">
+                    <span class="iconify" data-icon="mdi:content-save"></span>
+                    Update Match Info
+                </button>
+            </div>
+
+            <!-- Quick Actions Card -->
+            <div class="card quick-actions">
+                <div class="card-header">
+                    <span class="iconify" data-icon="mdi:flash"></span>
+                    <h3>Quick Actions</h3>
+                </div>
+                <div class="score-grid">
+                    <button class="btn btn-secondary" onclick="updateAllData()">
+                        <span class="iconify" data-icon="mdi:sync"></span>
+                        Update All
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetMatch()">
+                        <span class="iconify" data-icon="mdi:refresh"></span>
+                        Reset Match
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ingress Server Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="iconify" data-icon="mdi:server-network"></span>
+                    <h3>HLS Stream Source</h3>
+                </div>
+                <div class="form-group">
+                    <label>Ingress Server URL</label>
+                    <input type="text" id="ingressServer" placeholder="http://localhost:5001/hls/stream.m3u8">
+                    <small style="color: #888; margin-top: 0.5rem; display: block;">Enter the m3u8 URL for the HLS stream</small>
+                </div>
+                <button class="btn btn-primary" onclick="updateIngressServer()">
+                    <span class="iconify" data-icon="mdi:cloud-upload"></span>
+                    Update Stream Source
+                </button>
+                <button class="btn btn-secondary" style="margin-top: 0.5rem;" onclick="testStreamSource()">
+                    <span class="iconify" data-icon="mdi:play-circle"></span>
+                    Test Stream
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem;">
+            <a href="/" class="quick-link">
+                <span class="iconify" data-icon="mdi:television-play"></span>
+                View Live Stream
+            </a>
+            <a href="http://localhost:5000" class="quick-link">
+                <span class="iconify" data-icon="mdi:home"></span>
+                Main Site
+            </a>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center;">
+        <div class="card" style="width: 90%; max-width: 500px;">
+            <div class="card-header">
+                <span class="iconify" data-icon="mdi:message-text"></span>
+                <h3>Send Chat Message</h3>
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <input type="text" id="chatMessage" placeholder="Type your message..." maxlength="150">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <button class="btn btn-secondary" onclick="document.getElementById('chatModal').style.display='none'">
+                    Cancel
+                </button>
+                <button class="btn btn-success" onclick="sendChat()">
+                    <span class="iconify" data-icon="mdi:send"></span>
+                    Send
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>ASTERISK Control Panel • Real-time match management</p>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5001/api';
+
+        // Show status notification
+        function showStatus(message, isError = false) {
+            const alert = document.getElementById('statusAlert');
+            const messageEl = document.getElementById('statusMessage');
+            const icon = alert.querySelector('.iconify');
+            
+            messageEl.textContent = message;
+            alert.className = 'status-alert ' + (isError ? 'error' : 'success');
+            icon.setAttribute('data-icon', isError ? 'mdi:alert-circle' : 'mdi:check-circle');
+            alert.style.display = 'flex';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 3000);
+        }
+
+        // Load current state
+        async function loadState() {
+            try {
+                const response = await fetch(`${API_BASE}/match-state`);
+                const state = await response.json();
+                
+                document.getElementById('team1Name').value = state.team1.name;
+                document.getElementById('team1Subtitle').value = state.team1.subtitle;
+                document.getElementById('team1Score').value = state.team1.score;
+                
+                document.getElementById('team2Name').value = state.team2.name;
+                document.getElementById('team2Subtitle').value = state.team2.subtitle;
+                document.getElementById('team2Score').value = state.team2.score;
+                
+                document.getElementById('matchTitle').value = state.matchTitle;
+                document.getElementById('mapName').value = state.map;
+                document.getElementById('roundNumber').value = state.round;
+                document.getElementById('bestOf').value = state.bestOf;
+                
+                // Load ingress server
+                await loadIngressServer();
+            } catch (error) {
+                console.error('Error loading state:', error);
+            }
+        }
+
+        // Load ingress server URL
+        async function loadIngressServer() {
+            try {
+                const response = await fetch(`${API_BASE}/ingress-server`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('ingressServer').value = data.ingress_server || '';
+                }
+            } catch (error) {
+                console.error('Error loading ingress server:', error);
+            }
+        }
+
+        // Update ingress server URL
+        async function updateIngressServer() {
+            const ingressUrl = document.getElementById('ingressServer').value.trim();
+            
+            if (!ingressUrl) {
+                showStatus('❌ Please enter a stream URL', true);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/ingress-server`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': '0022'  // Admin password
+                    },
+                    body: JSON.stringify({ ingress_server: ingressUrl })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showStatus('✅ Stream source updated successfully!');
+                } else {
+                    showStatus(`❌ ${data.message}`, true);
+                }
+            } catch (error) {
+                showStatus(`❌ Error: ${error.message}`, true);
+            }
+        }
+
+        // Test stream source
+        async function testStreamSource() {
+            const ingressUrl = document.getElementById('ingressServer').value.trim();
+            
+            if (!ingressUrl) {
+                showStatus('❌ Please enter a stream URL', true);
+                return;
+            }
+
+            try {
+                showStatus('🔍 Testing stream...');
+                const response = await fetch(ingressUrl, { method: 'HEAD' });
+                
+                if (response.ok) {
+                    showStatus('✅ Stream is accessible!');
+                } else {
+                    showStatus(`⚠️ Stream returned status: ${response.status}`, true);
+                }
+            } catch (error) {
+                showStatus(`❌ Cannot reach stream: ${error.message}`, true);
+            }
+        }
+
+        // Update single team
+        async function updateTeam(teamNum) {
+            const name = document.getElementById(`team${teamNum}Name`).value;
+            const subtitle = document.getElementById(`team${teamNum}Subtitle`).value;
+            const score = parseInt(document.getElementById(`team${teamNum}Score`).value) || 0;
+
+            try {
+                // Update team info
+                await fetch(`${API_BASE}/update-teams`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        [`team${teamNum}`]: { name, subtitle }
+                    })
+                });
+
+                // Update score
+                await fetch(`${API_BASE}/update-score`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ team: teamNum, score })
+                });
+
+                showStatus(`✅ Team ${teamNum} updated successfully!`);
+            } catch (error) {
+                showStatus(`❌ Error updating team: ${error.message}`, true);
+            }
+        }
+
+        // Update match info
+        async function updateMatchInfo() {
+            const matchTitle = document.getElementById('matchTitle').value;
+            const map = document.getElementById('mapName').value;
+            const round = document.getElementById('roundNumber').value;
+            const bestOf = document.getElementById('bestOf').value;
+
+            try {
+                await fetch(`${API_BASE}/update-match-info`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ matchTitle, map, round, bestOf })
+                });
+                showStatus('✅ Match info updated!');
+            } catch (error) {
+                showStatus(`❌ Error: ${error.message}`, true);
+            }
+        }
+
+        // Update all data at once
+        async function updateAllData() {
+            await updateTeam(1);
+            await updateTeam(2);
+            await updateMatchInfo();
+            showStatus('✅ All data updated!');
+        }
+
+        // Reset match
+        async function resetMatch() {
+            if (!confirm('Reset everything to default?')) return;
+
+            try {
+                await fetch(`${API_BASE}/reset`, { method: 'POST' });
+                await loadState();
+                showStatus('✅ Match reset!');
+            } catch (error) {
+                showStatus(`❌ Error: ${error.message}`, true);
+            }
+        }
+
+        // Broadcast controls
+        async function triggerMatchStart() {
+            try {
+                await fetch(`${API_BASE}/control/start-match`, { method: 'POST' });
+                showStatus('🎬 Match start broadcasted!');
+            } catch (error) {
+                showStatus(`❌ Error: ${error.message}`, true);
+            }
+        }
+
+        async function triggerMatchEnd() {
+            try {
+                await fetch(`${API_BASE}/control/end-match`, { method: 'POST' });
+                showStatus('🏆 Match end broadcasted!');
+            } catch (error) {
+                showStatus(`❌ Error: ${error.message}`, true);
+            }
+        }
+
+        async function sendChat() {
+            const message = document.getElementById('chatMessage').value.trim();
+            if (!message) return;
+
+            try {
+                await fetch(`${API_BASE}/send-chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message, viewerId: 'admin-panel' })
+                });
+                document.getElementById('chatModal').style.display = 'none';
+                document.getElementById('chatMessage').value = '';
+                showStatus('💬 Message sent!');
+            } catch (error) {
+                showStatus(`❌ Error: ${error.message}`, true);
+            }
+        }
+
+        // Update viewer count
+        async function updateViewerCount() {
+            try {
+                const response = await fetch(`${API_BASE}/viewer-count`);
+                const data = await response.json();
+                document.getElementById('viewerCount').textContent = data.count;
+            } catch (error) {
+                document.getElementById('viewerCount').textContent = '?';
+            }
+        }
+
+        // Close chat modal on ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.getElementById('chatModal').style.display = 'none';
+            }
+        });
+
+        // Initialize
+        loadState();
+        updateViewerCount();
+        setInterval(updateViewerCount, 10000);
+    </script>
+</body>
+</html>

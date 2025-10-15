@@ -4,320 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tournament Control | ASTERISK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.cdnfonts.com/css/valorant" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary-red: #ff003c;
+            --primary-cyan: #00ffff;
         }
 
         body {
-            color: #e5e5e5;
             font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1920&q=80');
+            background-image: url('https://56ktpin8ut.ucarecd.net/1e09c958-9b5a-4501-b491-6c06a5295b34/LzC.jpg');
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
-            background-repeat: no-repeat;
-            min-height: 100vh;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(5px);
-            z-index: 0;
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(255, 0, 60, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 0, 60, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* Header */
-        .header {
-            position: relative;
-            z-index: 100;
-            background: rgba(10, 10, 10, 0.7);
-            backdrop-filter: blur(20px);
-            border-bottom: 2px solid rgba(255, 0, 60, 0.3);
-            padding: 1.5rem 2rem;
-        }
-
-        .header-content {
-            max-width: 1600px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .header h1 {
+        .font-valorant {
             font-family: 'Valorant', 'Rajdhani', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
         }
 
-        .header h1 span {
-            color: #ff003c;
-            text-shadow: 0 0 20px rgba(255, 0, 60, 0.8);
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .logout-btn {
-            background: linear-gradient(135deg, rgba(255, 50, 50, 0.8), rgba(200, 0, 0, 0.8));
-            color: white;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
+        .font-rajdhani {
             font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
-        .logout-btn:hover {
-            background: linear-gradient(135deg, rgba(255, 50, 50, 1), rgba(200, 0, 0, 1));
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 50, 50, 0.4);
-        }
-
-        /* Container */
-        .container {
-            position: relative;
-            z-index: 10;
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .page-title {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 0 30px rgba(255, 0, 60, 0.5);
-        }
-
-        .page-subtitle {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            font-weight: 500;
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: rgba(10, 10, 10, 0.7);
+        .glassmorphic {
+            background: rgba(10, 10, 10, 0.85);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 0, 60, 0.3);
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+            -webkit-backdrop-filter: blur(20px);
         }
 
-        .stat-card:hover {
-            border-color: #ff003c;
-            box-shadow: 0 10px 40px rgba(255, 0, 60, 0.3);
-            transform: translateY(-5px);
+        .card-clip {
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%);
         }
 
-        .stat-value {
-            font-size: 3rem;
-            font-weight: 700;
-            font-family: 'Rajdhani', sans-serif;
-            line-height: 1;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 600;
-        }
-
-        /* Action Buttons */
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #ff003c, #ff335c);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
+        .btn-clip {
             clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
-        }
-
-        .btn:hover {
-            background: linear-gradient(135deg, #ff335c, #ff003c);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 0, 60, 0.4);
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, rgba(251, 191, 36, 0.8), rgba(245, 158, 11, 0.8));
-        }
-
-        .btn-warning:hover {
-            background: linear-gradient(135deg, rgba(251, 191, 36, 1), rgba(245, 158, 11, 1));
-            box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
-        }
-
-        /* Matches Section */
-        .matches-section {
-            background: rgba(10, 10, 10, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 0, 60, 0.3);
-            border-radius: 12px;
-            padding: 2rem;
-            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
-        }
-
-        .section-header {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .matches-grid {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .match-card {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 0, 60, 0.2);
-            border-radius: 10px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .match-card:hover {
-            border-color: rgba(255, 0, 60, 0.6);
-            background: rgba(0, 0, 0, 0.6);
-            transform: translateX(5px);
-        }
-
-        .match-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .match-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .match-number {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #ff003c;
-        }
-
-        .match-round {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.95rem;
-        }
-
-        .status-badge {
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .status-pending {
-            background: rgba(59, 130, 246, 0.2);
-            color: #60a5fa;
-            border: 1px solid rgba(59, 130, 246, 0.4);
-        }
-
-        .status-live {
-            background: rgba(255, 0, 60, 0.2);
-            color: #ff003c;
-            border: 1px solid rgba(255, 0, 60, 0.4);
-            animation: pulse 2s infinite;
-        }
-
-        .status-completed {
-            background: rgba(34, 197, 94, 0.2);
-            color: #4ade80;
-            border: 1px solid rgba(34, 197, 94, 0.4);
         }
 
         @keyframes pulse {
@@ -325,372 +50,59 @@
             50% { opacity: 0.6; }
         }
 
-        .match-actions {
-            display: flex;
-            gap: 0.5rem;
+        .status-live {
+            animation: pulse 2s infinite;
         }
 
-        .btn-small {
-            padding: 0.4rem 0.8rem;
-            font-size: 0.85rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 0, 60, 0.3);
-            color: white;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
-        .btn-small:hover {
-            background: rgba(255, 0, 60, 0.2);
-            border-color: rgba(255, 0, 60, 0.6);
-        }
-
-        .btn-small.delete:hover {
-            background: rgba(255, 50, 50, 0.2);
-            border-color: rgba(255, 50, 50, 0.6);
-            color: #ff3232;
-        }
-
-        .match-teams {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .team-box {
-            text-align: center;
-        }
-
-        .team-box.left {
-            text-align: right;
-        }
-
-        .team-box.right {
-            text-align: left;
-        }
-
-        .team-name {
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #fff;
-            margin-bottom: 0.3rem;
-        }
-
-        .team-seed {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.85rem;
-        }
-
-        .vs-text {
-            font-family: 'Valorant', 'Rajdhani', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-
-        .match-winner {
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-        }
-
-        .match-winner span {
-            color: #4ade80;
-            font-weight: 700;
-        }
-
-        /* Modal */
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: rgba(10, 10, 10, 0.9);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 0, 60, 0.3);
-            border-radius: 12px;
-            padding: 2rem;
-            max-width: 600px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #fff;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .form-label {
-            display: block;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-size: 0.9rem;
-        }
-
-        .form-input, .form-select {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 0, 60, 0.3);
-            color: #fff;
-            padding: 0.75rem 1rem;
-            border-radius: 6px;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus, .form-select:focus {
-            outline: none;
-            border-color: #ff003c;
-            box-shadow: 0 0 15px rgba(255, 0, 60, 0.3);
-        }
-
-        .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        .form-select option {
-            background: #1a1a1a;
-            color: white;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 0, 60, 0.3);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 0, 60, 0.5);
-        }
-
-        /* Auth Modal */
-        .auth-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-
-        .auth-content {
-            background: rgba(10, 10, 10, 0.9);
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(255, 0, 60, 0.5);
-            border-radius: 12px;
-            padding: 3rem 2rem;
-            max-width: 450px;
-            width: 100%;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .auth-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #ff003c, #ff335c, #ff003c);
-        }
-
-        .auth-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #ff003c, #ff335c);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            box-shadow: 0 10px 40px rgba(255, 0, 60, 0.4);
-        }
-
-        .auth-title {
-            font-family: 'Valorant', 'Rajdhani', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: #fff;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            letter-spacing: 0.1em;
-        }
-
-        .auth-subtitle {
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
-
-        .auth-error {
-            background: rgba(255, 50, 50, 0.1);
-            border: 1px solid rgba(255, 50, 50, 0.3);
-            color: #ff3232;
-            padding: 0.75rem;
-            border-radius: 6px;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            display: none;
-        }
-
-        .auth-error.show {
-            display: block;
-        }
-
-        /* Notification */
         .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 0, 60, 0.5);
-            border-left: 4px solid #ff003c;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-            z-index: 10000;
-            transform: translateX(400px);
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            max-width: 350px;
+            animation: slideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
-        .notification.show {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        .notification.success {
-            border-left-color: #00ff64;
-        }
-
-        .notification.error {
-            border-left-color: #ff3232;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.5rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .action-buttons {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .match-teams {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
-            }
-
-            .team-box {
-                text-align: center !important;
-            }
-
-            .vs-text {
-                display: none;
-            }
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .empty-state .iconify {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            opacity: 0.3;
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(255, 0, 60, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 60, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
         }
     </style>
 </head>
-<body>
+<body class="bg-black text-gray-100 min-h-screen">
+    <!-- Background Overlay -->
+    <div class="fixed inset-0 bg-black/90 backdrop-blur-sm grid-pattern pointer-events-none z-0"></div>
+
     <!-- Auth Modal -->
-    <div id="authModal" class="auth-modal">
-        <div class="auth-content">
-            <div class="auth-icon">
-                <span class="iconify" data-icon="mdi:shield-lock" style="font-size: 3rem; color: white;"></span>
+    <div id="authModal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="glassmorphic border border-red-500/30 rounded-xl p-8 max-w-md w-full card-clip">
+            <div class="flex justify-center mb-6">
+                <div class="w-20 h-20 rounded-full bg-gradient-to-br from-red-600 to-pink-600 flex items-center justify-center shadow-lg shadow-red-500/50">
+                    <span class="iconify text-white text-4xl" data-icon="mdi:shield-lock"></span>
+                </div>
             </div>
-            <h2 class="auth-title">Tournament Control</h2>
-            <p class="auth-subtitle">Admin Authentication Required</p>
+            <h2 class="font-valorant text-3xl text-center mb-2 text-white uppercase tracking-wider">Tournament Control</h2>
+            <p class="text-gray-400 text-center mb-6">Admin Authentication Required</p>
             
-            <form id="authForm">
-                <div class="form-group" style="text-align: left;">
-                    <label class="form-label">Admin Password</label>
-                    <input type="password" id="authPassword" class="form-input" placeholder="Enter password" required autofocus>
+            <form id="authForm" class="space-y-4">
+                <div>
+                    <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase tracking-wide">Password</label>
+                    <input type="password" id="authPassword" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-3 text-white outline-none transition-all" placeholder="Enter password" required autofocus>
                 </div>
                 
-                <div id="authError" class="auth-error">Invalid password. Please try again.</div>
+                <div id="authError" class="hidden bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg text-sm">
+                    Invalid password. Please try again.
+                </div>
                 
-                <button type="submit" class="btn" style="width: 100%;">
+                <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 text-white font-rajdhani font-bold py-3 rounded-lg uppercase tracking-wider transition-all transform hover:scale-105 hover:shadow-lg hover:shadow-red-500/50 btn-clip flex items-center justify-center gap-2">
                     <span class="iconify" data-icon="mdi:login"></span>
                     Access Dashboard
                 </button>
@@ -699,184 +111,182 @@
     </div>
 
     <!-- Main Dashboard -->
-    <div id="dashboard" style="display: none;">
+    <div id="dashboard" class="hidden relative z-10">
         <!-- Header -->
-        <div class="header">
-            <div class="header-content">
-                <h1>
-                    <span class="iconify" data-icon="mdi:tournament" style="color: #ff003c;"></span>
-                    <span>ASTERISK</span> CONTROL
-                </h1>
-                <div class="header-actions">
-                    <button onclick="logout()" class="logout-btn">
+        <nav class="glassmorphic border-b border-red-500/20 sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <h1 class="font-valorant text-xl sm:text-2xl text-white uppercase tracking-wider flex items-center gap-2">
+                        <span class="iconify text-red-500" data-icon="mdi:tournament"></span>
+                        <span class="hidden sm:inline">ASTERISK</span> CONTROL
+                    </h1>
+                    <button onclick="logout()" class="bg-red-600/80 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-rajdhani font-bold uppercase text-sm transition-all flex items-center gap-2 btn-clip">
                         <span class="iconify" data-icon="mdi:logout"></span>
-                        Logout
+                        <span class="hidden sm:inline">Logout</span>
                     </button>
                 </div>
             </div>
-        </div>
+        </nav>
 
-        <!-- Container -->
-        <div class="container">
-            <h2 class="page-title">TOURNAMENT CONTROL</h2>
-            <p class="page-subtitle">Manage all matches, teams, and tournament progression</p>
-
+        <!-- Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
             <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value" style="color: #ff003c;" id="totalMatches">0</div>
-                    <div class="stat-label">Total Matches</div>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div class="glassmorphic border border-red-500/20 hover:border-red-500/50 rounded-xl p-4 transition-all hover:scale-105 card-clip">
+                    <div class="text-3xl sm:text-4xl font-bold text-red-500 font-rajdhani" id="totalMatches">0</div>
+                    <div class="text-xs sm:text-sm text-gray-400 uppercase tracking-wide font-rajdhani">Total</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value" style="color: #60a5fa;" id="upcomingMatches">0</div>
-                    <div class="stat-label">Upcoming</div>
+                <div class="glassmorphic border border-blue-500/20 hover:border-blue-500/50 rounded-xl p-4 transition-all hover:scale-105 card-clip">
+                    <div class="text-3xl sm:text-4xl font-bold text-blue-400 font-rajdhani" id="upcomingMatches">0</div>
+                    <div class="text-xs sm:text-sm text-gray-400 uppercase tracking-wide font-rajdhani">Pending</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value" style="color: #ff003c;" id="liveMatches">0</div>
-                    <div class="stat-label">Live Now</div>
+                <div class="glassmorphic border border-red-500/20 hover:border-red-500/50 rounded-xl p-4 transition-all hover:scale-105 card-clip">
+                    <div class="text-3xl sm:text-4xl font-bold text-red-500 font-rajdhani status-live" id="liveMatches">0</div>
+                    <div class="text-xs sm:text-sm text-gray-400 uppercase tracking-wide font-rajdhani">Live</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value" style="color: #4ade80;" id="completedMatches">0</div>
-                    <div class="stat-label">Completed</div>
+                <div class="glassmorphic border border-green-500/20 hover:border-green-500/50 rounded-xl p-4 transition-all hover:scale-105 card-clip">
+                    <div class="text-3xl sm:text-4xl font-bold text-green-400 font-rajdhani" id="completedMatches">0</div>
+                    <div class="text-xs sm:text-sm text-gray-400 uppercase tracking-wide font-rajdhani">Done</div>
                 </div>
             </div>
 
             <!-- Action Buttons -->
-            <div class="action-buttons">
-                <button onclick="showCreateMatchModal()" class="btn">
+            <div class="flex flex-wrap gap-3">
+                <button onclick="showCreateMatchModal()" class="flex-1 sm:flex-none bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 text-white px-4 sm:px-6 py-3 rounded-lg font-rajdhani font-bold uppercase text-sm transition-all hover:scale-105 hover:shadow-lg hover:shadow-red-500/50 btn-clip flex items-center justify-center gap-2">
                     <span class="iconify" data-icon="mdi:plus-circle"></span>
-                    Create New Match
+                    <span class="hidden sm:inline">New Match</span>
+                    <span class="sm:hidden">New</span>
                 </button>
-                <button onclick="showBroadcastModal()" class="btn-warning btn">
+                <button onclick="showBroadcastModal()" class="flex-1 sm:flex-none bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-600 text-white px-4 sm:px-6 py-3 rounded-lg font-rajdhani font-bold uppercase text-sm transition-all hover:scale-105 hover:shadow-lg hover:shadow-green-500/50 btn-clip flex items-center justify-center gap-2">
                     <span class="iconify" data-icon="mdi:whatsapp"></span>
-                    Broadcast WhatsApp
+                    <span class="hidden sm:inline">Broadcast</span>
+                    <span class="sm:hidden">WhatsApp</span>
                 </button>
             </div>
 
-            <!-- Matches Section -->
-            <div class="matches-section">
-                <h3 class="section-header">
-                    <span class="iconify" data-icon="mdi:sword-cross" style="color: #ff003c;"></span>
+            <!-- Matches List -->
+            <div class="glassmorphic border border-red-500/20 rounded-xl p-4 sm:p-6 card-clip">
+                <h2 class="font-rajdhani text-xl sm:text-2xl font-bold mb-4 uppercase tracking-wide flex items-center gap-2">
+                    <span class="iconify text-red-500" data-icon="mdi:sword-cross"></span>
                     All Matches
-                </h3>
-                <div id="matchesList" class="matches-grid">
-                    <!-- Matches will be loaded here -->
-                </div>
+                </h2>
+                <div id="matchesList" class="space-y-3"></div>
             </div>
         </div>
     </div>
 
     <!-- Match Modal -->
-    <div id="matchModal" class="modal">
-        <div class="modal-content">
-            <h3 class="modal-header" id="modalTitle">Create New Match</h3>
-            <form id="matchForm">
-                <input type="hidden" id="matchId">
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Round</label>
-                        <select id="matchRound" class="form-select" required>
-                            <option value="">Select Round</option>
-                            <option value="Round of 16">Round of 16</option>
-                            <option value="Quarterfinals">Quarterfinals</option>
-                            <option value="Semifinals">Semifinals</option>
-                            <option value="Grand Final">Grand Final</option>
-                        </select>
+    <div id="matchModal" class="hidden fixed inset-0 bg-black/95 backdrop-blur-md z-50 p-4 overflow-y-auto">
+        <div class="min-h-screen flex items-center justify-center">
+            <div class="glassmorphic border border-red-500/30 rounded-xl p-6 max-w-2xl w-full card-clip">
+                <h3 class="font-rajdhani text-2xl font-bold mb-6 uppercase" id="modalTitle">Create Match</h3>
+                <form id="matchForm" class="space-y-4">
+                    <input type="hidden" id="matchId">
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Round</label>
+                            <select id="matchRound" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-2 text-white outline-none" required>
+                                <option value="">Select Round</option>
+                                <option value="Round of 16">Round of 16</option>
+                                <option value="Quarterfinals">Quarterfinals</option>
+                                <option value="Semifinals">Semifinals</option>
+                                <option value="Grand Final">Grand Final</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Match #</label>
+                            <input type="text" id="matchNumber" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-2 text-white outline-none" placeholder="M1" required>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Match Number</label>
-                        <input type="text" id="matchNumber" class="form-input" placeholder="e.g., M1" required>
-                    </div>
-                </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Team 1</label>
-                        <input type="text" id="team1" class="form-input" placeholder="Team name" required>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Team 1</label>
+                            <input type="text" id="team1" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-2 text-white outline-none" placeholder="Team name" required>
+                        </div>
+                        <div>
+                            <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Seed</label>
+                            <input type="number" id="team1Seed" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-2 text-white outline-none" placeholder="1" min="1">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Team 1 Seed</label>
-                        <input type="number" id="team1Seed" class="form-input" placeholder="Seed" min="1">
-                    </div>
-                </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Team 2</label>
-                        <input type="text" id="team2" class="form-input" placeholder="Team name" required>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Team 2</label>
+                            <input type="text" id="team2" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-2 text-white outline-none" placeholder="Team name" required>
+                        </div>
+                        <div>
+                            <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Seed</label>
+                            <input type="number" id="team2Seed" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-2 text-white outline-none" placeholder="2" min="1">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Team 2 Seed</label>
-                        <input type="number" id="team2Seed" class="form-input" placeholder="Seed" min="1">
-                    </div>
-                </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Status</label>
-                        <select id="matchStatus" class="form-select" required>
-                            <option value="pending">Pending</option>
-                            <option value="live">Live</option>
-                            <option value="completed">Completed</option>
-                        </select>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Status</label>
+                            <select id="matchStatus" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-2 text-white outline-none" required>
+                                <option value="pending">Pending</option>
+                                <option value="live">Live</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Winner</label>
+                            <input type="text" id="matchWinner" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-2 text-white outline-none" placeholder="If completed">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Winner</label>
-                        <input type="text" id="matchWinner" class="form-input" placeholder="Winner (if completed)">
-                    </div>
-                </div>
 
-                <div class="modal-actions">
-                    <button type="button" onclick="closeMatchModal()" class="btn btn-secondary" style="flex: 1;">
-                        <span class="iconify" data-icon="mdi:close"></span>
-                        Cancel
-                    </button>
-                    <button type="submit" class="btn" style="flex: 1;">
-                        <span class="iconify" data-icon="mdi:check"></span>
-                        Save Match
-                    </button>
-                </div>
-            </form>
+                    <div class="flex gap-3 pt-4">
+                        <button type="button" onclick="closeMatchModal()" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-4 py-3 rounded-lg font-rajdhani font-bold uppercase text-sm transition-all">
+                            Cancel
+                        </button>
+                        <button type="submit" class="flex-1 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 text-white px-4 py-3 rounded-lg font-rajdhani font-bold uppercase text-sm transition-all btn-clip">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
     <!-- Broadcast Modal -->
-    <div id="broadcastModal" class="modal">
-        <div class="modal-content">
-            <h3 class="modal-header">📱 Broadcast WhatsApp</h3>
-            <form id="broadcastForm">
-                <div class="form-group">
-                    <label class="form-label">Message</label>
-                    <textarea id="broadcastMessage" class="form-input" rows="6" placeholder="Enter message to broadcast..." required style="resize: vertical;"></textarea>
-                    <p style="color: rgba(255, 255, 255, 0.5); font-size: 0.85rem; margin-top: 0.5rem;">
-                        This will be sent to all registered team leads via WhatsApp
-                    </p>
-                </div>
+    <div id="broadcastModal" class="hidden fixed inset-0 bg-black/95 backdrop-blur-md z-50 p-4 overflow-y-auto">
+        <div class="min-h-screen flex items-center justify-center">
+            <div class="glassmorphic border border-red-500/30 rounded-xl p-6 max-w-2xl w-full card-clip">
+                <h3 class="font-rajdhani text-2xl font-bold mb-6 uppercase flex items-center gap-2">
+                    <span class="iconify text-green-500" data-icon="mdi:whatsapp"></span>
+                    Broadcast WhatsApp
+                </h3>
+                <form id="broadcastForm" class="space-y-4">
+                    <div>
+                        <label class="block font-rajdhani font-semibold text-sm mb-2 uppercase">Message</label>
+                        <textarea id="broadcastMessage" class="w-full bg-black/50 border border-red-500/30 focus:border-red-500 rounded-lg px-4 py-3 text-white outline-none resize-none" rows="6" placeholder="Enter message..." required></textarea>
+                        <p class="text-xs text-gray-500 mt-2">Sent to all team leads via WhatsApp</p>
+                    </div>
 
-                <div id="broadcastProgress" style="display: none; margin-bottom: 1rem;">
-                    <div style="background: rgba(0, 0, 0, 0.4); border-radius: 8px; padding: 1rem;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <div id="broadcastProgress" class="hidden bg-black/40 border border-cyan-500/30 rounded-lg p-4">
+                        <div class="flex justify-between text-sm mb-2">
                             <span>Broadcasting...</span>
                             <span id="broadcastStatus">0 / 0</span>
                         </div>
-                        <div style="background: rgba(255, 255, 255, 0.1); border-radius: 4px; height: 8px; overflow: hidden;">
-                            <div id="broadcastProgressBar" style="background: #00fff7; height: 100%; width: 0%; transition: width 0.3s ease;"></div>
+                        <div class="bg-gray-700 rounded-full h-2 overflow-hidden">
+                            <div id="broadcastProgressBar" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full w-0 transition-all duration-300"></div>
                         </div>
-                        <div id="broadcastResults" style="margin-top: 1rem; max-height: 200px; overflow-y: auto;"></div>
+                        <div id="broadcastResults" class="mt-4 max-h-40 overflow-y-auto space-y-1 text-sm"></div>
                     </div>
-                </div>
 
-                <div class="modal-actions">
-                    <button type="button" onclick="closeBroadcastModal()" class="btn btn-secondary" style="flex: 1;">
-                        Cancel
-                    </button>
-                    <button type="submit" class="btn" id="broadcastBtn" style="flex: 1;">
-                        <span class="iconify" data-icon="mdi:send"></span>
-                        Send Broadcast
-                    </button>
-                </div>
-            </form>
+                    <div class="flex gap-3">
+                        <button type="button" onclick="closeBroadcastModal()" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-4 py-3 rounded-lg font-rajdhani font-bold uppercase text-sm transition-all">
+                            Cancel
+                        </button>
+                        <button type="submit" id="broadcastBtn" class="flex-1 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-600 text-white px-4 py-3 rounded-lg font-rajdhani font-bold uppercase text-sm transition-all btn-clip flex items-center justify-center gap-2">
+                            <span class="iconify" data-icon="mdi:send"></span>
+                            Send
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -884,7 +294,7 @@
         const API_BASE = "https://30c61382b1f2.ngrok-free.app";
         let authToken = localStorage.getItem('adminToken');
 
-        // Auth functions
+        // Auth
         document.getElementById('authForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const password = document.getElementById('authPassword').value;
@@ -902,29 +312,31 @@
                 if (data.success) {
                     authToken = data.token;
                     localStorage.setItem('adminToken', authToken);
-                    document.getElementById('authModal').style.display = 'none';
-                    document.getElementById('dashboard').style.display = 'block';
+                    document.getElementById('authModal').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
                     loadMatches();
+                    showNotification('✅ Login successful!', 'success');
                 } else {
-                    errorDiv.classList.add('show');
+                    errorDiv.classList.remove('hidden');
                 }
             } catch (error) {
                 errorDiv.textContent = 'Connection error. Please try again.';
-                errorDiv.classList.add('show');
+                errorDiv.classList.remove('hidden');
             }
         });
 
         function logout() {
-            localStorage.removeItem('adminToken');
-            authToken = null;
-            document.getElementById('dashboard').style.display = 'none';
-            document.getElementById('authModal').style.display = 'flex';
+            if (confirm('Logout?')) {
+                localStorage.removeItem('adminToken');
+                authToken = null;
+                document.getElementById('dashboard').classList.add('hidden');
+                document.getElementById('authModal').classList.remove('hidden');
+            }
         }
 
-        // Check auth on load
         if (authToken) {
-            document.getElementById('authModal').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('authModal').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
             loadMatches();
         }
 
@@ -942,7 +354,7 @@
                     updateStats(data.matches);
                 }
             } catch (error) {
-                console.error('Error loading matches:', error);
+                console.error('Error:', error);
             }
         }
 
@@ -950,54 +362,46 @@
             const container = document.getElementById('matchesList');
             
             if (matches.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <span class="iconify" data-icon="mdi:trophy-outline"></span>
-                        <p>No matches created yet</p>
-                    </div>
-                `;
+                container.innerHTML = '<div class="text-center py-8 text-gray-500">No matches yet</div>';
                 return;
             }
 
-            container.innerHTML = matches.map(match => `
-                <div class="match-card">
-                    <div class="match-header">
-                        <div class="match-info">
-                            <span class="match-number">${match.match_number || 'Match'}</span>
-                            <span class="match-round">${match.round}</span>
-                            <span class="status-badge status-${match.status}">${match.status}</span>
+            container.innerHTML = matches.map(match => {
+                const statusColors = {
+                    pending: 'blue',
+                    live: 'red',
+                    completed: 'green'
+                };
+                const color = statusColors[match.status] || 'gray';
+                
+                return `
+                    <div class="bg-black/40 border border-${color}-500/20 hover:border-${color}-500/50 rounded-lg p-4 transition-all">
+                        <div class="flex flex-wrap justify-between items-start gap-2 mb-3">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="font-rajdhani font-bold text-${color}-500">${match.match_number || 'Match'}</span>
+                                <span class="text-sm text-gray-400">${match.round}</span>
+                                <span class="px-2 py-1 bg-${color}-500/20 text-${color}-400 text-xs font-bold uppercase rounded border border-${color}-500/30 ${match.status === 'live' ? 'status-live' : ''}">${match.status}</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="editMatch('${match._id}')" class="px-3 py-1 bg-white/10 hover:bg-white/20 rounded text-xs font-rajdhani font-bold uppercase transition-all">Edit</button>
+                                <button onclick="deleteMatch('${match._id}')" class="px-3 py-1 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded text-xs font-rajdhani font-bold uppercase transition-all">Del</button>
+                            </div>
                         </div>
-                        <div class="match-actions">
-                            <button onclick="editMatch('${match._id}')" class="btn-small">
-                                <span class="iconify" data-icon="mdi:pencil"></span> Edit
-                            </button>
-                            <button onclick="deleteMatch('${match._id}')" class="btn-small delete">
-                                <span class="iconify" data-icon="mdi:delete"></span> Delete
-                            </button>
+                        <div class="grid grid-cols-3 gap-2 items-center">
+                            <div class="text-right">
+                                <div class="font-rajdhani font-bold">${match.team1}</div>
+                                ${match.team1_seed ? `<div class="text-xs text-gray-500">Seed ${match.team1_seed}</div>` : ''}
+                            </div>
+                            <div class="text-center font-valorant text-yellow-500 text-lg">VS</div>
+                            <div class="text-left">
+                                <div class="font-rajdhani font-bold">${match.team2}</div>
+                                ${match.team2_seed ? `<div class="text-xs text-gray-500">Seed ${match.team2_seed}</div>` : ''}
+                            </div>
                         </div>
+                        ${match.winner ? `<div class="mt-3 pt-3 border-t border-white/10 text-center text-sm text-gray-400">Winner: <span class="text-green-400 font-bold">${match.winner}</span></div>` : ''}
                     </div>
-
-                    <div class="match-teams">
-                        <div class="team-box left">
-                            <div class="team-name">${match.team1}</div>
-                            ${match.team1_seed ? `<div class="team-seed">Seed ${match.team1_seed}</div>` : ''}
-                        </div>
-                        
-                        <div class="vs-text">VS</div>
-                        
-                        <div class="team-box right">
-                            <div class="team-name">${match.team2}</div>
-                            ${match.team2_seed ? `<div class="team-seed">Seed ${match.team2_seed}</div>` : ''}
-                        </div>
-                    </div>
-
-                    ${match.winner ? `
-                        <div class="match-winner">
-                            Winner: <span>${match.winner}</span>
-                        </div>
-                    ` : ''}
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function updateStats(matches) {
@@ -1007,12 +411,12 @@
             document.getElementById('completedMatches').textContent = matches.filter(m => m.status === 'completed').length;
         }
 
-        // Match modal functions
+        // Match modal
         function showCreateMatchModal() {
-            document.getElementById('modalTitle').textContent = 'Create New Match';
+            document.getElementById('modalTitle').textContent = 'Create Match';
             document.getElementById('matchForm').reset();
             document.getElementById('matchId').value = '';
-            document.getElementById('matchModal').classList.add('active');
+            document.getElementById('matchModal').classList.remove('hidden');
         }
 
         async function editMatch(matchId) {
@@ -1034,15 +438,15 @@
                     document.getElementById('team2Seed').value = match.team2_seed || '';
                     document.getElementById('matchStatus').value = match.status;
                     document.getElementById('matchWinner').value = match.winner || '';
-                    document.getElementById('matchModal').classList.add('active');
+                    document.getElementById('matchModal').classList.remove('hidden');
                 }
             } catch (error) {
-                console.error('Error loading match:', error);
+                console.error('Error:', error);
             }
         }
 
         function closeMatchModal() {
-            document.getElementById('matchModal').classList.remove('active');
+            document.getElementById('matchModal').classList.add('hidden');
         }
 
         document.getElementById('matchForm').addEventListener('submit', async (e) => {
@@ -1078,10 +482,10 @@
                 if (data.success) {
                     closeMatchModal();
                     loadMatches();
-                    showNotification(matchId ? 'Match updated!' : 'Match created!', 'success');
+                    showNotification(matchId ? '✅ Match updated!' : '✅ Match created!', 'success');
                 }
             } catch (error) {
-                showNotification('Error saving match', 'error');
+                showNotification('❌ Error saving match', 'error');
             }
         });
 
@@ -1096,37 +500,37 @@
 
                 if (response.ok) {
                     loadMatches();
-                    showNotification('Match deleted', 'success');
+                    showNotification('✅ Match deleted', 'success');
                 }
             } catch (error) {
-                showNotification('Error deleting match', 'error');
+                showNotification('❌ Error deleting match', 'error');
             }
         }
 
-        // Broadcast modal
+        // Broadcast
         function showBroadcastModal() {
             document.getElementById('broadcastForm').reset();
-            document.getElementById('broadcastProgress').style.display = 'none';
-            document.getElementById('broadcastModal').classList.add('active');
+            document.getElementById('broadcastProgress').classList.add('hidden');
+            document.getElementById('broadcastModal').classList.remove('hidden');
         }
 
         function closeBroadcastModal() {
-            document.getElementById('broadcastModal').classList.remove('active');
+            document.getElementById('broadcastModal').classList.add('hidden');
         }
 
         document.getElementById('broadcastForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const message = document.getElementById('broadcastMessage').value.trim();
-            if (!confirm('Send this message to ALL team leads?')) return;
+            if (!confirm('Send to ALL teams?')) return;
             
             const progressDiv = document.getElementById('broadcastProgress');
             const resultsDiv = document.getElementById('broadcastResults');
             const broadcastBtn = document.getElementById('broadcastBtn');
             
-            progressDiv.style.display = 'block';
+            progressDiv.classList.remove('hidden');
             broadcastBtn.disabled = true;
-            broadcastBtn.textContent = 'Sending...';
+            broadcastBtn.innerHTML = '<span class="iconify animate-spin" data-icon="mdi:loading"></span> Sending...';
             resultsDiv.innerHTML = '';
             
             try {
@@ -1145,58 +549,52 @@
                     document.getElementById('broadcastProgressBar').style.width = '100%';
                     document.getElementById('broadcastStatus').textContent = `${data.total_sent} sent, ${data.total_failed} failed`;
                     
-                    resultsDiv.innerHTML = '<div style="font-weight: 600; margin-bottom: 0.5rem;">Results:</div>';
+                    resultsDiv.innerHTML = '<div class="font-bold mb-1">Results:</div>';
                     data.results.forEach(result => {
                         const icon = result.status === 'sent' ? '✅' : '❌';
-                        const color = result.status === 'sent' ? '#4ade80' : '#ff3232';
-                        resultsDiv.innerHTML += `<div style="color: ${color}; font-size: 0.9rem;">${icon} ${result.team}</div>`;
+                        const color = result.status === 'sent' ? 'text-green-400' : 'text-red-400';
+                        resultsDiv.innerHTML += `<div class="${color}">${icon} ${result.team}</div>`;
                     });
                     
-                    broadcastBtn.textContent = '✅ Complete';
+                    broadcastBtn.innerHTML = '✅ Complete';
                     setTimeout(() => closeBroadcastModal(), 5000);
                 }
             } catch (error) {
-                showNotification('Error broadcasting', 'error');
+                showNotification('❌ Error broadcasting', 'error');
                 broadcastBtn.disabled = false;
-                broadcastBtn.innerHTML = '<span class="iconify" data-icon="mdi:send"></span> Send Broadcast';
+                broadcastBtn.innerHTML = '<span class="iconify" data-icon="mdi:send"></span> Send';
             }
         });
 
         // Notification
         function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
+            const div = document.createElement('div');
+            div.className = `notification fixed top-20 right-4 z-50 glassmorphic border ${type === 'success' ? 'border-green-500/50' : 'border-red-500/50'} rounded-lg px-6 py-3 shadow-lg flex items-center gap-3`;
             
             const icon = type === 'success' ? 'mdi:check-circle' : 'mdi:alert-circle';
-            const iconColor = type === 'success' ? '#00ff64' : '#ff3232';
+            const iconColor = type === 'success' ? 'text-green-400' : 'text-red-400';
             
-            notification.innerHTML = `
-                <span class="iconify" data-icon="${icon}" style="font-size: 1.5rem; color: ${iconColor};"></span>
-                <span style="font-weight: 600;">${message}</span>
+            div.innerHTML = `
+                <span class="iconify ${iconColor} text-xl" data-icon="${icon}"></span>
+                <span class="font-rajdhani font-semibold">${message}</span>
             `;
             
-            document.body.appendChild(notification);
-            setTimeout(() => notification.classList.add('show'), 100);
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => document.body.removeChild(notification), 500);
-            }, 3000);
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 3000);
         }
 
-        // SSE for real-time updates
+        // SSE
         const eventSource = new EventSource(`${API_BASE}/api/sse`);
         eventSource.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
-                if (data.type === 'match_created' || data.type === 'match_updated' || data.type === 'match_deleted') {
-                    loadMatches();
-                }
+                if (data.type?.includes('match')) loadMatches();
             } catch (error) {
                 console.error('SSE error:', error);
             }
         };
 
-        console.log('🎮 ASTERISK Tournament Control initialized');
+        console.log('🎮 Control panel ready');
     </script>
 </body>
 </html>

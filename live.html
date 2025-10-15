@@ -3576,7 +3576,7 @@
         // Load team stats for pause screen
         async function loadPauseScreenStats() {
             try {
-                const response = await fetch(`${API_BASE}/api/team-stats`);
+                const response = await fetch(`${API_BASE_URL}/api/team-stats`);
                 if (!response.ok) {
                     console.error('Failed to fetch team stats');
                     return;

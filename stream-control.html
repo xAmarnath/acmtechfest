@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control Panel - ASTERISK</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Live Stream Control - ASTERISK</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.cdnfonts.com/css/valorant" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <style>
         * {
@@ -14,627 +16,624 @@
         }
 
         body {
-            background: #000;
+            color: #e5e5e5;
             font-family: 'Inter', sans-serif;
-            color: #e0e0e0;
+            overflow-x: hidden;
+            background-image: url('https://56ktpin8ut.ucarecd.net/1e09c958-9b5a-4501-b491-6c06a5295b34/LzC.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
             min-height: 100vh;
-            position: relative;
         }
 
         body::before {
             content: '';
             position: fixed;
             inset: 0;
-            background-image: 
-                linear-gradient(rgba(255, 8, 68, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 8, 68, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
             z-index: 0;
         }
 
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255, 0, 60, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 60, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .font-rajdhani {
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .font-valorant {
+            font-family: 'Valorant', sans-serif;
+        }
+
+        /* Header */
         .header {
+            position: relative;
+            z-index: 100;
             background: rgba(10, 10, 10, 0.7);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 8, 68, 0.3);
+            border-bottom: 2px solid rgba(255, 0, 60, 0.3);
             padding: 1.5rem 2rem;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
-            z-index: 10;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .header h1 {
-            font-size: 1.8rem;
+            font-family: 'Valorant', 'Rajdhani', sans-serif;
+            font-size: 2rem;
             font-weight: 700;
             color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
             display: flex;
             align-items: center;
             gap: 0.8rem;
         }
 
         .header h1 span {
-            color: #ff0844;
+            color: #ff003c;
+            text-shadow: 0 0 20px rgba(255, 0, 60, 0.8);
         }
 
-        .viewer-badge {
-            background: rgba(255, 8, 68, 0.1);
+        .header-stats {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .stat-badge {
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.15), rgba(0, 255, 247, 0.1));
             backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 8, 68, 0.3);
+            border: 1px solid rgba(255, 0, 60, 0.3);
             padding: 0.6rem 1.2rem;
             border-radius: 8px;
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            font-size: 1.1rem;
+            font-family: 'Rajdhani', sans-serif;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
         }
 
-        .viewer-count {
-            color: #ff0844;
-            font-size: 1.5rem;
+        .stat-value {
+            color: #ff003c;
+            font-size: 1.3rem;
+            font-weight: 700;
         }
 
+        /* Container */
         .container {
+            position: relative;
+            z-index: 10;
             max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
-            position: relative;
-            z-index: 5;
         }
 
+        .page-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 30px rgba(255, 0, 60, 0.5);
+        }
+
+        .page-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        /* Grid */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
+        /* Card */
         .card {
-            background: rgba(10, 10, 10, 0.6);
+            background: rgba(10, 10, 10, 0.7);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 8, 68, 0.2);
+            border: 1px solid rgba(255, 0, 60, 0.3);
             border-radius: 12px;
-            padding: 1.5rem;
+            overflow: hidden;
             transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%);
         }
 
         .card:hover {
-            border-color: rgba(255, 8, 68, 0.5);
-            box-shadow: 0 8px 30px rgba(255, 8, 68, 0.15);
-            transform: translateY(-2px);
+            border-color: #ff003c;
+            box-shadow: 0 10px 40px rgba(255, 0, 60, 0.3);
+            transform: translateY(-5px);
         }
 
         .card-header {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin-bottom: 1.2rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 1px solid rgba(255, 8, 68, 0.2);
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.2), rgba(0, 255, 247, 0.1));
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 0, 60, 0.3);
         }
 
         .card-header h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
             color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .card-header .iconify {
-            font-size: 1.5rem;
-            color: #ff0844;
+        .card-body {
+            padding: 1.5rem;
         }
 
+        /* Form Elements */
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
 
-        label {
+        .form-label {
             display: block;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
             margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             font-size: 0.9rem;
-            font-weight: 500;
-            color: #b0b0b0;
         }
 
-        input[type="text"],
-        input[type="number"] {
+        .form-input {
             width: 100%;
-            padding: 0.7rem;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 8, 68, 0.2);
-            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 0, 60, 0.3);
             color: #fff;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
 
-        input:focus {
+        .form-input:focus {
             outline: none;
-            border-color: rgba(255, 8, 68, 0.6);
-            background: rgba(0, 0, 0, 0.6);
-            box-shadow: 0 0 20px rgba(255, 8, 68, 0.2);
+            border-color: #ff003c;
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.3);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .helper-text {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            font-style: italic;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
         }
 
         .btn {
-            width: 100%;
-            padding: 0.8rem 1.2rem;
+            background: linear-gradient(135deg, #ff003c, #ff335c);
+            color: white;
             border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.6rem;
+            padding: 0.8rem 1.5rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #ff0844, #d4003a);
-            color: #fff;
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #ff2060, #ff0844);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(255, 8, 68, 0.4);
-        }
-
-        .btn-secondary {
-            background: #2a2a2a;
-            color: #fff;
-        }
-
-        .btn-secondary:hover {
-            background: #3a3a3a;
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #00d4aa, #00a388);
-            color: #fff;
-        }
-
-        .btn-success:hover {
-            background: linear-gradient(135deg, #00e4ba, #00d4aa);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(0, 212, 170, 0.4);
-        }
-
-        .btn-gold {
-            background: linear-gradient(135deg, #ff0844, #d4003a);
-            color: #fff;
-        }
-
-        .btn-gold:hover {
-            background: linear-gradient(135deg, #ff2060, #ff0844);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(255, 8, 68, 0.4);
-        }
-
-        .score-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .quick-actions {
-            grid-column: 1 / -1;
-        }
-
-        .status-alert {
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid;
-            border-radius: 8px;
-            padding: 1rem 1.5rem;
-            display: none;
-            align-items: center;
-            gap: 0.8rem;
-            z-index: 1000;
-            animation: slideIn 0.3s ease;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .status-alert.success {
-            border-color: #00d4aa;
-            color: #00d4aa;
-        }
-
-        .status-alert.error {
-            border-color: #ff0844;
-            color: #ff0844;
-        }
-
-        .broadcast-section {
-            background: rgba(255, 8, 68, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 2px solid rgba(255, 8, 68, 0.3);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 8px 30px rgba(255, 8, 68, 0.1);
-        }
-
-        .broadcast-section h2 {
-            font-size: 1.5rem;
-            color: #ff0844;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .broadcast-section p {
-            color: #999;
-            margin-bottom: 1.5rem;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 6px;
             font-size: 0.95rem;
-        }
-
-        .broadcast-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .quick-link {
-            color: #00d4aa;
-            text-decoration: none;
-            font-weight: 500;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all 0.2s ease;
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
         }
 
-        .quick-link:hover {
-            color: #00e4ba;
-            gap: 0.8rem;
+        .btn:hover {
+            background: linear-gradient(135deg, #ff335c, #ff003c);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 0, 60, 0.4);
         }
 
-        .footer {
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, rgba(0, 255, 247, 0.8), rgba(0, 200, 200, 0.8));
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, rgba(0, 255, 247, 1), rgba(0, 200, 200, 1));
+            box-shadow: 0 8px 20px rgba(0, 255, 247, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, rgba(0, 255, 100, 0.8), rgba(0, 200, 80, 0.8));
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, rgba(0, 255, 100, 1), rgba(0, 200, 80, 1));
+            box-shadow: 0 8px 20px rgba(0, 255, 100, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, rgba(255, 50, 50, 0.8), rgba(200, 0, 0, 0.8));
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, rgba(255, 50, 50, 1), rgba(200, 0, 0, 1));
+            box-shadow: 0 8px 20px rgba(255, 50, 50, 0.4);
+        }
+
+        /* Team Score Display */
+        .team-score-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 0, 60, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .team-side {
+            flex: 1;
             text-align: center;
-            padding: 2rem;
-            color: #666;
-            border-top: 1px solid #2a2a2a;
-            margin-top: 3rem;
         }
 
+        .team-name {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .team-score {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ff003c;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .vs-divider {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.3);
+            padding: 0 1rem;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 0, 60, 0.5);
+            border-left: 4px solid #ff003c;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            max-width: 350px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .notification.success {
+            border-color: rgba(0, 255, 100, 0.5);
+            border-left-color: #00ff64;
+        }
+
+        .notification.error {
+            border-color: rgba(255, 50, 50, 0.5);
+            border-left-color: #ff3232;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
             .grid {
                 grid-template-columns: 1fr;
             }
 
-            .score-grid {
-                grid-template-columns: 1fr;
+            .header-stats {
+                flex-wrap: wrap;
             }
 
-            .header {
+            .button-group {
                 flex-direction: column;
-                gap: 1rem;
-                padding: 1rem;
-            }
-
-            .header h1 {
-                font-size: 1.4rem;
-            }
-
-            .viewer-badge {
-                font-size: 0.9rem;
-            }
-
-            .viewer-count {
-                font-size: 1.2rem;
-            }
-
-            .container {
-                padding: 1rem;
-            }
-
-            .broadcast-section {
-                padding: 1.5rem;
-            }
-
-            .broadcast-section h2 {
-                font-size: 1.2rem;
-            }
-
-            .broadcast-buttons {
-                grid-template-columns: 1fr;
-            }
-
-            .card {
-                padding: 1.2rem;
-            }
-
-            .status-alert {
-                top: 1rem;
-                right: 1rem;
-                left: 1rem;
-                max-width: calc(100vw - 2rem);
-            }
-
-            .waiting-info {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 1.2rem;
-                gap: 0.5rem;
-            }
-
-            .header h1 .iconify {
-                font-size: 1.2rem;
-            }
-
-            .broadcast-section h2 {
-                font-size: 1rem;
-                flex-direction: column;
-                gap: 0.5rem;
             }
 
             .btn {
-                font-size: 0.85rem;
-                padding: 0.7rem 1rem;
+                width: 100%;
+                justify-content: center;
             }
+        }
 
-            input[type="text"],
-            input[type="number"] {
-                font-size: 0.9rem;
-            }
+        /* Loading Animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .loading {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        /* Glow Effects */
+        .glow-red {
+            text-shadow: 0 0 10px rgba(255, 0, 60, 0.8);
+        }
+
+        .glow-cyan {
+            text-shadow: 0 0 10px rgba(0, 255, 247, 0.8);
         }
     </style>
 </head>
 <body>
     <!-- Header -->
     <div class="header">
-        <h1>
-            <span class="iconify" data-icon="mdi:gamepad-variant"></span>
-            <span>ASTERISK</span> Control Panel
-        </h1>
-        <div class="viewer-badge">
-            <span class="iconify" data-icon="mdi:eye"></span>
-            <span class="viewer-count" id="viewerCount">-</span>
-            <span style="font-size: 0.9rem; color: #888;">viewers</span>
+        <div class="header-content">
+            <h1>
+                <span class="iconify" data-icon="mdi:broadcast" style="color: #ff003c;"></span>
+                <span>ASTERISK</span> STREAM CONTROL
+            </h1>
+            <div class="header-stats">
+                <div class="stat-badge">
+                    <span class="iconify" data-icon="mdi:eye" style="font-size: 1.5rem; color: #00fff7;"></span>
+                    <span>Viewers:</span>
+                    <span class="stat-value" id="viewerCount">0</span>
+                </div>
+                <div class="stat-badge">
+                    <span class="iconify" data-icon="mdi:circle" id="liveIndicator" style="font-size: 1rem; color: #ff003c;"></span>
+                    <span id="statusText">READY</span>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Status Alert -->
-    <div id="statusAlert" class="status-alert">
-        <span class="iconify" data-icon="mdi:check-circle"></span>
-        <span id="statusMessage"></span>
-    </div>
-
+    <!-- Main Container -->
     <div class="container">
-        <!-- Live Broadcast Section -->
-        <div class="broadcast-section">
-            <h2>
-                <span class="iconify" data-icon="mdi:broadcast"></span>
-                Live Broadcast Controls
-            </h2>
-            <p>Instantly broadcast animations and messages to all connected viewers</p>
-            <div class="broadcast-buttons">
-                <button class="btn btn-gold" onclick="triggerMatchStart()">
-                    <span class="iconify" data-icon="mdi:sword-cross"></span>
-                    Start Match
-                </button>
-                <button class="btn btn-gold" onclick="triggerMatchEnd()">
-                    <span class="iconify" data-icon="mdi:trophy"></span>
-                    End Match
-                </button>
-                <button class="btn btn-success" onclick="document.getElementById('chatModal').style.display='flex'">
-                    <span class="iconify" data-icon="mdi:message-text"></span>
-                    Send Chat
-                </button>
-            </div>
-        </div>
+        <h2 class="page-title">LIVE STREAM CONTROLS</h2>
+        <p class="page-subtitle">Manage your stream overlay, scores, and match information in real-time</p>
 
-        <!-- Main Grid -->
+        <!-- Grid Layout -->
         <div class="grid">
-            <!-- Team 1 Card -->
+            <!-- Team Scores Card -->
             <div class="card">
                 <div class="card-header">
-                    <span class="iconify" data-icon="mdi:shield"></span>
-                    <h3>Team 1</h3>
+                    <h3>
+                        <span class="iconify" data-icon="mdi:scoreboard" style="color: #ff003c;"></span>
+                        Team Scores
+                    </h3>
                 </div>
-                <div class="form-group">
-                    <label>Team Name</label>
-                    <input type="text" id="team1Name" placeholder="PHOENIX RISING">
+                <div class="card-body">
+                    <div class="team-score-display">
+                        <div class="team-side">
+                            <div class="team-name" id="displayTeam1">TEAM ALPHA</div>
+                            <div class="team-score" id="displayScore1">0</div>
+                        </div>
+                        <div class="vs-divider">VS</div>
+                        <div class="team-side">
+                            <div class="team-name" id="displayTeam2">TEAM OMEGA</div>
+                            <div class="team-score" id="displayScore2">0</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Team 1 Score</label>
+                        <input type="number" id="team1Score" class="form-input" placeholder="0" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Team 2 Score</label>
+                        <input type="number" id="team2Score" class="form-input" placeholder="0" min="0">
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn" onclick="updateScore()">
+                            <span class="iconify" data-icon="mdi:update"></span>
+                            Update Scores
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetScores()">
+                            <span class="iconify" data-icon="mdi:refresh"></span>
+                            Reset
+                        </button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Subtitle</label>
-                    <input type="text" id="team1Subtitle" placeholder="Attackers">
-                </div>
-                <div class="form-group">
-                    <label>Score</label>
-                    <input type="number" id="team1Score" min="0" placeholder="0">
-                </div>
-                <button class="btn btn-primary" onclick="updateTeam(1)">
-                    <span class="iconify" data-icon="mdi:content-save"></span>
-                    Update Team 1
-                </button>
             </div>
 
-            <!-- Team 2 Card -->
+            <!-- Team Names Card -->
             <div class="card">
                 <div class="card-header">
-                    <span class="iconify" data-icon="mdi:shield"></span>
-                    <h3>Team 2</h3>
+                    <h3>
+                        <span class="iconify" data-icon="mdi:account-group" style="color: #00fff7;"></span>
+                        Team Information
+                    </h3>
                 </div>
-                <div class="form-group">
-                    <label>Team Name</label>
-                    <input type="text" id="team2Name" placeholder="DRAGON FURY">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label">Team 1 Name</label>
+                        <input type="text" id="team1Name" class="form-input" placeholder="TEAM ALPHA">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Team 1 Subtitle</label>
+                        <input type="text" id="team1Subtitle" class="form-input" placeholder="Attackers">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Team 2 Name</label>
+                        <input type="text" id="team2Name" class="form-input" placeholder="TEAM OMEGA">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Team 2 Subtitle</label>
+                        <input type="text" id="team2Subtitle" class="form-input" placeholder="Defenders">
+                    </div>
+
+                    <button class="btn" onclick="updateTeams()">
+                        <span class="iconify" data-icon="mdi:check"></span>
+                        Update Teams
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label>Subtitle</label>
-                    <input type="text" id="team2Subtitle" placeholder="Defenders">
-                </div>
-                <div class="form-group">
-                    <label>Score</label>
-                    <input type="number" id="team2Score" min="0" placeholder="0">
-                </div>
-                <button class="btn btn-primary" onclick="updateTeam(2)">
-                    <span class="iconify" data-icon="mdi:content-save"></span>
-                    Update Team 2
-                </button>
             </div>
 
             <!-- Match Info Card -->
             <div class="card">
                 <div class="card-header">
-                    <span class="iconify" data-icon="mdi:information"></span>
-                    <h3>Match Information</h3>
+                    <h3>
+                        <span class="iconify" data-icon="mdi:map-marker" style="color: #d4af37;"></span>
+                        Match Information
+                    </h3>
                 </div>
-                <div class="form-group">
-                    <label>Match Title</label>
-                    <input type="text" id="matchTitle" placeholder="Grand Finals — ASTERISK 2025">
-                </div>
-                <div class="form-group">
-                    <label>Map Name</label>
-                    <input type="text" id="mapName" placeholder="HAVEN">
-                </div>
-                <div class="form-group">
-                    <label>Round</label>
-                    <input type="text" id="roundNumber" placeholder="8/24">
-                </div>
-                <div class="form-group">
-                    <label>Best Of</label>
-                    <input type="text" id="bestOf" placeholder="BO3">
-                </div>
-                <button class="btn btn-primary" onclick="updateMatchInfo()">
-                    <span class="iconify" data-icon="mdi:content-save"></span>
-                    Update Match Info
-                </button>
-            </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label">Map Name</label>
+                        <input type="text" id="mapName" class="form-input" placeholder="HAVEN">
+                    </div>
 
-            <!-- Quick Actions Card -->
-            <div class="card quick-actions">
-                <div class="card-header">
-                    <span class="iconify" data-icon="mdi:flash"></span>
-                    <h3>Quick Actions</h3>
-                </div>
-                <div class="score-grid">
-                    <button class="btn btn-secondary" onclick="updateAllData()">
-                        <span class="iconify" data-icon="mdi:sync"></span>
-                        Update All
-                    </button>
-                    <button class="btn btn-secondary" onclick="resetMatch()">
-                        <span class="iconify" data-icon="mdi:refresh"></span>
-                        Reset Match
+                    <div class="form-group">
+                        <label class="form-label">Round (e.g., 1/24)</label>
+                        <input type="text" id="roundNumber" class="form-input" placeholder="1/24">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Best Of (e.g., BO3)</label>
+                        <input type="text" id="bestOf" class="form-input" placeholder="BO3">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Match Title</label>
+                        <input type="text" id="matchTitle" class="form-input" placeholder="Grand Finals — ASTERISK 2025">
+                    </div>
+
+                    <button class="btn" onclick="updateMatchInfo()">
+                        <span class="iconify" data-icon="mdi:update"></span>
+                        Update Match Info
                     </button>
                 </div>
             </div>
 
-            <!-- Ingress Server Card -->
+            <!-- HLS Stream Source Card -->
             <div class="card">
                 <div class="card-header">
-                    <span class="iconify" data-icon="mdi:server-network"></span>
-                    <h3>HLS Stream Source</h3>
+                    <h3>
+                        <span class="iconify" data-icon="mdi:video-wireless" style="color: #ff003c;"></span>
+                        HLS Stream Source
+                    </h3>
                 </div>
-                <div class="form-group">
-                    <label>Ingress Server URL</label>
-                    <input type="text" id="ingressServer" placeholder="http://localhost:5001/hls/stream.m3u8">
-                    <small style="color: #888; margin-top: 0.5rem; display: block;">Enter the m3u8 URL for the HLS stream</small>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label">Stream URL (m3u8)</label>
+                        <input type="text" id="ingressServer" class="form-input" placeholder="http://localhost:5001/hls/stream.m3u8">
+                        <p class="helper-text">Enter the m3u8 URL for the HLS stream source</p>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn" onclick="updateIngressServer()">
+                            <span class="iconify" data-icon="mdi:content-save"></span>
+                            Save Stream URL
+                        </button>
+                        <button class="btn btn-secondary" onclick="testStreamSource()">
+                            <span class="iconify" data-icon="mdi:play-network"></span>
+                            Test Stream
+                        </button>
+                    </div>
                 </div>
-                <button class="btn btn-primary" onclick="updateIngressServer()">
-                    <span class="iconify" data-icon="mdi:cloud-upload"></span>
-                    Update Stream Source
-                </button>
-                <button class="btn btn-secondary" style="margin-top: 0.5rem;" onclick="testStreamSource()">
-                    <span class="iconify" data-icon="mdi:play-circle"></span>
-                    Test Stream
-                </button>
+            </div>
+
+            <!-- Match Control Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>
+                        <span class="iconify" data-icon="mdi:controller" style="color: #00ff64;"></span>
+                        Match Controls
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <p class="helper-text" style="margin-bottom: 1rem;">
+                        Trigger overlay animations for match start and end events
+                    </p>
+
+                    <div class="button-group" style="flex-direction: column;">
+                        <button class="btn btn-success" onclick="triggerMatchStart()">
+                            <span class="iconify" data-icon="mdi:sword-cross"></span>
+                            Trigger Match Start
+                        </button>
+                        <button class="btn btn-danger" onclick="triggerMatchEnd()">
+                            <span class="iconify" data-icon="mdi:trophy"></span>
+                            Trigger Match End
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetMatch()">
+                            <span class="iconify" data-icon="mdi:restore"></span>
+                            Reset Everything
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <!-- Quick Links -->
-        <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem;">
-            <a href="/" class="quick-link">
-                <span class="iconify" data-icon="mdi:television-play"></span>
-                View Live Stream
-            </a>
-            <a href="http://localhost:5000" class="quick-link">
-                <span class="iconify" data-icon="mdi:home"></span>
-                Main Site
-            </a>
-        </div>
-    </div>
-
-    <!-- Chat Modal -->
-    <div id="chatModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center;">
-        <div class="card" style="width: 90%; max-width: 500px;">
-            <div class="card-header">
-                <span class="iconify" data-icon="mdi:message-text"></span>
-                <h3>Send Chat Message</h3>
-            </div>
-            <div class="form-group">
-                <label>Message</label>
-                <input type="text" id="chatMessage" placeholder="Type your message..." maxlength="150">
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <button class="btn btn-secondary" onclick="document.getElementById('chatModal').style.display='none'">
-                    Cancel
-                </button>
-                <button class="btn btn-success" onclick="sendChat()">
-                    <span class="iconify" data-icon="mdi:send"></span>
-                    Send
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer">
-        <p>ASTERISK Control Panel • Real-time match management</p>
     </div>
 
     <script>
         const API_BASE = 'https://30c61382b1f2.ngrok-free.app/api';
+        const AUTH_TOKEN = '0022';
 
-        // Show status notification
-        function showStatus(message, isError = false) {
-            const alert = document.getElementById('statusAlert');
-            const messageEl = document.getElementById('statusMessage');
-            const icon = alert.querySelector('.iconify');
-            
-            messageEl.textContent = message;
-            alert.className = 'status-alert ' + (isError ? 'error' : 'success');
-            icon.setAttribute('data-icon', isError ? 'mdi:alert-circle' : 'mdi:check-circle');
-            alert.style.display = 'flex';
-            
-            setTimeout(() => {
-                alert.style.display = 'none';
-            }, 3000);
-        }
-
-        // Load current state
+        // Load initial state
         async function loadState() {
             try {
                 const response = await fetch(`${API_BASE}/match-state`);
@@ -648,214 +647,252 @@
                 document.getElementById('team2Subtitle').value = state.team2.subtitle;
                 document.getElementById('team2Score').value = state.team2.score;
                 
-                document.getElementById('matchTitle').value = state.matchTitle;
                 document.getElementById('mapName').value = state.map;
                 document.getElementById('roundNumber').value = state.round;
                 document.getElementById('bestOf').value = state.bestOf;
+                document.getElementById('matchTitle').value = state.matchTitle;
+                
+                updateDisplay(state);
                 
                 // Load ingress server
                 await loadIngressServer();
             } catch (error) {
                 console.error('Error loading state:', error);
+                showNotification('Failed to load state', 'error');
             }
         }
 
-        // Load ingress server URL
         async function loadIngressServer() {
             try {
                 const response = await fetch(`${API_BASE}/ingress-server`);
                 const data = await response.json();
-                
-                if (data.success) {
-                    document.getElementById('ingressServer').value = data.ingress_server || '';
+                if (data.ingress_server) {
+                    document.getElementById('ingressServer').value = data.ingress_server;
                 }
             } catch (error) {
                 console.error('Error loading ingress server:', error);
             }
         }
 
-        // Update ingress server URL
-        async function updateIngressServer() {
-            const ingressUrl = document.getElementById('ingressServer').value.trim();
-            
-            if (!ingressUrl) {
-                showStatus('❌ Please enter a stream URL', true);
-                return;
-            }
+        function updateDisplay(state) {
+            document.getElementById('displayTeam1').textContent = state.team1.name;
+            document.getElementById('displayScore1').textContent = state.team1.score;
+            document.getElementById('displayTeam2').textContent = state.team2.name;
+            document.getElementById('displayScore2').textContent = state.team2.score;
+        }
 
+        async function updateScore() {
+            const team1Score = parseInt(document.getElementById('team1Score').value) || 0;
+            const team2Score = parseInt(document.getElementById('team2Score').value) || 0;
+            
             try {
-                const response = await fetch(`${API_BASE}/ingress-server`, {
+                await fetch(`${API_BASE}/update-score`, {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'X-Auth-Token': '0022'  // Admin password
-                    },
-                    body: JSON.stringify({ ingress_server: ingressUrl })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ team: 1, score: team1Score })
                 });
-
-                const data = await response.json();
                 
-                if (data.success) {
-                    showStatus('✅ Stream source updated successfully!');
-                } else {
-                    showStatus(`❌ ${data.message}`, true);
-                }
+                await fetch(`${API_BASE}/update-score`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ team: 2, score: team2Score })
+                });
+                
+                showNotification('Scores updated!', 'success');
+                loadState();
             } catch (error) {
-                showStatus(`❌ Error: ${error.message}`, true);
+                console.error('Error updating score:', error);
+                showNotification('Failed to update scores', 'error');
             }
         }
 
-        // Test stream source
-        async function testStreamSource() {
-            const ingressUrl = document.getElementById('ingressServer').value.trim();
+        async function resetScores() {
+            document.getElementById('team1Score').value = 0;
+            document.getElementById('team2Score').value = 0;
+            await updateScore();
+        }
+
+        async function updateTeams() {
+            const team1Name = document.getElementById('team1Name').value;
+            const team1Subtitle = document.getElementById('team1Subtitle').value;
+            const team2Name = document.getElementById('team2Name').value;
+            const team2Subtitle = document.getElementById('team2Subtitle').value;
             
-            if (!ingressUrl) {
-                showStatus('❌ Please enter a stream URL', true);
-                return;
-            }
-
             try {
-                showStatus('🔍 Testing stream...');
-                const response = await fetch(ingressUrl, { method: 'HEAD' });
-                
-                if (response.ok) {
-                    showStatus('✅ Stream is accessible!');
-                } else {
-                    showStatus(`⚠️ Stream returned status: ${response.status}`, true);
-                }
-            } catch (error) {
-                showStatus(`❌ Cannot reach stream: ${error.message}`, true);
-            }
-        }
-
-        // Update single team
-        async function updateTeam(teamNum) {
-            const name = document.getElementById(`team${teamNum}Name`).value;
-            const subtitle = document.getElementById(`team${teamNum}Subtitle`).value;
-            const score = parseInt(document.getElementById(`team${teamNum}Score`).value) || 0;
-
-            try {
-                // Update team info
                 await fetch(`${API_BASE}/update-teams`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        [`team${teamNum}`]: { name, subtitle }
+                        team1: { name: team1Name, subtitle: team1Subtitle },
+                        team2: { name: team2Name, subtitle: team2Subtitle }
                     })
                 });
-
-                // Update score
-                await fetch(`${API_BASE}/update-score`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ team: teamNum, score })
-                });
-
-                showStatus(`✅ Team ${teamNum} updated successfully!`);
+                
+                showNotification('Team info updated!', 'success');
+                loadState();
             } catch (error) {
-                showStatus(`❌ Error updating team: ${error.message}`, true);
+                console.error('Error updating teams:', error);
+                showNotification('Failed to update teams', 'error');
             }
         }
 
-        // Update match info
         async function updateMatchInfo() {
-            const matchTitle = document.getElementById('matchTitle').value;
-            const map = document.getElementById('mapName').value;
-            const round = document.getElementById('roundNumber').value;
+            const mapName = document.getElementById('mapName').value;
+            const roundNumber = document.getElementById('roundNumber').value;
             const bestOf = document.getElementById('bestOf').value;
-
+            const matchTitle = document.getElementById('matchTitle').value;
+            
             try {
                 await fetch(`${API_BASE}/update-match-info`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ matchTitle, map, round, bestOf })
+                    body: JSON.stringify({
+                        map: mapName,
+                        round: roundNumber,
+                        bestOf: bestOf,
+                        matchTitle: matchTitle
+                    })
                 });
-                showStatus('✅ Match info updated!');
+                
+                showNotification('Match info updated!', 'success');
             } catch (error) {
-                showStatus(`❌ Error: ${error.message}`, true);
+                console.error('Error updating match info:', error);
+                showNotification('Failed to update match info', 'error');
             }
         }
 
-        // Update all data at once
-        async function updateAllData() {
-            await updateTeam(1);
-            await updateTeam(2);
-            await updateMatchInfo();
-            showStatus('✅ All data updated!');
-        }
-
-        // Reset match
-        async function resetMatch() {
-            if (!confirm('Reset everything to default?')) return;
-
+        async function updateIngressServer() {
+            const url = document.getElementById('ingressServer').value.trim();
+            
+            if (!url) {
+                showNotification('Please enter a stream URL', 'error');
+                return;
+            }
+            
             try {
-                await fetch(`${API_BASE}/reset`, { method: 'POST' });
-                await loadState();
-                showStatus('✅ Match reset!');
+                const response = await fetch(`${API_BASE}/ingress-server`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': AUTH_TOKEN
+                    },
+                    body: JSON.stringify({ ingress_server: url })
+                });
+                
+                if (response.ok) {
+                    showNotification('Stream URL saved!', 'success');
+                } else {
+                    showNotification('Failed to save stream URL', 'error');
+                }
             } catch (error) {
-                showStatus(`❌ Error: ${error.message}`, true);
+                console.error('Error saving ingress server:', error);
+                showNotification('Error saving stream URL', 'error');
             }
         }
 
-        // Broadcast controls
+        async function testStreamSource() {
+            const url = document.getElementById('ingressServer').value.trim();
+            
+            if (!url) {
+                showNotification('Please enter a stream URL first', 'error');
+                return;
+            }
+            
+            showNotification('Testing stream...', 'success');
+            
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                if (response.ok) {
+                    showNotification('✅ Stream is accessible!', 'success');
+                } else {
+                    showNotification('❌ Cannot access stream', 'error');
+                }
+            } catch (error) {
+                showNotification('❌ Stream test failed', 'error');
+            }
+        }
+
         async function triggerMatchStart() {
             try {
-                await fetch(`${API_BASE}/control/start-match`, { method: 'POST' });
-                showStatus('🎬 Match start broadcasted!');
+                await fetch(`${API_BASE}/control/start-match`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                showNotification('🎮 Match start animation triggered!', 'success');
             } catch (error) {
-                showStatus(`❌ Error: ${error.message}`, true);
+                console.error('Error triggering match start:', error);
+                showNotification('Failed to trigger match start', 'error');
             }
         }
 
         async function triggerMatchEnd() {
             try {
-                await fetch(`${API_BASE}/control/end-match`, { method: 'POST' });
-                showStatus('🏆 Match end broadcasted!');
-            } catch (error) {
-                showStatus(`❌ Error: ${error.message}`, true);
-            }
-        }
-
-        async function sendChat() {
-            const message = document.getElementById('chatMessage').value.trim();
-            if (!message) return;
-
-            try {
-                await fetch(`${API_BASE}/send-chat`, {
+                await fetch(`${API_BASE}/control/end-match`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message, viewerId: 'admin-panel' })
+                    headers: { 'Content-Type': 'application/json' }
                 });
-                document.getElementById('chatModal').style.display = 'none';
-                document.getElementById('chatMessage').value = '';
-                showStatus('💬 Message sent!');
+                showNotification('🏆 Match end animation triggered!', 'success');
             } catch (error) {
-                showStatus(`❌ Error: ${error.message}`, true);
+                console.error('Error triggering match end:', error);
+                showNotification('Failed to trigger match end', 'error');
             }
         }
 
-        // Update viewer count
+        async function resetMatch() {
+            if (!confirm('Reset all match data to defaults?')) return;
+            
+            try {
+                await fetch(`${API_BASE}/reset`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                showNotification('Match reset!', 'success');
+                loadState();
+            } catch (error) {
+                console.error('Error resetting match:', error);
+                showNotification('Failed to reset match', 'error');
+            }
+        }
+
+        // Viewer count update
         async function updateViewerCount() {
             try {
                 const response = await fetch(`${API_BASE}/viewer-count`);
                 const data = await response.json();
-                document.getElementById('viewerCount').textContent = data.count;
+                document.getElementById('viewerCount').textContent = data.count || 0;
             } catch (error) {
-                document.getElementById('viewerCount').textContent = '?';
+                console.error('Error fetching viewer count:', error);
             }
         }
 
-        // Close chat modal on ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                document.getElementById('chatModal').style.display = 'none';
-            }
-        });
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            const icon = type === 'success' ? 'mdi:check-circle' : 'mdi:alert-circle';
+            const iconColor = type === 'success' ? '#00ff64' : '#ff3232';
+            
+            notification.innerHTML = `
+                <span class="iconify" data-icon="${icon}" style="font-size: 1.5rem; color: ${iconColor};"></span>
+                <span style="font-weight: 600;">${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => document.body.removeChild(notification), 500);
+            }, 3000);
+        }
 
         // Initialize
         loadState();
         updateViewerCount();
-        setInterval(updateViewerCount, 10000);
+        setInterval(updateViewerCount, 5000);
+
+        console.log('🎮 ASTERISK Stream Control Panel initialized');
     </script>
 </body>
 </html>

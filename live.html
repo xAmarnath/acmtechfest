@@ -3993,15 +3993,17 @@
                 }
             });
             
-            // Pause screen event
-            eventSource.addEventListener('pause_screen', (e) => {
+            // Pause screen events
+            eventSource.addEventListener('showPause', (e) => {
                 const data = JSON.parse(e.data);
-                console.log('⏸️ Pause screen triggered:', data);
-                if (data.action === 'show') {
-                    showPauseScreen();
-                } else if (data.action === 'hide') {
-                    hidePauseScreen();
-                }
+                console.log('⏸️ Show pause screen triggered:', data);
+                showPauseScreen();
+            });
+
+            eventSource.addEventListener('hidePause', (e) => {
+                const data = JSON.parse(e.data);
+                console.log('▶️ Hide pause screen triggered:', data);
+                hidePauseScreen();
             });
             
             // Connection errors

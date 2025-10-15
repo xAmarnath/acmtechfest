@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Control Dashboard | ASTERISK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .glassmorphic {
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            border-radius: 12px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff003c, #ff6b6b);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 0, 60, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
+        }
+
+        .input-field {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: white;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #ff003c;
+            box-shadow: 0 0 0 3px rgba(255, 0, 60, 0.1);
+        }
+
+        select.input-field option {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .match-card {
+            background: linear-gradient(135deg, rgba(25, 25, 25, 0.9), rgba(15, 15, 15, 0.95));
+            border: 2px solid rgba(255, 0, 60, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .match-card:hover {
+            border-color: rgba(255, 0, 60, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(255, 0, 60, 0.3);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-upcoming {
+            background: rgba(100, 100, 255, 0.2);
+            color: #8888ff;
+        }
+
+        .status-live {
+            background: rgba(255, 0, 60, 0.2);
+            color: #ff003c;
+            animation: pulse 2s infinite;
+        }
+
+        .status-completed {
+            background: rgba(0, 255, 100, 0.2);
+            color: #00ff66;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .auth-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Authentication Modal -->
+    <div id="authModal" class="auth-modal">
+        <div class="glassmorphic p-8 max-w-md w-full mx-4 relative overflow-hidden">
+            <!-- Decorative Elements -->
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 via-pink-500 to-red-600"></div>
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-red-600/20 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-pink-600/20 rounded-full blur-3xl"></div>
+            
+            <div class="relative">
+                <!-- Logo/Icon -->
+                <div class="flex justify-center mb-6">
+                    <div class="w-20 h-20 bg-gradient-to-br from-red-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                </div>
+                
+                <h2 class="text-3xl font-bold mb-2 text-center bg-gradient-to-r from-red-400 to-pink-400 bg-clip-text text-transparent">Tournament Control</h2>
+                <p class="text-gray-400 text-center mb-6">Admin Authentication Required</p>
+                
+                <form id="authForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Admin Password</label>
+                        <div class="relative">
+                            <input type="password" id="authPassword" class="input-field pr-12" placeholder="Enter your password" required autofocus>
+                            <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
+                                <svg id="eyeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary w-full flex items-center justify-center gap-2 text-lg font-bold">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        Access Dashboard
+                    </button>
+                    <p id="authError" class="text-red-400 text-sm text-center hidden bg-red-900/20 border border-red-500/30 rounded-lg py-2"></p>
+                </form>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-xs text-gray-500">
+                        🔒 Protected by ASTERISK Security
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="hidden min-h-screen p-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-4xl font-bold mb-2">Match Control Dashboard</h1>
+                    <p class="text-gray-400">Manage tournament matches in real-time</p>
+                </div>
+                <button onclick="logout()" class="btn-secondary">Logout</button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div class="glassmorphic p-4">
+                    <div class="text-3xl font-bold text-[#ff003c]" id="totalMatches">0</div>
+                    <div class="text-sm text-gray-400">Total Matches</div>
+                </div>
+                <div class="glassmorphic p-4">
+                    <div class="text-3xl font-bold text-blue-400" id="upcomingMatches">0</div>
+                    <div class="text-sm text-gray-400">Upcoming</div>
+                </div>
+                <div class="glassmorphic p-4">
+                    <div class="text-3xl font-bold text-[#ff003c]" id="liveMatches">0</div>
+                    <div class="text-sm text-gray-400">Live</div>
+                </div>
+                <div class="glassmorphic p-4">
+                    <div class="text-3xl font-bold text-green-400" id="completedMatches">0</div>
+                    <div class="text-sm text-gray-400">Completed</div>
+                </div>
+            </div>
+
+            <!-- Create Match Button -->
+            <div class="mb-6 flex gap-4">
+                <button onclick="showCreateMatchModal()" class="btn-primary">
+                    ➕ Create New Match
+                </button>
+                <button onclick="showBroadcastModal()" class="btn-warning">
+                    📱 Broadcast WhatsApp to All Teams
+                </button>
+            </div>
+
+            <!-- Matches List -->
+            <div class="glassmorphic p-6">
+                <h2 class="text-2xl font-bold mb-4">All Matches</h2>
+                <div id="matchesList" class="space-y-4">
+                    <!-- Matches will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit Match Modal -->
+    <div id="matchModal" class="auth-modal hidden">
+        <div class="glassmorphic p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <h2 id="modalTitle" class="text-2xl font-bold mb-6">Create New Match</h2>
+            <form id="matchForm" class="space-y-4">
+                <input type="hidden" id="matchId">
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Round</label>
+                        <select id="matchRound" class="input-field" required>
+                            <option value="">Select Round</option>
+                            <option value="Round of 16">Round of 16</option>
+                            <option value="Quarterfinals">Quarterfinals</option>
+                            <option value="Semifinals">Semifinals</option>
+                            <option value="Grand Final">Grand Final</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Match Number</label>
+                        <input type="text" id="matchNumber" class="input-field" placeholder="e.g., M1" required>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Team 1</label>
+                        <input type="text" id="team1" class="input-field" placeholder="Team name" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Team 1 Seed</label>
+                        <input type="number" id="team1Seed" class="input-field" placeholder="Seed" min="1">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Team 2</label>
+                        <input type="text" id="team2" class="input-field" placeholder="Team name" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Team 2 Seed</label>
+                        <input type="number" id="team2Seed" class="input-field" placeholder="Seed" min="1">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Status</label>
+                        <select id="matchStatus" class="input-field" required>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="live">Live</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Winner (if completed)</label>
+                        <input type="text" id="matchWinner" class="input-field" placeholder="Winner team name">
+                    </div>
+                </div>
+
+                <div class="flex gap-4 pt-4">
+                    <button type="submit" class="btn-primary flex-1">Save Match</button>
+                    <button type="button" onclick="closeMatchModal()" class="btn-secondary flex-1">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Broadcast WhatsApp Modal -->
+    <div id="broadcastModal" class="auth-modal hidden">
+        <div class="glassmorphic p-8 max-w-2xl w-full mx-4">
+            <h2 class="text-2xl font-bold mb-6">📱 Broadcast WhatsApp to All Team Leads</h2>
+            <form id="broadcastForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Message</label>
+                    <textarea id="broadcastMessage" class="input-field" rows="6" placeholder="Enter your message..." required></textarea>
+                    <p class="text-sm text-gray-400 mt-2">This message will be sent to all registered team leads via WhatsApp</p>
+                </div>
+
+                <div id="broadcastProgress" class="hidden">
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium">Broadcasting...</span>
+                            <span id="broadcastStatus" class="text-sm text-gray-400">0 / 0</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div id="broadcastProgressBar" class="bg-[#00fff7] h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                        <div id="broadcastResults" class="mt-4 max-h-40 overflow-y-auto space-y-1"></div>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 pt-4">
+                    <button type="submit" class="btn-primary flex-1" id="broadcastBtn">
+                        📤 Send Broadcast
+                    </button>
+                    <button type="button" onclick="closeBroadcastModal()" class="btn-secondary flex-1">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let authToken = localStorage.getItem('adminToken');
+        const API_BASE = window.location.origin;
+
+        // Password toggle function
+        function togglePassword() {
+            const passwordInput = document.getElementById('authPassword');
+            const eyeIcon = document.getElementById('eyeIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
+                `;
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                `;
+            }
+        }
+
+        // Authentication
+        document.getElementById('authForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = document.getElementById('authPassword').value;
+            const errorElement = document.getElementById('authError');
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            
+            // Disable button and show loading
+            submitButton.disabled = true;
+            submitButton.innerHTML = `
+                <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Authenticating...
+            `;
+            
+            try {
+                const response = await fetch(`${API_BASE}/key`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ password })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    authToken = data.token;
+                    localStorage.setItem('adminToken', authToken);
+                    
+                    // Success animation
+                    submitButton.innerHTML = `
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Success!
+                    `;
+                    
+                    setTimeout(() => {
+                        document.getElementById('authModal').classList.add('hidden');
+                        document.getElementById('dashboard').classList.remove('hidden');
+                        loadMatches();
+                    }, 500);
+                } else {
+                    errorElement.textContent = '❌ Invalid password. Please try again.';
+                    errorElement.classList.remove('hidden');
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = `
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        Access Dashboard
+                    `;
+                }
+            } catch (error) {
+                console.error('Auth error:', error);
+                errorElement.textContent = '⚠️ Connection error. Please check your internet.';
+                errorElement.classList.remove('hidden');
+                submitButton.disabled = false;
+                submitButton.innerHTML = `
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    Access Dashboard
+                `;
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('adminToken');
+            authToken = null;
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('authModal').classList.remove('hidden');
+        }
+
+        // Check auth on load
+        if (authToken) {
+            document.getElementById('authModal').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            loadMatches();
+        }
+
+        // Load matches
+        async function loadMatches() {
+            try {
+                const response = await fetch(`${API_BASE}/api/matches`, {
+                    headers: {
+                        'X-Auth-Token': authToken
+                    }
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayMatches(data.matches);
+                    updateStats(data.matches);
+                }
+            } catch (error) {
+                console.error('Error loading matches:', error);
+            }
+        }
+
+        function displayMatches(matches) {
+            const container = document.getElementById('matchesList');
+            
+            if (matches.length === 0) {
+                container.innerHTML = '<p class="text-gray-400 text-center py-8">No matches created yet</p>';
+                return;
+            }
+
+            container.innerHTML = matches.map(match => `
+                <div class="match-card">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-lg font-bold">${match.match_number || 'Match'}</span>
+                                <span class="text-gray-400">${match.round}</span>
+                                <span class="status-badge status-${match.status}">${match.status}</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="editMatch('${match._id}')" class="btn-secondary px-3 py-1 text-sm">Edit</button>
+                            <button onclick="deleteMatch('${match._id}')" class="btn-secondary px-3 py-1 text-sm text-red-400">Delete</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4 items-center">
+                        <div class="text-right">
+                            <div class="font-bold text-lg">${match.team1}</div>
+                            ${match.team1_seed ? `<div class="text-sm text-gray-400">Seed ${match.team1_seed}</div>` : ''}
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="text-[#ffd700] font-bold text-xl">VS</div>
+                        </div>
+                        
+                        <div>
+                            <div class="font-bold text-lg">${match.team2}</div>
+                            ${match.team2_seed ? `<div class="text-sm text-gray-400">Seed ${match.team2_seed}</div>` : ''}
+                        </div>
+                    </div>
+
+                    ${match.winner ? `
+                        <div class="mt-4 pt-4 border-t border-gray-700">
+                            <div class="text-sm text-gray-400">Winner: <span class="text-green-400 font-bold">${match.winner}</span></div>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function updateStats(matches) {
+            document.getElementById('totalMatches').textContent = matches.length;
+            document.getElementById('upcomingMatches').textContent = matches.filter(m => m.status === 'upcoming').length;
+            document.getElementById('liveMatches').textContent = matches.filter(m => m.status === 'live').length;
+            document.getElementById('completedMatches').textContent = matches.filter(m => m.status === 'completed').length;
+        }
+
+        // Create/Edit Match
+        function showCreateMatchModal() {
+            document.getElementById('modalTitle').textContent = 'Create New Match';
+            document.getElementById('matchForm').reset();
+            document.getElementById('matchId').value = '';
+            document.getElementById('matchModal').classList.remove('hidden');
+        }
+
+        async function editMatch(matchId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/matches`, {
+                    headers: {'X-Auth-Token': authToken}
+                });
+                const data = await response.json();
+                const match = data.matches.find(m => m._id === matchId);
+                
+                if (match) {
+                    document.getElementById('modalTitle').textContent = 'Edit Match';
+                    document.getElementById('matchId').value = match._id;
+                    document.getElementById('matchRound').value = match.round;
+                    document.getElementById('matchNumber').value = match.match_number;
+                    document.getElementById('team1').value = match.team1;
+                    document.getElementById('team1Seed').value = match.team1_seed || '';
+                    document.getElementById('team2').value = match.team2;
+                    document.getElementById('team2Seed').value = match.team2_seed || '';
+                    document.getElementById('matchStatus').value = match.status;
+                    document.getElementById('matchWinner').value = match.winner || '';
+                    document.getElementById('matchModal').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error loading match:', error);
+            }
+        }
+
+        function closeMatchModal() {
+            document.getElementById('matchModal').classList.add('hidden');
+        }
+
+        document.getElementById('matchForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const matchId = document.getElementById('matchId').value;
+            const matchData = {
+                round: document.getElementById('matchRound').value,
+                match_number: document.getElementById('matchNumber').value,
+                team1: document.getElementById('team1').value,
+                team1_seed: parseInt(document.getElementById('team1Seed').value) || null,
+                team2: document.getElementById('team2').value,
+                team2_seed: parseInt(document.getElementById('team2Seed').value) || null,
+                status: document.getElementById('matchStatus').value,
+                winner: document.getElementById('matchWinner').value || null
+            };
+
+            try {
+                const url = matchId ? `${API_BASE}/api/matches/${matchId}` : `${API_BASE}/api/matches`;
+                const method = matchId ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': authToken
+                    },
+                    body: JSON.stringify(matchData)
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    closeMatchModal();
+                    loadMatches();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error saving match:', error);
+                alert('Error saving match');
+            }
+        });
+
+        async function deleteMatch(matchId) {
+            if (!confirm('Are you sure you want to delete this match?')) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/matches/${matchId}`, {
+                    method: 'DELETE',
+                    headers: {'X-Auth-Token': authToken}
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    loadMatches();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error deleting match:', error);
+                alert('Error deleting match');
+            }
+        }
+
+        // Broadcast WhatsApp Functions
+        function showBroadcastModal() {
+            document.getElementById('broadcastForm').reset();
+            document.getElementById('broadcastProgress').classList.add('hidden');
+            document.getElementById('broadcastModal').classList.remove('hidden');
+        }
+
+        function closeBroadcastModal() {
+            document.getElementById('broadcastModal').classList.add('hidden');
+        }
+
+        document.getElementById('broadcastForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const message = document.getElementById('broadcastMessage').value.trim();
+            
+            if (!message) {
+                alert('Please enter a message');
+                return;
+            }
+            
+            if (!confirm('Are you sure you want to send this message to ALL team leads via WhatsApp?')) {
+                return;
+            }
+            
+            const progressDiv = document.getElementById('broadcastProgress');
+            const resultsDiv = document.getElementById('broadcastResults');
+            const broadcastBtn = document.getElementById('broadcastBtn');
+            
+            // Show progress
+            progressDiv.classList.remove('hidden');
+            broadcastBtn.disabled = true;
+            broadcastBtn.textContent = '📤 Sending...';
+            resultsDiv.innerHTML = '';
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/broadcast-whatsapp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': authToken
+                    },
+                    body: JSON.stringify({ message })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Update progress bar
+                    document.getElementById('broadcastProgressBar').style.width = '100%';
+                    document.getElementById('broadcastStatus').textContent = 
+                        `${data.total_sent} sent, ${data.total_failed} failed`;
+                    
+                    // Show results
+                    resultsDiv.innerHTML = '<div class="text-sm font-medium mb-2">Results:</div>';
+                    data.results.forEach(result => {
+                        const statusColor = result.status === 'sent' ? 'text-green-400' : 'text-red-400';
+                        const icon = result.status === 'sent' ? '✅' : '❌';
+                        const reason = result.reason ? ` (${result.reason})` : '';
+                        resultsDiv.innerHTML += `
+                            <div class="text-sm ${statusColor}">
+                                ${icon} ${result.team}${reason}
+                            </div>
+                        `;
+                    });
+                    
+                    broadcastBtn.textContent = '✅ Broadcast Complete';
+                    
+                    setTimeout(() => {
+                        closeBroadcastModal();
+                    }, 5000);
+                } else {
+                    alert('Error: ' + data.message);
+                    broadcastBtn.disabled = false;
+                    broadcastBtn.textContent = '📤 Send Broadcast';
+                }
+            } catch (error) {
+                console.error('Error broadcasting:', error);
+                alert('Error broadcasting message');
+                broadcastBtn.disabled = false;
+                broadcastBtn.textContent = '📤 Send Broadcast';
+            }
+        });
+
+        // Real-time updates via SSE
+        const eventSource = new EventSource(`${API_BASE}/api/sse`);
+        
+        eventSource.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                if (data.type === 'match_created' || data.type === 'match_updated' || data.type === 'match_deleted') {
+                    loadMatches();
+                }
+            } catch (error) {
+                console.error('SSE error:', error);
+            }
+        };
+
+        eventSource.onerror = (error) => {
+            console.error('SSE connection error:', error);
+        };
+    </script>
+</body>
+</html>

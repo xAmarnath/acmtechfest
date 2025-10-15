@@ -16,9 +16,22 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 100%);
+            background: #000;
             color: #fff;
             min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255, 8, 68, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 8, 68, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
         }
 
         h1, h2, h3, h4 {
@@ -26,14 +39,15 @@
         }
 
         .glassmorphic {
-            background: rgba(20, 20, 20, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 0, 60, 0.3);
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 8, 68, 0.3);
             border-radius: 12px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #ff003c, #ff6b6b);
+            background: linear-gradient(135deg, #ff0844, #d4003a);
             border: none;
             padding: 0.75rem 1.5rem;
             border-radius: 8px;
@@ -44,13 +58,14 @@
         }
 
         .btn-primary:hover {
+            background: linear-gradient(135deg, #ff2060, #ff0844);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 0, 60, 0.4);
+            box-shadow: 0 8px 20px rgba(255, 8, 68, 0.4);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 8, 68, 0.3);
             padding: 0.75rem 1.5rem;
             border-radius: 8px;
             color: white;
@@ -60,7 +75,8 @@
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 8, 68, 0.1);
+            border-color: rgba(255, 8, 68, 0.5);
         }
 
         .btn-warning {
@@ -75,13 +91,14 @@
         }
 
         .btn-warning:hover {
+            background: linear-gradient(135deg, #fcd34d, #fbbf24);
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
         }
 
         .input-field {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 8, 68, 0.3);
             border-radius: 8px;
             padding: 0.75rem 1rem;
             color: white;
@@ -91,8 +108,9 @@
 
         .input-field:focus {
             outline: none;
-            border-color: #ff003c;
-            box-shadow: 0 0 0 3px rgba(255, 0, 60, 0.1);
+            border-color: #ff0844;
+            box-shadow: 0 0 20px rgba(255, 8, 68, 0.3);
+            background: rgba(0, 0, 0, 0.8);
         }
 
         select.input-field option {
@@ -101,17 +119,19 @@
         }
 
         .match-card {
-            background: linear-gradient(135deg, rgba(25, 25, 25, 0.9), rgba(15, 15, 15, 0.95));
-            border: 2px solid rgba(255, 0, 60, 0.3);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 8, 68, 0.3);
             border-radius: 12px;
             padding: 1.5rem;
             transition: all 0.3s ease;
         }
 
         .match-card:hover {
-            border-color: rgba(255, 0, 60, 0.6);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(255, 0, 60, 0.3);
+            border-color: rgba(255, 8, 68, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 8, 68, 0.2);
         }
 
         .status-badge {
@@ -122,20 +142,23 @@
             text-transform: uppercase;
         }
 
-        .status-upcoming {
-            background: rgba(100, 100, 255, 0.2);
-            color: #8888ff;
+        .status-upcoming, .status-pending {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.3);
         }
 
         .status-live {
-            background: rgba(255, 0, 60, 0.2);
-            color: #ff003c;
+            background: rgba(255, 8, 68, 0.2);
+            color: #ff0844;
+            border: 1px solid rgba(255, 8, 68, 0.4);
             animation: pulse 2s infinite;
         }
 
         .status-completed {
-            background: rgba(0, 255, 100, 0.2);
-            color: #00ff66;
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
         }
 
         @keyframes pulse {
@@ -228,19 +251,19 @@
 
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-                <div class="glassmorphic p-4">
-                    <div class="text-3xl font-bold text-[#ff003c]" id="totalMatches">0</div>
+                <div class="glassmorphic p-4 hover:border-[#ff0844] transition-all">
+                    <div class="text-3xl font-bold text-[#ff0844]" id="totalMatches">0</div>
                     <div class="text-sm text-gray-400">Total Matches</div>
                 </div>
-                <div class="glassmorphic p-4">
+                <div class="glassmorphic p-4 hover:border-blue-500 transition-all">
                     <div class="text-3xl font-bold text-blue-400" id="upcomingMatches">0</div>
                     <div class="text-sm text-gray-400">Upcoming</div>
                 </div>
-                <div class="glassmorphic p-4">
-                    <div class="text-3xl font-bold text-[#ff003c]" id="liveMatches">0</div>
-                    <div class="text-sm text-gray-400">Live</div>
+                <div class="glassmorphic p-4 hover:border-[#ff0844] transition-all">
+                    <div class="text-3xl font-bold text-[#ff0844]" id="liveMatches">0</div>
+                    <div class="text-sm text-gray-400">Live Now</div>
                 </div>
-                <div class="glassmorphic p-4">
+                <div class="glassmorphic p-4 hover:border-green-500 transition-all">
                     <div class="text-3xl font-bold text-green-400" id="completedMatches">0</div>
                     <div class="text-sm text-gray-400">Completed</div>
                 </div>
@@ -316,7 +339,7 @@
                     <div>
                         <label class="block text-sm font-medium mb-2">Status</label>
                         <select id="matchStatus" class="input-field" required>
-                            <option value="upcoming">Upcoming</option>
+                            <option value="pending">Pending</option>
                             <option value="live">Live</option>
                             <option value="completed">Completed</option>
                         </select>
@@ -545,7 +568,7 @@
 
         function updateStats(matches) {
             document.getElementById('totalMatches').textContent = matches.length;
-            document.getElementById('upcomingMatches').textContent = matches.filter(m => m.status === 'upcoming').length;
+            document.getElementById('upcomingMatches').textContent = matches.filter(m => m.status === 'pending' || m.status === 'upcoming').length;
             document.getElementById('liveMatches').textContent = matches.filter(m => m.status === 'live').length;
             document.getElementById('completedMatches').textContent = matches.filter(m => m.status === 'completed').length;
         }

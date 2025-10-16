@@ -2012,6 +2012,54 @@
             document.querySelectorAll('.bracket-match').forEach(match => {
                 match.addEventListener('touchstart', function(e) {
                     this.classList.add('force-visible');
+
+                    try {
+                        if (window.innerWidth <= 768) {
+                            console.log('%c[DEBUG] touchstart on .bracket-match', 'color: #ff003c; font-weight: bold;');
+                            const comp = window.getComputedStyle(this);
+                            console.log('Target computed:', {transform: comp.transform, zIndex: comp.zIndex, position: comp.position, pointerEvents: comp.pointerEvents});
+
+                            // Walk up ancestors to log potential stacking contexts
+                            let anc = this.parentElement;
+                            const ancestors = [];
+                            while (anc && anc !== document.body) {
+                                const cs = window.getComputedStyle(anc);
+                                ancestors.push({node: anc, transform: cs.transform, zIndex: cs.zIndex, position: cs.position, pointerEvents: cs.pointerEvents});
+                                anc = anc.parentElement;
+                            }
+                            console.log('%c[DEBUG] Ancestor chain (closest first):', 'color: #00d9ff; font-weight: bold;', ancestors.map(a => ({node: a.node.nodeName + (a.node.className ? '.'+a.node.className.split(' ').join('.') : ''), transform: a.transform, zIndex: a.zIndex, position: a.position, pointerEvents: a.pointerEvents})));
+
+                            // Temporarily force ancestors to be visible and non-transforming so card can show — restores after 1.5s
+                            anc = this.parentElement;
+                            const modified = [];
+                            while (anc && anc !== document.body) {
+                                try {
+                                    // save originals
+                                    modified.push({el: anc, origZ: anc.style.zIndex || '', origTransform: anc.style.transform || '', origPointer: anc.style.pointerEvents || '', origOutline: anc.style.outline || ''});
+                                    anc.style.zIndex = '2147483647';
+                                    anc.style.transform = 'none';
+                                    anc.style.pointerEvents = 'auto';
+                                    anc.style.outline = '2px solid rgba(255,0,0,0.12)';
+                                } catch (e) {
+                                    // ignore
+                                }
+                                anc = anc.parentElement;
+                            }
+
+                            setTimeout(() => {
+                                modified.forEach(item => {
+                                    try {
+                                        item.el.style.zIndex = item.origZ;
+                                        item.el.style.transform = item.origTransform;
+                                        item.el.style.pointerEvents = item.origPointer;
+                                        item.el.style.outline = item.origOutline;
+                                    } catch (e) {}
+                                });
+                            }, 1500);
+                        }
+                    } catch (err) {
+                        console.error('Debug override failed:', err);
+                    }
                 }, {passive: true});
 
                 match.addEventListener('touchend', function(e) {

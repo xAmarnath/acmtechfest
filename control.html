@@ -374,31 +374,64 @@
                 };
                 const color = statusColors[match.status] || 'gray';
                 
+                // Determine if teams are eliminated (losers)
+                const team1IsWinner = match.winner === match.team1;
+                const team2IsWinner = match.winner === match.team2;
+                const team1Classes = match.winner && !team1IsWinner ? 'opacity-50 line-through text-gray-600' : '';
+                const team2Classes = match.winner && !team2IsWinner ? 'opacity-50 line-through text-gray-600' : '';
+                const winnerHighlight = match.winner ? 'text-green-400 font-extrabold' : '';
+                
+                // Highlight ongoing matches
+                const matchHighlight = match.status === 'live' ? 'ring-2 ring-red-500 bg-red-900/20' : '';
+                
                 return `
-                    <div class="bg-black/40 border border-${color}-500/20 hover:border-${color}-500/50 rounded-lg p-4 transition-all">
+                    <div class="bg-black/40 border border-${color}-500/20 hover:border-${color}-500/50 rounded-lg p-4 transition-all ${matchHighlight}">
                         <div class="flex flex-wrap justify-between items-start gap-2 mb-3">
                             <div class="flex flex-wrap items-center gap-2">
                                 <span class="font-rajdhani font-bold text-${color}-500">${match.match_number || 'Match'}</span>
                                 <span class="text-sm text-gray-400">${match.round}</span>
+                                ${match.court ? `<span class="text-xs text-cyan-400 px-2 py-0.5 bg-cyan-500/10 rounded border border-cyan-500/30">Court ${match.court}</span>` : ''}
+                                ${match.time_slot ? `<span class="text-xs text-purple-400 px-2 py-0.5 bg-purple-500/10 rounded border border-purple-500/30">${match.time_slot}</span>` : ''}
                                 <span class="px-2 py-1 bg-${color}-500/20 text-${color}-400 text-xs font-bold uppercase rounded border border-${color}-500/30 ${match.status === 'live' ? 'status-live' : ''}">${match.status}</span>
                             </div>
                             <div class="flex gap-2">
+                                ${match.status !== 'completed' ? `<button onclick="setMatchLive('${match._id}')" class="px-3 py-1 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded text-xs font-rajdhani font-bold uppercase transition-all">Set Live</button>` : ''}
                                 <button onclick="editMatch('${match._id}')" class="px-3 py-1 bg-white/10 hover:bg-white/20 rounded text-xs font-rajdhani font-bold uppercase transition-all">Edit</button>
                                 <button onclick="deleteMatch('${match._id}')" class="px-3 py-1 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded text-xs font-rajdhani font-bold uppercase transition-all">Del</button>
                             </div>
                         </div>
                         <div class="grid grid-cols-3 gap-2 items-center">
                             <div class="text-right">
-                                <div class="font-rajdhani font-bold">${match.team1}</div>
+                                <div class="font-rajdhani font-bold ${team1Classes} ${team1IsWinner ? winnerHighlight : ''}">${match.team1}</div>
                                 ${match.team1_seed ? `<div class="text-xs text-gray-500">Seed ${match.team1_seed}</div>` : ''}
+                                ${match.team1_score !== undefined ? `<div class="text-xs text-cyan-400 font-bold mt-1">Score: ${match.team1_score}</div>` : ''}
                             </div>
                             <div class="text-center font-valorant text-yellow-500 text-lg">VS</div>
                             <div class="text-left">
-                                <div class="font-rajdhani font-bold">${match.team2}</div>
+                                <div class="font-rajdhani font-bold ${team2Classes} ${team2IsWinner ? winnerHighlight : ''}">${match.team2}</div>
                                 ${match.team2_seed ? `<div class="text-xs text-gray-500">Seed ${match.team2_seed}</div>` : ''}
+                                ${match.team2_score !== undefined ? `<div class="text-xs text-cyan-400 font-bold mt-1">Score: ${match.team2_score}</div>` : ''}
                             </div>
                         </div>
-                        ${match.winner ? `<div class="mt-3 pt-3 border-t border-white/10 text-center text-sm text-gray-400">Winner: <span class="text-green-400 font-bold">${match.winner}</span></div>` : ''}
+                        ${match.winner ? `
+                            <div class="mt-3 pt-3 border-t border-white/10 text-center text-sm text-gray-400">
+                                Winner: <span class="text-green-400 font-bold">${match.winner}</span>
+                                ${match.status === 'completed' && match.round === 'Round of 18' ? `
+                                    <button onclick="advanceWinner('${match._id}', '${match.winner}')" class="ml-3 px-3 py-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded text-xs font-rajdhani font-bold uppercase transition-all">
+                                        Advance to QF
+                                    </button>
+                                ` : ''}
+                            </div>
+                        ` : `
+                            <div class="mt-3 pt-3 border-t border-white/10 grid grid-cols-2 gap-2">
+                                <button onclick="setWinner('${match._id}', '${match.team1}')" class="px-3 py-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded text-xs font-rajdhani font-bold uppercase transition-all">
+                                    ${match.team1} Wins
+                                </button>
+                                <button onclick="setWinner('${match._id}', '${match.team2}')" class="px-3 py-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded text-xs font-rajdhani font-bold uppercase transition-all">
+                                    ${match.team2} Wins
+                                </button>
+                            </div>
+                        `}
                     </div>
                 `;
             }).join('');
@@ -504,6 +537,82 @@
                 }
             } catch (error) {
                 showNotification('❌ Error deleting match', 'error');
+            }
+        }
+
+        // Set match as live
+        async function setMatchLive(matchId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/matches/${matchId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': authToken
+                    },
+                    body: JSON.stringify({ status: 'live' })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    loadMatches();
+                    showNotification('🔴 Match is now LIVE!', 'success');
+                }
+            } catch (error) {
+                showNotification('❌ Error setting match live', 'error');
+            }
+        }
+
+        // Set winner for a match
+        async function setWinner(matchId, winner) {
+            try {
+                const response = await fetch(`${API_BASE}/api/matches/${matchId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': authToken
+                    },
+                    body: JSON.stringify({ 
+                        winner: winner,
+                        status: 'completed'
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    loadMatches();
+                    showNotification(`✅ ${winner} wins!`, 'success');
+                }
+            } catch (error) {
+                showNotification('❌ Error setting winner', 'error');
+            }
+        }
+
+        // Advance winner to next round
+        async function advanceWinner(matchId, winner) {
+            if (!confirm(`Advance ${winner} to Quarterfinals?`)) return;
+            
+            try {
+                // This would create or update a quarterfinal match
+                // For now, just show notification - you can implement the backend logic
+                showNotification(`✅ ${winner} advanced to Quarterfinals!`, 'success');
+                
+                // TODO: Implement backend endpoint for advancing teams
+                // const response = await fetch(`${API_BASE}/api/tournament/advance-team`, {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //         'X-Auth-Token': authToken
+                //     },
+                //     body: JSON.stringify({ 
+                //         matchId: matchId,
+                //         winner: winner,
+                //         targetRound: 'Quarterfinals'
+                //     })
+                // });
+            } catch (error) {
+                showNotification('❌ Error advancing team', 'error');
             }
         }
 

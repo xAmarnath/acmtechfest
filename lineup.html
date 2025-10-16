@@ -1198,6 +1198,17 @@
                 padding: 0.75rem !important;
             }
 
+            /* Force consistent stacking on mobile so cards remain tappable/visible */
+            .bracket-match,
+            .bracket-match-placeholder,
+            .bracket-team {
+                z-index: 50 !important;
+                position: relative !important;
+                transform: none !important;
+                -webkit-transform: none !important;
+                will-change: auto !important;
+            }
+
             /* Score display - mobile compact */
             .bracket-team span[style*="font-size"] {
                 font-size: 1rem !important;
@@ -1981,6 +1992,9 @@
                 match.style.opacity = '0';
                 match.style.transform = 'translateY(20px)';
                 match.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                // Ensure mobile cards sit above sticky headers and other overlays
+                match.style.zIndex = '50';
+                match.style.willChange = 'transform, opacity';
                 match.style.transitionDelay = `${index * 0.05}s`;
                 mobileObserver.observe(match);
             });

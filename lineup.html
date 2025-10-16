@@ -597,7 +597,7 @@
             border-radius: 12px;
             padding: 1.25rem;
             position: relative;
-            z-index: 2;
+            z-index: 2147483647;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 
                 0 4px 20px rgba(0, 0, 0, 0.4),
@@ -871,7 +871,7 @@
             border-radius: 12px;
             padding: 1.25rem;
             position: relative;
-            z-index: 2;
+            z-index: 2147483647;
             opacity: 0.5;
             transition: opacity 0.3s ease;
         }
@@ -1202,11 +1202,20 @@
             .bracket-match,
             .bracket-match-placeholder,
             .bracket-team {
-                z-index: 50 !important;
+                z-index: 2147483647 !important;
                 position: relative !important;
                 transform: none !important;
                 -webkit-transform: none !important;
                 will-change: auto !important;
+            }
+
+            /* When a card is interacted with on mobile, keep it visible */
+            .force-visible {
+                opacity: 1 !important;
+                transform: none !important;
+                -webkit-transform: none !important;
+                z-index: 2147483647 !important;
+                pointer-events: auto !important;
             }
 
             /* Score display - mobile compact */
@@ -1993,10 +2002,28 @@
                 match.style.transform = 'translateY(20px)';
                 match.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                 // Ensure mobile cards sit above sticky headers and other overlays
-                match.style.zIndex = '50';
+                match.style.zIndex = '2147483647';
                 match.style.willChange = 'transform, opacity';
                 match.style.transitionDelay = `${index * 0.05}s`;
                 mobileObserver.observe(match);
+            });
+
+            // Prevent mobile taps from collapsing/hiding cards: add class on touchstart and remove on touchend
+            document.querySelectorAll('.bracket-match').forEach(match => {
+                match.addEventListener('touchstart', function(e) {
+                    this.classList.add('force-visible');
+                }, {passive: true});
+
+                match.addEventListener('touchend', function(e) {
+                    // keep visible for a short time to allow any click handlers to run
+                    setTimeout(() => this.classList.remove('force-visible'), 1200);
+                });
+
+                // Also support click fallback
+                match.addEventListener('click', function(e) {
+                    this.classList.add('force-visible');
+                    setTimeout(() => this.classList.remove('force-visible'), 1200);
+                });
             });
         }
 

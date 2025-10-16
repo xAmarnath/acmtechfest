@@ -597,6 +597,7 @@
             border-radius: 12px;
             padding: 1.25rem;
             position: relative;
+            z-index: 2;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 
                 0 4px 20px rgba(0, 0, 0, 0.4),
@@ -870,6 +871,7 @@
             border-radius: 12px;
             padding: 1.25rem;
             position: relative;
+            z-index: 2;
             opacity: 0.5;
             transition: opacity 0.3s ease;
         }
@@ -2065,9 +2067,13 @@
 
                 if (round.matches.length === 0) {
                     // Show placeholders for empty rounds
-                    const placeholderCount = roundNum === 1 ? 9 : roundNum === 2 ? 4 : roundNum === 3 ? 2 : 1;
+                    let placeholderCount = 1;
+                    if (roundNum == 1) placeholderCount = 9;
+                    else if (roundNum == 2) placeholderCount = 5;
+                    else if (roundNum == 3) placeholderCount = 2;
+                    else if (roundNum == 4) placeholderCount = 1;
                     for (let i = 0; i < placeholderCount; i++) {
-                        const placeholder = createPlaceholderMatch(roundNum === 4);
+                        const placeholder = createPlaceholderMatch(roundNum == 4);
                         matchesColumn.appendChild(placeholder);
                     }
                 } else {

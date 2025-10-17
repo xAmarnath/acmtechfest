@@ -343,10 +343,13 @@
 
         /* Slow pulse animation for Watch Live button */
         @keyframes pulse-slow {
-            0%, 100% {
+
+            0%,
+            100% {
                 opacity: 1;
                 transform: scale(1);
             }
+
             50% {
                 opacity: 0.9;
                 transform: scale(1.02);
@@ -1064,16 +1067,16 @@
             #about .grid.md\:grid-cols-3 {
                 display: none;
             }
-            
+
             #about .mb-16 {
                 margin-bottom: 0 !important;
             }
-            
+
             /* Smooth section transitions for mobile */
             section {
                 position: relative;
             }
-            
+
             /* Add gradient overlays between sections */
             section::after {
                 content: '';
@@ -1082,11 +1085,11 @@
                 left: 0;
                 right: 0;
                 height: 60px;
-                background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.3));
+                background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
                 pointer-events: none;
                 z-index: 1;
             }
-            
+
             section::before {
                 content: '';
                 position: absolute;
@@ -1094,52 +1097,53 @@
                 left: 0;
                 right: 0;
                 height: 60px;
-                background: linear-gradient(to top, transparent, rgba(0,0,0,0.3));
+                background: linear-gradient(to top, transparent, rgba(0, 0, 0, 0.3));
                 pointer-events: none;
                 z-index: 1;
             }
-            
+
             /* Enhance section backgrounds with subtle gradients */
             #about {
                 background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%) !important;
             }
-            
+
             #events {
                 background: linear-gradient(180deg, #050505 0%, #0f0f0f 50%, #050505 100%) !important;
             }
-            
+
             #schedule {
                 background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%) !important;
             }
-            
+
             #register {
                 background: linear-gradient(180deg, #050505 0%, #0f0f0f 50%, #050505 100%) !important;
             }
-            
+
             #sponsors {
                 background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%) !important;
             }
-            
+
             /* Add subtle colored accent on section edges */
             #about::after {
-                background: linear-gradient(to bottom, transparent, rgba(255,0,60,0.05), transparent);
+                background: linear-gradient(to bottom, transparent, rgba(255, 0, 60, 0.05), transparent);
                 height: 80px;
             }
-            
+
             #events::after {
-                background: linear-gradient(to bottom, transparent, rgba(0,255,247,0.05), transparent);
+                background: linear-gradient(to bottom, transparent, rgba(0, 255, 247, 0.05), transparent);
                 height: 80px;
             }
-            
+
             /* Increase padding for better spacing */
             section {
                 padding-top: 3rem !important;
                 padding-bottom: 3rem !important;
             }
-            
+
             /* Smoother text shadows on mobile */
-            h2, h3 {
-                text-shadow: 0 2px 10px rgba(0,0,0,0.5) !important;
+            h2,
+            h3 {
+                text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
             }
         }
 
@@ -1201,7 +1205,7 @@
             letter-spacing: 0.15em;
             padding: 4px 30px 4px 12px;
             margin: 0 10px;
-            text-shadow: 
+            text-shadow:
                 0 0 15px rgba(255, 235, 59, 0.8),
                 0 0 30px rgba(255, 235, 59, 0.4),
                 1px 1px 3px rgba(0, 0, 0, 0.8);
@@ -1212,7 +1216,7 @@
 
         .marquee-event-link:hover {
             color: #ff003c;
-            text-shadow: 
+            text-shadow:
                 0 0 15px rgba(255, 0, 60, 0.8),
                 0 0 30px rgba(255, 0, 60, 0.6);
             background: rgba(255, 0, 60, 0.1);
@@ -1236,6 +1240,7 @@
             0% {
                 transform: translateX(0);
             }
+
             100% {
                 transform: translateX(-50%);
             }
@@ -1355,8 +1360,10 @@
             <img src="https://envs.sh/LaF.png" alt="ASTERISK Logo" class="h-12 w-auto logo">
             <a href="#register"
                 class="hidden md:flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded transition shadow-lg shadow-red-500/20 uppercase tracking-wider text-sm">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: white;">
-                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="currentColor" fill-opacity="0.5"/>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    style="color: white;">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" fill="currentColor" fill-opacity="0.5" />
                 </svg>
                 Register Now
             </a>
@@ -1372,52 +1379,62 @@
             <a href="#about" class="block py-3 px-4 text-sm flex items-center">
                 <span class="mobile-menu-icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                        <path d="M12 16v-4m0-4h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                        <path d="M12 16v-4m0-4h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                     </svg>
                 </span>About</a>
             <a href="#events" class="block py-3 px-4 text-sm flex items-center">
                 <span class="mobile-menu-icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
-                        <path d="M9 3v4m6-4v4M6 11h12M6 15h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2" />
+                        <path d="M9 3v4m6-4v4M6 11h12M6 15h6" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" />
                     </svg>
                 </span>Events</a>
             <a href="#schedule" class="block py-3 px-4 text-sm flex items-center">
                 <span class="mobile-menu-icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
-                        <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" />
+                        <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                     </svg>
                 </span>Schedule</a>
             <a href="#sponsors" class="block py-3 px-4 text-sm flex items-center">
                 <span class="mobile-menu-icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2m14-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm6 8v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path
+                            d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2m14-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm6 8v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </span>Sponsors</a>
             <a href="game.html" class="block py-3 px-4 text-sm flex items-center">
                 <span class="mobile-menu-icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M9 12h6m-6 4h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        <path d="M9 12h6m-6 4h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                     </svg>
                 </span>Rules</a>
             <a href="team.html" class="block py-3 px-4 text-sm flex items-center">
                 <span class="mobile-menu-icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87m-4-12.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87m-4-12.13a4 4 0 0 1 0 7.75" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </span>Team Login</a>
             <a href="#register" class="block py-3 px-4 text-sm flex items-center">
-                <span class="mobile-menu-icon" style="background: rgba(255, 0, 60, 0.2); border-color: rgba(255, 0, 60, 0.4);">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: white;">
-                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="currentColor" fill-opacity="0.5"/>
+                <span class="mobile-menu-icon"
+                    style="background: rgba(255, 0, 60, 0.2); border-color: rgba(255, 0, 60, 0.4);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        style="color: white;">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" fill="currentColor" fill-opacity="0.5" />
                     </svg>
                 </span>Register Now</a>
-            
+
             <!-- Mobile Logos Section -->
             <div class="mobile-logos-container">
                 <div class="mobile-logo-item">
@@ -1429,6 +1446,210 @@
                     <span>AJCE</span>
                 </div>
             </div>
+
+            <!-- Quarterfinal Qualifiers - Compact Hero Block -->
+            <div class="mt-8 max-w-5xl mx-auto px-4">
+                <div class="valorant-card p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="text-left flex-shrink-0">
+                        <div class="card-category">Quarterfinal Qualifiers</div>
+                        <h3 class="text-lg md:text-2xl font-rajdhani font-bold text-white">Valorant — The Reckoning</h3>
+                        <p class="text-xs md:text-sm text-gray-300 mt-1 hidden md:block">Top 10 teams advancing to the
+                            quarterfinals. Catch the action live and support your favourites.</p>
+                    </div>
+
+                    <div class="w-full md:w-3/4">
+                        <style>
+                            /* Visibility and contrast fixes for qualifiers block */
+                            .qualifiers-hero {
+                                position: relative;
+                                z-index: 60;
+                            }
+
+                            .valorant-card.qualifiers-card {
+                                z-index: 70;
+                                position: relative;
+                                background: linear-gradient(180deg, rgba(0, 0, 0, 0.84), rgba(0, 0, 0, 0.7));
+                                border: 1px solid rgba(255, 0, 60, 0.22);
+                                box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75);
+                            }
+
+                            @media (max-width: 767px) {
+                                .qualifiers-hero {
+                                    padding-left: 0.6rem;
+                                    padding-right: 0.6rem;
+                                }
+                            }
+
+                            /* Compact qualifier badges */
+                            .qualifiers-row {
+                                display: flex;
+                                gap: 0.75rem;
+                                align-items: center;
+                            }
+
+                            .hide-scrollbar {
+                                -ms-overflow-style: none;
+                                scrollbar-width: none;
+                            }
+
+                            .hide-scrollbar::-webkit-scrollbar {
+                                display: none;
+                            }
+
+                            .team-badge {
+                                min-width: 10.5rem;
+                                /* comfortable touch target */
+                                display: flex;
+                                align-items: center;
+                                gap: 0.75rem;
+                                padding: 0.5rem 0.75rem;
+                                background: linear-gradient(90deg, rgba(255, 0, 60, 0.08), rgba(0, 255, 247, 0.03));
+                                border: 1px solid rgba(255, 0, 60, 0.15);
+                                border-radius: 12px;
+                                color: #fff;
+                                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+                                backdrop-filter: blur(6px);
+                                transition: transform 0.18s ease, box-shadow 0.18s ease;
+                            }
+
+                            .team-badge:hover {
+                                transform: translateY(-6px);
+                                box-shadow: 0 18px 40px rgba(255, 0, 60, 0.12);
+                            }
+
+                            .team-initial {
+                                width: 44px;
+                                height: 44px;
+                                border-radius: 999px;
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-weight: 700;
+                                color: #111;
+                                background: linear-gradient(180deg, #ff003c, #ff7a88);
+                                box-shadow: 0 6px 18px rgba(255, 0, 60, 0.12);
+                                font-family: 'Rajdhani', sans-serif;
+                            }
+
+                            .team-name {
+                                font-weight: 700;
+                                font-family: 'Rajdhani', sans-serif;
+                                color: #fff;
+                                font-size: 0.95rem;
+                            }
+
+                            .team-sub {
+                                font-size: 0.72rem;
+                                color: #cbd5e1;
+                                font-weight: 600;
+                            }
+
+                            /* Desktop: multi-column grid */
+                            @media (min-width: 768px) {
+                                .qualifiers-grid {
+                                    display: grid;
+                                    grid-template-columns: repeat(5, 1fr);
+                                    gap: 0.75rem;
+                                }
+
+                                .qualifiers-row {
+                                    display: block;
+                                    overflow: visible;
+                                }
+
+                                .team-badge {
+                                    min-width: 0;
+                                }
+                            }
+                        </style>
+
+                        <!-- Mobile: horizontal scroll with snap; Desktop: 5-column grid -->
+                        <div class="qualifiers-row hide-scrollbar overflow-x-auto snap-x snap-mandatory md:block">
+                            <div class="qualifiers-grid">
+                                <div class="team-badge">
+                                    <div class="team-initial">XL</div>
+                                    <div>
+                                        <div class="team-name">xlr8</div>
+                                        <div class="team-sub">Speed and precision</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">GC</div>
+                                    <div>
+                                        <div class="team-name">gods own country</div>
+                                        <div class="team-sub">Homegrown legends</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">GL</div>
+                                    <div>
+                                        <div class="team-name">go lose fast</div>
+                                        <div class="team-sub">Unpredictable force</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">HS</div>
+                                    <div>
+                                        <div class="team-name">hestoa</div>
+                                        <div class="team-sub">Tactical thinkers</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">SR</div>
+                                    <div>
+                                        <div class="team-name">spike rushers</div>
+                                        <div class="team-sub">Fast executes</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">ED</div>
+                                    <div>
+                                        <div class="team-name">esports divison nitc <span
+                                                style="color:#ff7a7a;font-weight:700;font-size:0.8rem;margin-left:6px;">(unable
+                                                to attend)</span></div>
+                                        <div class="team-sub">Collegiate powerhouse</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">DNA</div>
+                                    <div>
+                                        <div class="team-name">dna</div>
+                                        <div class="team-sub">Strategic playmakers</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">RG</div>
+                                    <div>
+                                        <div class="team-name">renegades</div>
+                                        <div class="team-sub">Relentless pressure</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">LB</div>
+                                    <div>
+                                        <div class="team-name">log baits</div>
+                                        <div class="team-sub">Mind games</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">VT</div>
+                                    <div>
+                                        <div class="team-name">vitality</div>
+                                        <div class="team-sub">Aggressive tempo</div>
+                                    </div>
+                                </div>
+                                <div class="team-badge">
+                                    <div class="team-initial">EX</div>
+                                    <div>
+                                        <div class="team-name">exodus</div>
+                                        <div class="team-sub">Alternate contender</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -1436,62 +1657,73 @@
         <section class="min-h-screen flex items-center justify-center text-center hero-bg overflow-hidden">
             <div id="valorant-ranks-bg" class="absolute top-0 left-0 w-full h-full z-0"></div>
             <canvas id="hero-canvas"></canvas>
-            
+
             <!-- Horizontal Marquee Text with Clickable Events -->
             <div class="bouncing-marquee" id="bouncingText">
                 <span class="marquee-text">
                     <a href="#" class="marquee-event-link event-details-btn" data-modal="valorantModal">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="m23.51 6.55-5.25 11.23a.47.47 0 0 1-.87-.01l-2.47-5.32-3.1 5.31a.47.47 0 0 1-.86 0l-3.08-5.3L5.42 17.7a.47.47 0 0 1-.87.02L.49 6.55a.47.47 0 0 1 .6-.53l10.42 4.04a.47.47 0 0 1 .42 0L22.9 6a.47.47 0 0 1 .6.54Z" fill="currentColor"/>
+                            <path
+                                d="m23.51 6.55-5.25 11.23a.47.47 0 0 1-.87-.01l-2.47-5.32-3.1 5.31a.47.47 0 0 1-.86 0l-3.08-5.3L5.42 17.7a.47.47 0 0 1-.87.02L.49 6.55a.47.47 0 0 1 .6-.53l10.42 4.04a.47.47 0 0 1 .42 0L22.9 6a.47.47 0 0 1 .6.54Z"
+                                fill="currentColor" />
                         </svg>
                         THE RECKONING - VALORANT TOURNAMENT
                     </a>
                     <a href="#" class="marquee-event-link event-details-btn" data-modal="artModal">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         PIXEL CRAFT - GAME ART COMPETITION
                     </a>
                     <a href="#" class="marquee-event-link event-details-btn" data-modal="workshopModal">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         DEV GENESIS - GAME DEVELOPMENT WORKSHOP
                     </a>
-                    <a href="#" class="marquee-event-link event-details-btn" data-modal="consoleModal">
+                    <a href="#" class="marquee-event-link event-details-btn" data-modal="gamingRingModal">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
-                            <path d="M9 3v4m6-4v4M6 11h12M6 15h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2" />
+                            <path d="M9 3v4m6-4v4M6 11h12M6 15h6" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" />
                         </svg>
-                        CONSOLE COMMAND - GAMING ZONE
+                        GAMING RIG - GAMING ZONE
                     </a>
                     <a href="#" class="marquee-event-link event-details-btn" data-modal="talkModal">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2m14-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm6 8v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path
+                                d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2m14-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm6 8v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         GUEST STREAMER INTERACTIVE SESSION
                     </a>
                     <a href="#" class="marquee-event-link event-details-btn" data-modal="valorantModal">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="m23.51 6.55-5.25 11.23a.47.47 0 0 1-.87-.01l-2.47-5.32-3.1 5.31a.47.47 0 0 1-.86 0l-3.08-5.3L5.42 17.7a.47.47 0 0 1-.87.02L.49 6.55a.47.47 0 0 1 .6-.53l10.42 4.04a.47.47 0 0 1 .42 0L22.9 6a.47.47 0 0 1 .6.54Z" fill="currentColor"/>
+                            <path
+                                d="m23.51 6.55-5.25 11.23a.47.47 0 0 1-.87-.01l-2.47-5.32-3.1 5.31a.47.47 0 0 1-.86 0l-3.08-5.3L5.42 17.7a.47.47 0 0 1-.87.02L.49 6.55a.47.47 0 0 1 .6-.53l10.42 4.04a.47.47 0 0 1 .42 0L22.9 6a.47.47 0 0 1 .6.54Z"
+                                fill="currentColor" />
                         </svg>
                         THE RECKONING - VALORANT TOURNAMENT
                     </a>
                     <a href="#" class="marquee-event-link event-details-btn" data-modal="artModal">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         PIXEL CRAFT - GAME ART COMPETITION
                     </a>
                     <a href="#" class="marquee-event-link event-details-btn" data-modal="workshopModal">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         DEV GENESIS - GAME DEVELOPMENT WORKSHOP
                     </a>
                 </span>
             </div>
-            
+
             <div class="z-10 p-6 relative mt-20 sm:mt-16 md:mt-4">
                 <p class="text-xl md:text-2xl mt-4 tracking-widest uppercase smallboy">ACM AJCE PRESENTS</p>
 
@@ -1517,60 +1749,78 @@
                         <div class="text-xs uppercase">Seconds</div>
                     </div>
                 </div>
-                
+
                 <!-- Action Buttons - Aligned and Styled -->
                 <div class="mt-8 sm:mt-12 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
                     <!-- View The Arenas Button -->
-                    <a href="#events" class="group inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-red-600 via-red-500 to-red-600 rounded-lg border border-red-400/50 hover:border-red-300 transition-all duration-300 hover:shadow-[0_0_20px_rgba(220,38,38,0.6)] hover:scale-[1.02] relative overflow-hidden">
+                    <a href="#events"
+                        class="group inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-red-600 via-red-500 to-red-600 rounded-lg border border-red-400/50 hover:border-red-300 transition-all duration-300 hover:shadow-[0_0_20px_rgba(220,38,38,0.6)] hover:scale-[1.02] relative overflow-hidden">
                         <!-- Shimmer effect -->
-                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                        
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700">
+                        </div>
+
                         <!-- Arena Icon -->
-                        <svg class="relative w-4 h-4 sm:w-5 sm:h-5 text-white flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18.5c-4.28-1.12-7-5.2-7-9.5V8.3l7-3.11 7 3.11V11c0 4.3-2.72 8.38-7 9.5z"/>
-                            <path d="M9.5 12.5L11 14l3.5-3.5"/>
+                        <svg class="relative w-4 h-4 sm:w-5 sm:h-5 text-white flex-shrink-0" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18.5c-4.28-1.12-7-5.2-7-9.5V8.3l7-3.11 7 3.11V11c0 4.3-2.72 8.38-7 9.5z" />
+                            <path d="M9.5 12.5L11 14l3.5-3.5" />
                         </svg>
-                        
+
                         <!-- Text -->
-                        <span class="relative font-rajdhani font-bold text-sm sm:text-base uppercase tracking-wide text-white">
+                        <span
+                            class="relative font-rajdhani font-bold text-sm sm:text-base uppercase tracking-wide text-white">
                             View The Arenas
                         </span>
-                        
+
                         <!-- Arrow Icon -->
-                        <svg class="relative w-4 h-4 sm:w-5 sm:h-5 text-white flex-shrink-0 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        <svg class="relative w-4 h-4 sm:w-5 sm:h-5 text-white flex-shrink-0 group-hover:translate-x-0.5 transition-transform"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 7l5 5m0 0l-5 5m5-5H6" />
                         </svg>
-                        
+
                         <!-- Sparkle -->
-                        <svg class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 text-white animate-pulse opacity-80" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        <svg class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 text-white animate-pulse opacity-80"
+                            fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                         </svg>
                     </a>
-                    
+
                     <!-- Watch Live Button -->
-                    <a href="live.html" class="group inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-amber-500 via-yellow-400 to-orange-500 rounded-lg border border-yellow-400/50 hover:border-yellow-300 transition-all duration-300 hover:shadow-[0_0_20px_rgba(251,191,36,0.6)] hover:scale-[1.02] relative overflow-hidden">
+                    <a href="live.html"
+                        class="group inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-amber-500 via-yellow-400 to-orange-500 rounded-lg border border-yellow-400/50 hover:border-yellow-300 transition-all duration-300 hover:shadow-[0_0_20px_rgba(251,191,36,0.6)] hover:scale-[1.02] relative overflow-hidden">
                         <!-- Shimmer effect -->
-                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                        
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700">
+                        </div>
+
                         <!-- LIVE dot -->
                         <span class="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2 flex-shrink-0">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-600 opacity-75"></span>
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-600 opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-full w-full bg-red-600"></span>
                         </span>
-                        
+
                         <!-- Text -->
-                        <span class="relative font-rajdhani font-bold text-sm sm:text-base uppercase tracking-wide text-black">
+                        <span
+                            class="relative font-rajdhani font-bold text-sm sm:text-base uppercase tracking-wide text-black">
                             Watch Live
                         </span>
-                        
+
                         <!-- Play Icon -->
-                        <svg class="relative w-4 h-4 sm:w-5 sm:h-5 text-black flex-shrink-0 group-hover:translate-x-0.5 transition-transform" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z"/>
+                        <svg class="relative w-4 h-4 sm:w-5 sm:h-5 text-black flex-shrink-0 group-hover:translate-x-0.5 transition-transform"
+                            fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
                         </svg>
-                        
+
                         <!-- Sparkle -->
-                        <svg class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 text-white animate-pulse opacity-80" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        <svg class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 text-white animate-pulse opacity-80"
+                            fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                         </svg>
                     </a>
                 </div>
@@ -1742,7 +1992,8 @@
                         <div class="card-content text-left">
                             <p class="card-category">Creative</p>
                             <h3 class="card-title text-2xl font-rajdhani font-bold my-2">Pixel Craft</h3>
-                            <p class="card-description text-gray-400 mb-6 text-sm">Design a compelling game concept, a unique character or a breathtaking scenery.</p>
+                            <p class="card-description text-gray-400 mb-6 text-sm">Design a compelling game concept, a
+                                unique character or a breathtaking scenery.</p>
                             <button class="card-button event-details-btn mt-auto self-start" data-modal="artModal">View
                                 Guidelines &rarr;</button>
                         </div>
@@ -1768,11 +2019,11 @@
                         </div>
                         <div class="card-content text-left">
                             <p class="card-category">Gaming Zone</p>
-                            <h3 class="card-title text-2xl font-rajdhani font-bold my-2">Console Command</h3>
+                            <h3 class="card-title text-2xl font-rajdhani font-bold my-2">Gaming Rig</h3>
                             <p class="card-description text-gray-400 mb-6 text-sm">Experience high-performance gaming on
                                 top-tier consoles. Relax and compete!</p>
                             <button class="card-button event-details-btn mt-auto self-start"
-                                data-modal="consoleModal">More Info &rarr;</button>
+                                data-modal="gamingRingModal">More Info &rarr;</button>
                         </div>
                     </div>
 
@@ -1827,7 +2078,8 @@
                                 </div>
                                 <span class="timeline-time">BOTH DAYS</span>
                                 <h4 class="font-bold text-white text-lg">Gaming Console Zone</h4>
-                                <p class="text-gray-400 mt-1">Two days of non-stop gaming on high-end consoles. Relax and
+                                <p class="text-gray-400 mt-1">Two days of non-stop gaming on high-end consoles. Relax
+                                    and
                                     compete!</p>
                             </div>
                         </div>
@@ -1964,8 +2216,13 @@
 
             <style>
                 @keyframes hexMove {
-                    0% { background-position: 0 0; }
-                    100% { background-position: 60px 104px; }
+                    0% {
+                        background-position: 0 0;
+                    }
+
+                    100% {
+                        background-position: 60px 104px;
+                    }
                 }
 
                 /* Sponsor Showcase with 3D Tilt */
@@ -1994,7 +2251,7 @@
                 .sponsor-card:hover {
                     transform: rotateY(5deg) rotateX(-5deg) scale(1.05);
                     border-color: rgba(0, 255, 247, 0.8);
-                    box-shadow: 
+                    box-shadow:
                         0 25px 50px -12px rgba(0, 255, 247, 0.3),
                         0 0 0 1px rgba(0, 255, 247, 0.2),
                         inset 0 0 60px rgba(0, 255, 247, 0.05);
@@ -2006,12 +2263,10 @@
                     left: -50%;
                     width: 200%;
                     height: 200%;
-                    background: linear-gradient(
-                        45deg,
-                        transparent 30%,
-                        rgba(255, 255, 255, 0.1) 50%,
-                        transparent 70%
-                    );
+                    background: linear-gradient(45deg,
+                            transparent 30%,
+                            rgba(255, 255, 255, 0.1) 50%,
+                            transparent 70%);
                     transform: translateX(-100%) translateY(-100%) rotate(45deg);
                     transition: transform 0.8s ease;
                     pointer-events: none;
@@ -2076,21 +2331,27 @@
                 }
 
                 @keyframes gradientShift {
-                    0%, 100% { background-position: 0% 50%; }
-                    50% { background-position: 100% 50%; }
+
+                    0%,
+                    100% {
+                        background-position: 0% 50%;
+                    }
+
+                    50% {
+                        background-position: 100% 50%;
+                    }
                 }
 
                 /* Infinite Scrolling Marquee */
                 .sponsor-marquee {
                     width: 100%;
                     overflow: hidden;
-                    background: linear-gradient(90deg, 
-                        transparent 0%, 
-                        rgba(255, 0, 60, 0.1) 10%, 
-                        rgba(0, 255, 247, 0.1) 50%, 
-                        rgba(255, 0, 60, 0.1) 90%, 
-                        transparent 100%
-                    );
+                    background: linear-gradient(90deg,
+                            transparent 0%,
+                            rgba(255, 0, 60, 0.1) 10%,
+                            rgba(0, 255, 247, 0.1) 50%,
+                            rgba(255, 0, 60, 0.1) 90%,
+                            transparent 100%);
                     padding: 1.5rem 0;
                     margin-top: 3rem;
                     border-top: 1px solid rgba(255, 0, 60, 0.2);
@@ -2106,8 +2367,13 @@
                 }
 
                 @keyframes marquee {
-                    0% { transform: translateX(0); }
-                    100% { transform: translateX(-50%); }
+                    0% {
+                        transform: translateX(0);
+                    }
+
+                    100% {
+                        transform: translateX(-50%);
+                    }
                 }
 
                 .marquee-text {
@@ -2126,8 +2392,15 @@
                 }
 
                 @keyframes textGradient {
-                    0%, 100% { background-position: 0% 50%; }
-                    50% { background-position: 100% 50%; }
+
+                    0%,
+                    100% {
+                        background-position: 0% 50%;
+                    }
+
+                    50% {
+                        background-position: 100% 50%;
+                    }
                 }
 
                 .marquee-separator {
@@ -2138,8 +2411,15 @@
                 }
 
                 @keyframes pulse {
-                    0%, 100% { opacity: 0.4; }
-                    50% { opacity: 1; }
+
+                    0%,
+                    100% {
+                        opacity: 0.4;
+                    }
+
+                    50% {
+                        opacity: 1;
+                    }
                 }
 
                 /* Mobile Responsive */
@@ -2190,13 +2470,13 @@
                         const rect = sponsorCard.getBoundingClientRect();
                         const x = e.clientX - rect.left;
                         const y = e.clientY - rect.top;
-                        
+
                         const centerX = rect.width / 2;
                         const centerY = rect.height / 2;
-                        
+
                         const rotateX = (y - centerY) / 10;
                         const rotateY = (centerX - x) / 10;
-                        
+
                         sponsorCard.style.transform = `
                             perspective(1500px) 
                             rotateX(${rotateX}deg) 
@@ -2204,7 +2484,7 @@
                             scale(1.05)
                         `;
                     });
-                    
+
                     sponsorCard.addEventListener('mouseleave', () => {
                         sponsorCard.style.transform = '';
                     });
@@ -2213,47 +2493,74 @@
         </section>
     </main>
 
-    <footer class="py-16 relative overflow-hidden" style="background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%); border-top: 1px solid rgba(255,0,60,0.2);">
+    <footer class="py-16 relative overflow-hidden"
+        style="background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%); border-top: 1px solid rgba(255,0,60,0.2);">
         <!-- Animated background -->
         <div class="absolute inset-0 opacity-10">
-            <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,0,60,0.3) 1px, transparent 0); background-size: 40px 40px;"></div>
+            <div class="absolute inset-0"
+                style="background-image: radial-gradient(circle at 2px 2px, rgba(255,0,60,0.3) 1px, transparent 0); background-size: 40px 40px;">
+            </div>
         </div>
-        
+
         <div class="container mx-auto px-6 text-center relative z-10" style="max-width:900px;">
             <div style="padding:2rem 1rem;">
                 <!-- Logo/Brand -->
-                <h3 class="text-3xl font-bold mb-4" style="font-family:'valorant',sans-serif;background: linear-gradient(135deg, #ff003c 0%, #ff6b6b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">ASTERISK 2025</h3>
-                
+                <h3 class="text-3xl font-bold mb-4"
+                    style="font-family:'valorant',sans-serif;background: linear-gradient(135deg, #ff003c 0%, #ff6b6b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    ASTERISK 2025</h3>
+
                 <!-- Tagline -->
                 <p class="text-gray-400 mb-6 font-rajdhani text-lg">Where Code Meets Combat</p>
-                
+
                 <!-- Social Links -->
                 <div class="flex justify-center gap-6 mb-8">
-                    <a href="#" class="social-icon-footer" style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(255,0,60,0.1);border:2px solid #ff003c;border-radius:50%;color:#ff003c;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='#ff003c';this.style.color='#fff';this.style.transform='scale(1.1)';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.color='#ff003c';this.style.transform='scale(1)';">📸</a>
-                    <a href="#" class="social-icon-footer" style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(255,0,60,0.1);border:2px solid #ff003c;border-radius:50%;color:#ff003c;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='#ff003c';this.style.color='#fff';this.style.transform='scale(1.1)';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.color='#ff003c';this.style.transform='scale(1)';">🐦</a>
-                    <a href="#" class="social-icon-footer" style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(255,0,60,0.1);border:2px solid #ff003c;border-radius:50%;color:#ff003c;font-size:1.5rem;transition:all 0.3s ease;" onmouseover="this.style.background='#ff003c';this.style.color='#fff';this.style.transform='scale(1.1)';" onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.color='#ff003c';this.style.transform='scale(1)';">💼</a>
+                    <a href="#" class="social-icon-footer"
+                        style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(255,0,60,0.1);border:2px solid #ff003c;border-radius:50%;color:#ff003c;font-size:1.5rem;transition:all 0.3s ease;"
+                        onmouseover="this.style.background='#ff003c';this.style.color='#fff';this.style.transform='scale(1.1)';"
+                        onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.color='#ff003c';this.style.transform='scale(1)';">📸</a>
+                    <a href="#" class="social-icon-footer"
+                        style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(255,0,60,0.1);border:2px solid #ff003c;border-radius:50%;color:#ff003c;font-size:1.5rem;transition:all 0.3s ease;"
+                        onmouseover="this.style.background='#ff003c';this.style.color='#fff';this.style.transform='scale(1.1)';"
+                        onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.color='#ff003c';this.style.transform='scale(1)';">🐦</a>
+                    <a href="#" class="social-icon-footer"
+                        style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:rgba(255,0,60,0.1);border:2px solid #ff003c;border-radius:50%;color:#ff003c;font-size:1.5rem;transition:all 0.3s ease;"
+                        onmouseover="this.style.background='#ff003c';this.style.color='#fff';this.style.transform='scale(1.1)';"
+                        onmouseout="this.style.background='rgba(255,0,60,0.1)';this.style.color='#ff003c';this.style.transform='scale(1)';">💼</a>
                 </div>
-                
+
                 <!-- Divider -->
-                <div style="height:2px;background:linear-gradient(90deg, transparent, #ff003c, #ff6b6b, transparent);margin:2rem 0;opacity:0.3;"></div>
-                
+                <div
+                    style="height:2px;background:linear-gradient(90deg, transparent, #ff003c, #ff6b6b, transparent);margin:2rem 0;opacity:0.3;">
+                </div>
+
                 <!-- Copyright -->
-                <p style="font-family:'Rajdhani',sans-serif;font-size:1.1rem;color:#fff;letter-spacing:0.08em;margin-bottom:0.5rem;">
+                <p
+                    style="font-family:'Rajdhani',sans-serif;font-size:1.1rem;color:#fff;letter-spacing:0.08em;margin-bottom:0.5rem;">
                     &copy; 2025 ACM Student Chapter, Amal Jyothi College of Engineering
                 </p>
-                
+
                 <!-- Credits -->
-                <p style="color:#888;font-size:0.9rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.05em;margin-bottom:1rem;">
-                    Designed & Developed by <span style="color:#ff003c;font-weight:600;">Amarnath C</span> and <span style="color:#ff003c;font-weight:600;">Amal Benny Joseph</span>
+                <p
+                    style="color:#888;font-size:0.9rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.05em;margin-bottom:1rem;">
+                    Designed & Developed by <span style="color:#ff003c;font-weight:600;">Amarnath C</span> and <span
+                        style="color:#ff003c;font-weight:600;">Amal Benny Joseph</span>
                 </p>
-                
+
                 <!-- Contact Info -->
-                <p style="color:#999;font-size:0.95rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.05em;margin-bottom:1.5rem;">
-                    <span style="color:#ff003c;font-weight:600;">Edwin</span> - <a href="tel:+916282325276" style="color:#ddd;text-decoration:none;transition:color 0.3s ease;" onmouseover="this.style.color='#ff003c';" onmouseout="this.style.color='#ddd';">+91 62823 25276</a>
+                <p
+                    style="color:#999;font-size:0.95rem;font-family:'Rajdhani',sans-serif;letter-spacing:0.05em;margin-bottom:1.5rem;">
+                    <span style="color:#ff003c;font-weight:600;">Edwin</span> - <a href="tel:+916282325276"
+                        style="color:#ddd;text-decoration:none;transition:color 0.3s ease;"
+                        onmouseover="this.style.color='#ff003c';" onmouseout="this.style.color='#ddd';">+91 62823
+                        25276</a>
                 </p>
-                
+
                 <!-- Contact Button -->
-                <a href="tel:+916282325276" style="display:inline-block;color:#fff;background:#ff003c;padding:0.75rem 2rem;border-radius:25px;text-decoration:none;font-weight:700;font-family:'Rajdhani',sans-serif;text-transform:uppercase;letter-spacing:0.1em;box-shadow:0 5px 20px rgba(255,0,60,0.4);transition:all 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(255,0,60,0.6)';this.style.background='#e6003a';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 5px 20px rgba(255,0,60,0.4)';this.style.background='#ff003c';">☎ CALL US</a>
+                <a href="tel:+916282325276"
+                    style="display:inline-block;color:#fff;background:#ff003c;padding:0.75rem 2rem;border-radius:25px;text-decoration:none;font-weight:700;font-family:'Rajdhani',sans-serif;text-transform:uppercase;letter-spacing:0.1em;box-shadow:0 5px 20px rgba(255,0,60,0.4);transition:all 0.3s ease;"
+                    onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(255,0,60,0.6)';this.style.background='#e6003a';"
+                    onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 5px 20px rgba(255,0,60,0.4)';this.style.background='#ff003c';">☎
+                    CALL US</a>
             </div>
         </div>
     </footer>
@@ -2298,7 +2605,9 @@
             <button class="close-btn absolute top-4 right-4 text-white text-2xl">&times;</button>
             <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-4">Pixel Craft: Guidelines</h3>
             <div class="text-gray-300 space-y-4">
-                <p>Design a compelling game concept, a unique character or a breathtaking scenery. The genre and style are completely up to you. So use your preferred Digital Art or Traditional Art techniques to bring your vision to life.</p>
+                <p>Design a compelling game concept, a unique character or a breathtaking scenery. The genre and style
+                    are completely up to you. So use your preferred Digital Art or Traditional Art techniques to bring
+                    your vision to life.</p>
                 <div>
                     <h4 class="font-bold text-white">Theme:</h4>
                     <p>Open - Any genre or style</p>
@@ -2351,12 +2660,13 @@
         </div>
     </div>
 
-    <div id="consoleModal" class="modal">
+    <div id="gamingRingModal" class="modal">
         <div class="modal-content max-w-2xl mx-auto my-12 p-8 rounded-lg shadow-lg relative">
             <button class="close-btn absolute top-4 right-4 text-white text-2xl">&times;</button>
-            <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-4">Gaming Console Zone</h3>
+            <h3 class="text-3xl font-rajdhani font-bold text-red-500 mb-4">Gaming Rig</h3>
             <div class="text-gray-300 space-y-4">
-                <p>Two day event for all to play and experience high end gaming consoles.</p>
+                <p>Two day event for all to play and experience high-end gaming consoles, Fastest Lap Prize, and
+                    more.
                 <div>
                     <h4 class="font-bold text-white">Experience:</h4>
                     <p>High-performance gaming on a variety of top-tier consoles. A fun, high-energy space to compete,
@@ -2369,6 +2679,12 @@
                 <div>
                     <h4 class="font-bold text-white">Availability:</h4>
                     <p>Open on October 17th and 18th.</p>
+                </div>
+                <div>
+                    <button id="registerBtn" onclick="window.location.href='https://example.com/placeholder'"
+                        class="payment-button">
+                        Register Now
+                    </button>
                 </div>
             </div>
         </div>

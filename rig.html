@@ -434,6 +434,31 @@
             box-shadow: 0 6px 20px rgba(255, 0, 60, 0.6);
         }
 
+        /* Time Input Styles */
+        .time-input-group input {
+            text-align: center;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+        }
+
+        #new-minutes { 
+            background: linear-gradient(90deg, rgba(255, 0, 60, 0.1), transparent); 
+        }
+        #new-seconds { 
+            background: linear-gradient(90deg, rgba(0, 255, 247, 0.1), transparent); 
+        }
+        #new-milliseconds { 
+            background: linear-gradient(90deg, rgba(255, 165, 0, 0.1), transparent); 
+        }
+
+        #calculated-time-display {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            padding: 0.5rem;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             body::before {
@@ -628,12 +653,26 @@
                             <!-- Add New Lap Time -->
                             <div class="mb-8">
                                 <h3 class="text-xl font-rajdhani font-bold mb-4">Add New Lap Time</h3>
-                                <form id="add-lap-form" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <input type="text" id="new-name" placeholder="Racer Name" required>
-                                    <input type="number" id="new-time" placeholder="Lap Time (seconds)" step="0.01" required>
-                                    <input type="text" id="new-place" placeholder="Place (optional)">
-                                    <button type="submit" class="md:col-span-3">Add Lap Time</button>
+                                <form id="add-lap-form" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                                    <div>
+                                        <input type="text" id="new-name" placeholder="Racer Name" required class="w-full">
+                                    </div>
+                                    <div>
+                                        <input type="number" id="new-minutes" placeholder="Min" min="0" max="10" class="w-full">
+                                    </div>
+                                    <div>
+                                        <input type="number" id="new-seconds" placeholder="Sec" min="0" max="59" class="w-full">
+                                    </div>
+                                    <div>
+                                        <input type="number" id="new-milliseconds" placeholder="MS" min="0" max="999" class="w-full">
+                                    </div>
+                                    <input type="text" id="new-place" placeholder="Place (optional)" class="md:col-span-4 w-full">
+                                    <button type="submit" class="md:col-span-4">Add Lap Time</button>
                                 </form>
+                                <!-- Display calculated time -->
+                                <div id="calculated-time-display" class="mt-3 text-center hidden">
+                                    <span class="text-lg font-bold text-green-400" id="calculated-display"></span>
+                                </div>
                             </div>
 
                             <!-- Leaderboard Table -->
@@ -763,7 +802,21 @@
             }
         }
 
-        // Render leaderboard with edit/delete buttons
+        // Format time for display (MM:SS.mmm)
+        function formatTimeDisplay(seconds) {
+            const totalMs = seconds * 1000;
+            const minutes = Math.floor(totalMs / 60000);
+            const secs = Math.floor((totalMs % 60000) / 1000);
+            const ms = Math.floor((totalMs % 1000));
+            
+            const minStr = minutes.toString().padStart(2, '0');
+            const secStr = secs.toString().padStart(2, '0');
+            const msStr = ms.toString().padStart(3, '0');
+            
+            return `${minStr}:${secStr}.${msStr}`;
+        }
+
+        // Render leaderboard with enhanced time display
         function renderLeaderboard(laps) {
             const leaderboardGrid = document.getElementById('leaderboard-grid');
             laps.sort((a, b) => a.time - b.time);
@@ -772,6 +825,7 @@
                 const rank = index + 1;
                 const rankColor = rank === 1 ? '#ffd700' : rank === 2 ? '#c0c0c0' : rank === 3 ? '#cd7f32' : '#fff';
                 const rankBg = rank <= 3 ? 'rgba(255, 215, 0, 0.1)' : 'transparent';
+                const displayTime = formatTimeDisplay(lap.time);
                 
                 return `
                     <div class="leaderboard-row flex items-center justify-between p-3">
@@ -781,27 +835,67 @@
                         <div class="leaderboard-name flex-1 ml-4">
                             ${lap.name}
                         </div>
-                        <div class="leaderboard-time ml-4">
-                            ${lap.time.toFixed(2)}s
+                        <div class="leaderboard-time ml-4" style="font-size: 1rem;">
+                            <span style="color: #00fff7;">${displayTime}</span>
                         </div>
                         <div class="leaderboard-place ml-4">
                             ${lap.place || 'N/A'}
                         </div>
                         <div class="flex gap-2 ml-4">
-                            <button onclick="editLap('${lap._id}')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">Edit</button>
-                            <button onclick="deleteLap('${lap._id}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Delete</button>
+                            <button onclick="editLap('${lap._id}')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">Edit</button>
+                            <button onclick="deleteLap('${lap._id}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">Delete</button>
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
-        // Add new lap time
+        // Live calculation as user types
+        ['new-minutes', 'new-seconds', 'new-milliseconds'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updateCalculatedTime);
+        });
+
+        function updateCalculatedTime() {
+            const minutes = parseInt(document.getElementById('new-minutes').value) || 0;
+            const seconds = parseInt(document.getElementById('new-seconds').value) || 0;
+            const milliseconds = parseInt(document.getElementById('new-milliseconds').value) || 0;
+            
+            const totalTime = minutes * 60 + seconds + (milliseconds / 1000);
+            
+            const display = document.getElementById('calculated-display');
+            const container = document.getElementById('calculated-time-display');
+            
+            if (totalTime > 0) {
+                display.textContent = formatTimeDisplay(totalTime);
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        // Add new lap time with MMS format
         document.getElementById('add-lap-form').addEventListener('submit', async (e) => {
             e.preventDefault();
+            
             const name = document.getElementById('new-name').value;
-            const time = document.getElementById('new-time').value;
+            const minutes = parseInt(document.getElementById('new-minutes').value) || 0;
+            const seconds = parseInt(document.getElementById('new-seconds').value) || 0;
+            const milliseconds = parseInt(document.getElementById('new-milliseconds').value) || 0;
             const place = document.getElementById('new-place').value;
+
+            // Calculate total time in seconds
+            const totalTime = minutes * 60 + seconds + (milliseconds / 1000);
+            
+            // Validate
+            if (!name) {
+                showToast('error', 'Error', 'Please enter racer name.', 3000);
+                return;
+            }
+            
+            if (totalTime <= 0) {
+                showToast('error', 'Error', 'Please enter a valid time.', 3000);
+                return;
+            }
 
             try {
                 const response = await fetch(`${API_BASE_URL}/api/lap-times`, {
@@ -810,13 +904,14 @@
                         'Content-Type': 'application/json',
                         'X-Auth-Token': authToken
                     },
-                    body: JSON.stringify({ name, time: parseFloat(time), place })
+                    body: JSON.stringify({ name, time: totalTime, place })
                 });
                 const data = await response.json();
 
                 if (data.success) {
-                    showToast('success', 'Success', 'Lap time added successfully.', 3000);
+                    showToast('success', 'Success', `Lap time added: ${formatTimeDisplay(totalTime)}`, 3000);
                     document.getElementById('add-lap-form').reset();
+                    document.getElementById('calculated-time-display').classList.add('hidden');
                     fetchLapTimes();
                 } else {
                     showToast('error', 'Error', data.message || 'Failed to add lap time.', 5000);
@@ -826,16 +921,28 @@
             }
         });
 
-        // Edit lap time
+        // Edit lap time with MMS format
         async function editLap(id) {
             const lap = allLaps.find(l => l._id === id);
             if (!lap) return;
 
+            const displayTime = formatTimeDisplay(lap.time);
+            const [minStr, secStr, msStr] = displayTime.split(/[:.]/);
+            
             const newName = prompt('Enter new name:', lap.name);
-            const newTime = prompt('Enter new time (seconds):', lap.time);
+            const newMinutes = prompt('Enter minutes:', parseInt(minStr));
+            const newSeconds = prompt('Enter seconds (0-59):', parseInt(secStr));
+            const newMilliseconds = prompt('Enter milliseconds (0-999):', parseInt(msStr));
             const newPlace = prompt('Enter new place (optional):', lap.place || '');
 
-            if (newName && newTime) {
+            if (newName && newMinutes !== null && newSeconds !== null && newMilliseconds !== null) {
+                const totalTime = parseInt(newMinutes) * 60 + parseInt(newSeconds) + (parseInt(newMilliseconds) / 1000);
+                
+                if (totalTime <= 0) {
+                    showToast('error', 'Error', 'Please enter a valid time.', 3000);
+                    return;
+                }
+
                 try {
                     const response = await fetch(`${API_BASE_URL}/api/lap-times/${id}`, {
                         method: 'PUT',
@@ -845,14 +952,14 @@
                         },
                         body: JSON.stringify({
                             name: newName,
-                            time: parseFloat(newTime),
+                            time: totalTime,
                             place: newPlace || undefined
                         })
                     });
                     const data = await response.json();
 
                     if (data.success) {
-                        showToast('success', 'Success', 'Lap time updated successfully.', 3000);
+                        showToast('success', 'Success', `Lap time updated: ${formatTimeDisplay(totalTime)}`, 3000);
                         fetchLapTimes();
                     } else {
                         showToast('error', 'Error', data.message || 'Failed to update lap time.', 5000);

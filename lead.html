@@ -300,7 +300,7 @@
             box-shadow: 0 0 40px rgba(255, 0, 60, 0.2);
         }
 
-    /* Enhanced Leaderboard Table */
+    /* Enhanced Leaderboard Table - MMS FORMAT */
         .leaderboard-table {
             background: linear-gradient(145deg, rgba(10, 10, 12, 0.85), rgba(6, 6, 8, 0.9));
             border: 1px solid rgba(255, 0, 60, 0.2);
@@ -362,7 +362,8 @@
         .leaderboard-time {
             color: #00fff7;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 1rem; /* Increased for MMS format */
+            text-shadow: 0 0 8px rgba(0, 255, 247, 0.5);
         }
 
         .leaderboard-place {
@@ -549,8 +550,6 @@
 
         /* ================= RESPONSIVE FIXES ================= */
 
-
-
         /* Tablets */
         @media (max-width: 1024px) {
             .title-reveal {
@@ -616,6 +615,10 @@
                 margin-left: 0.5rem;
                 margin-right: 0.5rem;
             }
+
+            .leaderboard-time {
+                font-size: 1rem !important;
+            }
         }
 
         /* Small Mobile */
@@ -647,7 +650,7 @@
             }
 
             .leaderboard-time {
-                font-size: 0.85rem;
+                font-size: 0.95rem !important;
             }
 
             .leaderboard-place {
@@ -791,7 +794,7 @@
                                 <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#ff003c" stroke="#ff003c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
-                        <p class="text-center text-gray-400 mb-6 font-rajdhani text-sm">Fastest lap timings - updated in real-time</p>
+                        <p class="text-center text-gray-400 mb-6 font-rajdhani text-sm">Fastest lap timings - updated in real-time (MM:SS.mmm)</p>
                         
                         <!-- Loading Spinner -->
                         <div id="loading" class="flex justify-center items-center mb-6">
@@ -879,6 +882,20 @@
             connectSSE();
         });
 
+        // Format time for display (MM:SS.mmm) - MMS FORMAT
+        function formatTimeDisplay(seconds) {
+            const totalMs = seconds * 1000;
+            const minutes = Math.floor(totalMs / 60000);
+            const secs = Math.floor((totalMs % 60000) / 1000);
+            const ms = Math.floor((totalMs % 1000));
+            
+            const minStr = minutes.toString().padStart(2, '0');
+            const secStr = secs.toString().padStart(2, '0');
+            const msStr = ms.toString().padStart(3, '0');
+            
+            return `${minStr}:${secStr}.${msStr}`;
+        }
+
         async function fetchLapTimes() {
             const loading = document.getElementById('loading');
             const leaderboardList = document.getElementById('leaderboard-list');
@@ -916,6 +933,7 @@
                 const rank = index + 1;
                 const rankColor = rank === 1 ? '#ffd700' : rank === 2 ? '#c0c0c0' : rank === 3 ? '#cd7f32' : '#fff';
                 const rankBg = rank <= 3 ? 'rgba(255, 215, 0, 0.1)' : 'transparent';
+                const displayTime = formatTimeDisplay(lap.time); // MMS FORMAT
                 
                 return `
                     <div class="leaderboard-row flex items-center justify-between p-3">
@@ -926,7 +944,7 @@
                             ${lap.name}
                         </div>
                         <div class="leaderboard-time ml-4">
-                            ${lap.time.toFixed(2)}s
+                            <span style="color: #00fff7; font-size: 1rem;">${displayTime}</span>
                         </div>
                         <div class="leaderboard-place ml-4">
                             ${lap.place || 'N/A'}
@@ -945,7 +963,7 @@
                     if (data.type === 'lap_updated') {
                         // Refresh leaderboard on update
                         fetchLapTimes();
-                        showToast('info', 'Update', 'Leaderboard updated with new lap time', 3000);
+                        showToast('info', 'Update', `New lap time: ${formatTimeDisplay(data.time)}`, 3000);
                     }
                 } catch (error) {
                     console.error('SSE parse error:', error);
